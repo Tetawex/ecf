@@ -3,7 +3,7 @@ package org.tetawex.ecf.util;
 import com.badlogic.gdx.math.RandomXS128;
 
 /**
- * Created by tetawex on 03.05.17.
+ * Created by Tetawex on 03.05.17.
  */
 public class RandomProvider {
     private static RandomXS128 random;

@@ -1,6 +1,9 @@
 package org.tetawex.ecf.core;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import org.tetawex.ecf.core.screen.GameScreen;
 
 /**
  * Created by Tetawex on 30.12.2016.
@@ -30,12 +33,10 @@ public class GameStateManager
     }
 
     public void renderCurrentScreen(float deltaTime){
-
+        currentScreen.render(deltaTime);
     }
 
-    public void setState(GameState gameState)
-    {
-
+    public void setState(GameState gameState){
         currentState=gameState;
         if(currentScreen!=null)
             currentScreen.dispose();

@@ -1,10 +1,14 @@
 package org.tetawex.ecf.model;
 
 /**
- * Created by tetawex on 02.05.17.
+ * Created by Tetawex on 02.05.17.
  */
 public enum Element {
     FIRE,WATER,LIGHT,SHADOW,EARTH,WIND,NEUTRAL;
+    public static int getElementsCount(){
+        //return values().length;
+        return 6;
+    }
     public static Element getOpposite(Element element){
         switch (element){
             case WATER:
@@ -20,7 +24,7 @@ public enum Element {
             case SHADOW:
                 return LIGHT;
         }
-        return FIRE;
+        return NEUTRAL;
     }
     public static Element getElementById(int id){
         switch(id){

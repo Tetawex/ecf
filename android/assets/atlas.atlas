@@ -1,0 +1,75 @@
+
+atlas.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+element_earth
+  rotate: false
+  xy: 509, 252
+  size: 248, 248
+  orig: 248, 248
+  offset: 0, 0
+  index: -1
+element_fire
+  rotate: false
+  xy: 759, 252
+  size: 248, 248
+  orig: 248, 248
+  offset: 0, 0
+  index: -1
+element_light
+  rotate: false
+  xy: 509, 2
+  size: 248, 248
+  orig: 248, 248
+  offset: 0, 0
+  index: -1
+element_shadow
+  rotate: false
+  xy: 759, 2
+  size: 248, 248
+  orig: 248, 248
+  offset: 0, 0
+  index: -1
+hexagon
+  rotate: false
+  xy: 2, 502
+  size: 505, 437
+  orig: 505, 437
+  offset: 0, 0
+  index: -1
+hexagon_adjacent
+  rotate: false
+  xy: 2, 63
+  size: 505, 437
+  orig: 505, 437
+  offset: 0, 0
+  index: -1
+hexagon_selected
+  rotate: false
+  xy: 509, 502
+  size: 505, 437
+  orig: 505, 437
+  offset: 0, 0
+  index: -1
+
+atlas2.png
+size: 512,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+element_water
+  rotate: false
+  xy: 2, 2
+  size: 248, 248
+  orig: 248, 248
+  offset: 0, 0
+  index: -1
+element_wind
+  rotate: false
+  xy: 252, 2
+  size: 248, 248
+  orig: 248, 248
+  offset: 0, 0
+  index: -1
