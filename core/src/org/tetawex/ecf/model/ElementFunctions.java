@@ -47,14 +47,16 @@ public class ElementFunctions {
             else set.add(Element.SHADOW);
         }
         if(set.size==0){
-            set.add(Element.getElementById(random.nextInt()));
+            set.add(Element.getElementById(1+random.nextInt(Element.getElementsCount()-1)));
         }
         return set;
     }
-    public static int resolveElementSet(OrderedSet<Element> elements){
-        Array<Element> deletionList=new Array<Element>();
-        int reactions=0;
-        for (Element element:elements) {
+
+    public static int resolveElementSet(OrderedSet<Element> elements) {
+
+        Array<Element> deletionList = new Array<Element>();
+        int reactions = 0;
+        for (Element element : elements) {
             Element oppositeElement = Element.getOpposite(element);
             if (elements.contains(oppositeElement)) {
                 deletionList.add(element);
@@ -62,7 +64,7 @@ public class ElementFunctions {
                 reactions++;
             }
         }
-        for (Element e:deletionList) {
+        for (Element e : deletionList) {
             elements.remove(e);
         }
         return reactions;
