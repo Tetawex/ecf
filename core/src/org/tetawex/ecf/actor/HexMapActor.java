@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedMap;
 import org.tetawex.ecf.core.ECFGame;
-import org.tetawex.ecf.core.factory.CellFactory;
 import org.tetawex.ecf.model.Cell;
 import org.tetawex.ecf.model.Element;
 import org.tetawex.ecf.util.IntVector2;
@@ -22,15 +21,22 @@ import org.tetawex.ecf.util.RandomProvider;
  * Created by tetawex on 02.05.17.
  */
 public class HexMapActor extends BaseWidget<ECFGame> {
+    public interface CellActionListener {
+        void cellMerged(int mergedElementsCount);
+        void cellMoved(int cellElementCount);
+        boolean canMove(int cellElementCount);
+    }
     private Cell[][] cellArray;
+
+    private CellActionListener cellActionListener;
 
     private float scalingFactor=1f;
 
     private float hexagonWidth;
     private float hexagonHeight;
 
-    private float elementWidth=2f;
-    private float elementHeight=2f;
+    private float elementWidth=200f;
+    private float elementHeight=200f;
 
     private Cell selectedCell;
 
@@ -45,7 +51,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
     private OrderedMap<Element,TextureRegion> textureToElementMap;
 
     private RandomXS128 random= RandomProvider.getRandom();
-    public HexMapActor(ECFGame game,int width, int height) {
+    public HexMapActor(ECFGame game) {
         super(game);
 
         cellRegion=getGame().getTextureRegionFromAtlas("hexagon");
@@ -70,19 +76,13 @@ public class HexMapActor extends BaseWidget<ECFGame> {
         textureToElementMap.put(Element.LIGHT,getGame()
                 .getTextureRegionFromAtlas("element_light"));
 
-        hexagonHeight=6.3f;
+        hexagonHeight=630f;
         hexagonWidth=hexagonHeight* MathUtils.getHexagonWidthToHeightRatio();
-        setWidth(hexagonWidth*width);
-        setHeight(height*hexagonHeight);
 
-        cellArray=new Cell[width][height];
-        for (int i = 0; i <width; i++) {
-            for (int j = 0; j <height; j++) {
-                cellArray[i][j]= CellFactory.generateRandomCell(new IntVector2(i,j));
-            }
-        }
-        cellArray[0][0]=null;
-        cellArray[cellArray.length-1][0]=null;
+        cellArray=new Cell[0][0];
+
+        setWidth(hexagonWidth);
+        setHeight(hexagonHeight);
 
         setTouchable(Touchable.enabled);
         addListener(new InputListener() {
@@ -226,13 +226,31 @@ public class HexMapActor extends BaseWidget<ECFGame> {
             if(cell!=null) {
                 if(cell!=selectedCell) {
                     if(isAdjacent(selectedCell.getPosition(),cell.getPosition())){
-                        cell.interactWith(selectedCell);
-                        selectedCell = null;
-                    }
-                    else
-                        selectedCell=cell;
+                        if(cellActionListener.canMove(selectedCell.getElements().size)) {
 
-                    mergeSound.play(1f);
+                            cellActionListener.cellMoved(selectedCell.getElements().size);
+                            cellActionListener.cellMerged(cell.interactWith(selectedCell));
+
+                            selectedCell = null;
+                            mergeSound.play(1f);
+                        }
+                        else {
+                            errorSound.play(1f);
+                            selectedCell=null;
+                        }
+                    }
+                    else {
+                        if(selectedCell!=null&&selectedCell.getElements().size!=0) {
+                            selectedCell = cell;
+                            clickSound.play(1f);
+                        }
+                        else {
+                            selectedCell = null;
+                            errorSound.play(1f);
+                        }
+                    }
+
+
                 }
                 else {
                     selectedCell = null;
@@ -305,5 +323,27 @@ public class HexMapActor extends BaseWidget<ECFGame> {
     }*/
     public void setScalingFactor(float scalingFactor) {
         this.scalingFactor = scalingFactor;
+    }
+
+    public Cell[][] getCellArray() {
+        return cellArray;
+    }
+
+    public void setCellArray(Cell[][] cellArray) {
+        this.cellArray = cellArray;
+        int width=cellArray.length;
+        setWidth(hexagonWidth*width);
+        if(width!=0)
+            setHeight(hexagonHeight*cellArray[0].length);
+        else
+            setHeight(0);
+    }
+
+    public CellActionListener getCellActionListener() {
+        return cellActionListener;
+    }
+
+    public void setCellActionListener(CellActionListener cellActionListener) {
+        this.cellActionListener = cellActionListener;
     }
 }

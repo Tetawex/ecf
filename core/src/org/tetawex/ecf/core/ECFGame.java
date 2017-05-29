@@ -9,6 +9,7 @@ import com.badlogic.gdx.assets.loaders.AssetLoader;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -22,10 +23,13 @@ public class ECFGame extends Game {
 	    assetManager=new AssetManager();
 	    assetManager.load("atlas.atlas",TextureAtlas.class);
 		assetManager.load("backgrounds/background.png",Texture.class);
+        assetManager.load("backgrounds/background_pause.png",Texture.class);
 
 		assetManager.load("sounds/click.ogg", Sound.class);
 		assetManager.load("sounds/merge.ogg", Sound.class);
 		assetManager.load("sounds/error.ogg", Sound.class);
+
+		assetManager.load("fonts/font_main.fnt", BitmapFont.class);
 
 	    assetManager.finishLoading();
 

@@ -1,4 +1,4 @@
-package org.tetawex.ecf.core.factory;
+package org.tetawex.ecf.model;
 
 import org.tetawex.ecf.model.Cell;
 import org.tetawex.ecf.model.ElementFunctions;

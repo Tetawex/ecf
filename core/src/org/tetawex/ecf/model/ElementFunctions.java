@@ -58,7 +58,7 @@ public class ElementFunctions {
         int reactions = 0;
         for (Element element : elements) {
             Element oppositeElement = Element.getOpposite(element);
-            if (elements.contains(oppositeElement)) {
+            if (elements.contains(oppositeElement)&&!deletionList.contains(element,true)) {
                 deletionList.add(element);
                 deletionList.add(oppositeElement);
                 reactions++;

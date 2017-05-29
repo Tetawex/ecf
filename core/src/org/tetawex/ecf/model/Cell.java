@@ -38,10 +38,10 @@ public class Cell {
     public void clear(){
         elements.clear();
     }
-    public void interactWith(Cell cell){
+    public int interactWith(Cell cell){
         elements.addAll(cell.getElements());
         cell.clear();
-        ElementFunctions.resolveElementSet(elements);
+        return ElementFunctions.resolveElementSet(elements);
     }
     public IntVector2 getPosition() {
         return position;
