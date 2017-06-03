@@ -3,7 +3,6 @@ package org.tetawex.ecf.actor;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -15,7 +14,6 @@ import org.tetawex.ecf.model.Cell;
 import org.tetawex.ecf.model.Element;
 import org.tetawex.ecf.util.IntVector2;
 import org.tetawex.ecf.util.MathUtils;
-import org.tetawex.ecf.util.RandomProvider;
 
 /**
  * Created by tetawex on 02.05.17.
@@ -35,8 +33,8 @@ public class HexMapActor extends BaseWidget<ECFGame> {
     private float hexagonWidth;
     private float hexagonHeight;
 
-    private float elementWidth=200f;
-    private float elementHeight=200f;
+    private float elementWidth=141f;
+    private float elementHeight=141f;
 
     private Cell selectedCell;
 
@@ -50,7 +48,6 @@ public class HexMapActor extends BaseWidget<ECFGame> {
 
     private OrderedMap<Element,TextureRegion> textureToElementMap;
 
-    private RandomXS128 random= RandomProvider.getRandom();
     public HexMapActor(ECFGame game) {
         super(game);
 
@@ -76,7 +73,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
         textureToElementMap.put(Element.LIGHT,getGame()
                 .getTextureRegionFromAtlas("element_light"));
 
-        hexagonHeight=630f;
+        hexagonHeight=381f;
         hexagonWidth=hexagonHeight* MathUtils.getHexagonWidthToHeightRatio();
 
         cellArray=new Cell[0][0];
@@ -106,6 +103,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
     }
     @Override
     public void draw(Batch batch, float parentAlpha){
+        //draw hexagons
         for(int i = 0; i <cellArray.length ; i++) {
             for (int j = 0; j <cellArray[i].length ; j++) {
                 if(cellExistsAt(i,j)) {
@@ -113,6 +111,29 @@ public class HexMapActor extends BaseWidget<ECFGame> {
                     Vector2 offset = findOffsetForIndex(vec);
                     batch.draw(cellRegion, getX() + vec.x * (hexagonWidth + offset.x), getY() + vec.y * hexagonHeight + offset.y,
                             hexagonWidth, hexagonHeight);
+                }
+            }
+        }
+        //draw selected cells
+        if(selectedCell!=null) {
+            IntVector2 vec = selectedCell.getPosition();
+            Vector2 offset = findOffsetForIndex(vec);
+            batch.draw(selectedRegion, getX() + vec.x * (hexagonWidth + offset.x), getY() + vec.y * hexagonHeight + offset.y,
+                    hexagonWidth, hexagonHeight);
+            for (Cell cell:getAdjacentCells(vec)) {
+                IntVector2 vec2 = cell.getPosition();
+                Vector2 offset2 = findOffsetForIndex(vec2);
+                batch.draw(adjacentRegion, getX() + vec2.x * (hexagonWidth + offset2.x), getY() + vec2.y * hexagonHeight + offset2.y,
+                        hexagonWidth, hexagonHeight);
+            }
+
+        }
+        //draw elements
+        for(int i = 0; i <cellArray.length ; i++) {
+            for (int j = 0; j <cellArray[i].length ; j++) {
+                if(cellExistsAt(i,j)) {
+                    IntVector2 vec = cellArray[i][j].getPosition();
+                    Vector2 offset = findOffsetForIndex(vec);
                     Cell cell=cellArray[i][j];
                     Array<Element> elements = cell.getElements().orderedItems();
                     int size=cell.getElements().size;
@@ -121,7 +142,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
                     else if(size==1)
                         batch.draw(textureToElementMap.get(elements.get(0)), getX()
                                         + i * (hexagonWidth + offset.x)+hexagonWidth/2
-                                           -elementWidth/2,
+                                        -elementWidth/2,
                                 getY() + j * hexagonHeight + offset.y+hexagonHeight/2-elementHeight/2,
                                 elementWidth, elementHeight);
                     else if(size==2) {
@@ -140,17 +161,20 @@ public class HexMapActor extends BaseWidget<ECFGame> {
                         batch.draw(textureToElementMap.get(elements.get(0)), getX()
                                         + i * (hexagonWidth + offset.x)+hexagonWidth/2
                                         -elementWidth/2,
-                                getY() + j * hexagonHeight + offset.y+hexagonHeight*0.66f-elementHeight/2,
+                                getY() + j * hexagonHeight + offset.y+hexagonHeight*0.66f
+                                        +hexagonHeight*0.050f-elementHeight/2,
                                 elementWidth, elementHeight);
                         batch.draw(textureToElementMap.get(elements.get(1)), getX()
                                         + i * (hexagonWidth + offset.x) + hexagonWidth*0.33f
                                         - elementWidth / 2,
-                                getY() + j * hexagonHeight + offset.y + hexagonHeight*0.33f - elementHeight / 2,
+                                getY() + j * hexagonHeight + offset.y + hexagonHeight*0.33f
+                                        +hexagonHeight*0.050f - elementHeight / 2,
                                 elementWidth, elementHeight);
                         batch.draw(textureToElementMap.get(elements.get(2)), getX()
                                         + i * (hexagonWidth + offset.x) + hexagonWidth *0.66f
                                         - elementWidth / 2,
-                                getY() + j * hexagonHeight + offset.y + hexagonHeight*0.33f - elementHeight / 2,
+                                getY() + j * hexagonHeight + offset.y + hexagonHeight*0.33f
+                                        +hexagonHeight*0.050f - elementHeight / 2,
                                 elementWidth, elementHeight);
                     }
                     else
@@ -161,19 +185,6 @@ public class HexMapActor extends BaseWidget<ECFGame> {
                                 3, 3);
                 }
             }
-        }
-        if(selectedCell!=null) {
-            IntVector2 vec = selectedCell.getPosition();
-            Vector2 offset = findOffsetForIndex(vec);
-            batch.draw(selectedRegion, getX() + vec.x * (hexagonWidth + offset.x), getY() + vec.y * hexagonHeight + offset.y,
-                    hexagonWidth, hexagonHeight);
-            for (Cell cell:getAdjacentCells(vec)) {
-                    IntVector2 vec2 = cell.getPosition();
-                    Vector2 offset2 = findOffsetForIndex(vec2);
-                    batch.draw(adjacentRegion, getX() + vec2.x * (hexagonWidth + offset2.x), getY() + vec2.y * hexagonHeight + offset2.y,
-                            hexagonWidth, hexagonHeight);
-            }
-
         }
     }
     private IntVector2 getCellIndexByVector(Vector2 vector){

@@ -4,13 +4,16 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import org.tetawex.ecf.core.screen.GameScreen;
+import org.tetawex.ecf.core.screen.MainMenuScreen;
+import org.tetawex.ecf.core.screen.SettingsScreen;
+import org.tetawex.ecf.util.Bundle;
 
 /**
  * Created by Tetawex on 30.12.2016.
  */
 public class GameStateManager
 {
-    public enum GameState{MAIN_MENU,GAME,SETTINGS,GAME_OVER}
+    public enum GameState{MAIN_MENU,GAME,SETTINGS,}
 
     private Screen currentScreen;
     private GameState currentState;
@@ -19,12 +22,12 @@ public class GameStateManager
     public GameStateManager(ECFGame game)
     {
         this.game=game;
-        setState(GameState.GAME);
+        setState(GameState.MAIN_MENU,null);
     }
     public GameStateManager(ECFGame game, GameState state)
     {
         this(game);
-        setState(state);
+        setState(state,null);
     }
 
     public Screen getCurrentScreen()
@@ -36,7 +39,7 @@ public class GameStateManager
         currentScreen.render(deltaTime);
     }
 
-    public void setState(GameState gameState){
+    public void setState(GameState gameState,Bundle bundle){
         currentState=gameState;
         if(currentScreen!=null)
             currentScreen.dispose();
@@ -55,8 +58,15 @@ public class GameStateManager
             case SETTINGS:
                 currentScreen=new ScreenAdapter();
                 break;*/
+            case MAIN_MENU:
+                currentScreen=new MainMenuScreen(game,bundle);
+                break;
+            case SETTINGS:
+                currentScreen=new SettingsScreen(game,bundle);
+                break;
             case GAME:
-                currentScreen=new GameScreen(game);
+                currentScreen=new GameScreen(game,bundle);
+                break;
         }
     }
 }

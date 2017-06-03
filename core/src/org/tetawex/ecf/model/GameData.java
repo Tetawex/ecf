@@ -15,8 +15,8 @@ public class GameData {
     private GameDataChangedListener gameDataChangedListener;
 
     private static final int SINGLE_MERGE_BONUS_SCORE=100;
-    private static final int SINGLE_MERGE_BONUS_MANA=20;
-    private static final int SINGLE_MOVE_MANACOST=10;
+    private static final int SINGLE_MERGE_BONUS_MANA=2;
+    private static final int SINGLE_MOVE_MANACOST=1;
 
     private int mana;
     private int score;

@@ -2,104 +2,204 @@
 atlas.png
 size: 1024,1024
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Nearest,MipMapLinearNearest
 repeat: none
+arrow
+  rotate: false
+  xy: 716, 937
+  size: 35, 57
+  orig: 35, 57
+  offset: 0, 0
+  index: -1
 button_menu
   rotate: false
-  xy: 2, 707
-  size: 108, 240
-  split: 53, 53, 46, 46
-  orig: 108, 240
+  xy: 842, 263
+  size: 150, 150
+  split: 37, 37, 37, 37
+  orig: 150, 150
   offset: 0, 0
   index: -1
-button_menu_pressed
+button_menu_bottom
   rotate: false
-  xy: 112, 707
-  size: 108, 240
-  split: 53, 53, 46, 46
-  orig: 108, 240
+  xy: 842, 111
+  size: 150, 150
+  split: 37, 37, 37, 37
+  orig: 150, 150
   offset: 0, 0
   index: -1
-button_pause
+dark_line
   rotate: false
-  xy: 752, 441
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: -1
-element_earth
-  rotate: false
-  xy: 222, 699
-  size: 248, 248
-  orig: 248, 248
-  offset: 0, 0
-  index: -1
-element_fire
-  rotate: false
-  xy: 472, 699
-  size: 248, 248
-  orig: 248, 248
-  offset: 0, 0
-  index: -1
-element_light
-  rotate: false
-  xy: 722, 699
-  size: 248, 248
-  orig: 248, 248
-  offset: 0, 0
-  index: -1
-element_shadow
-  rotate: false
-  xy: 2, 449
-  size: 248, 248
-  orig: 248, 248
-  offset: 0, 0
-  index: -1
-element_water
-  rotate: false
-  xy: 252, 449
-  size: 248, 248
-  orig: 248, 248
-  offset: 0, 0
-  index: -1
-element_wind
-  rotate: false
-  xy: 502, 449
-  size: 248, 248
-  orig: 248, 248
+  xy: 2, 996
+  size: 780, 9
+  orig: 780, 9
   offset: 0, 0
   index: -1
 hexagon
   rotate: false
-  xy: 2, 10
-  size: 505, 437
-  orig: 505, 437
+  xy: 514, 415
+  size: 441, 381
+  orig: 441, 381
   offset: 0, 0
   index: -1
 hexagon_adjacent
   rotate: false
-  xy: 509, 2
-  size: 505, 437
-  orig: 505, 437
+  xy: 2, 101
+  size: 441, 381
+  orig: 441, 381
+  offset: 0, 0
+  index: -1
+level_inactive
+  rotate: false
+  xy: 445, 18
+  size: 395, 395
+  orig: 395, 395
+  offset: 0, 0
+  index: -1
+light_line
+  rotate: false
+  xy: 2, 90
+  size: 437, 9
+  orig: 437, 9
+  offset: 0, 0
+  index: -1
+mana
+  rotate: false
+  xy: 784, 798
+  size: 206, 207
+  orig: 206, 207
+  offset: 0, 0
+  index: -1
+music_off
+  rotate: false
+  xy: 2, 2
+  size: 86, 86
+  orig: 86, 86
+  offset: 0, 0
+  index: -1
+music_on
+  rotate: false
+  xy: 90, 2
+  size: 86, 86
+  orig: 86, 86
+  offset: 0, 0
+  index: -1
+slider
+  rotate: false
+  xy: 842, 5
+  size: 104, 104
+  orig: 104, 104
+  offset: 0, 0
+  index: -1
+sound_off
+  rotate: false
+  xy: 178, 2
+  size: 86, 86
+  orig: 86, 86
+  offset: 0, 0
+  index: -1
+sound_on
+  rotate: false
+  xy: 266, 2
+  size: 86, 86
+  orig: 86, 86
+  offset: 0, 0
+  index: -1
+star
+  rotate: false
+  xy: 514, 803
+  size: 200, 191
+  orig: 200, 191
+  offset: 0, 0
+  index: -1
+tutorial_note
+  rotate: false
+  xy: 2, 484
+  size: 510, 510
+  split: 64, 64, 64, 64
+  orig: 510, 510
   offset: 0, 0
   index: -1
 
 atlas2.png
 size: 1024,1024
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Nearest,MipMapLinearNearest
 repeat: none
-hexagon_selected
+button_menu_pressed
   rotate: false
   xy: 2, 2
-  size: 505, 437
-  orig: 505, 437
+  size: 150, 150
+  split: 37, 37, 37, 37
+  orig: 150, 150
   offset: 0, 0
   index: -1
-mana
+button_pause
   rotate: false
-  xy: 2, 441
-  size: 512, 512
-  orig: 512, 512
+  xy: 445, 589
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: -1
+element_earth
+  rotate: false
+  xy: 647, 791
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1
+element_fire
+  rotate: false
+  xy: 154, 11
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1
+element_light
+  rotate: false
+  xy: 791, 791
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1
+element_shadow
+  rotate: false
+  xy: 298, 11
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1
+element_water
+  rotate: false
+  xy: 647, 648
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1
+element_wind
+  rotate: false
+  xy: 791, 648
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1
+hexagon_selected
+  rotate: false
+  xy: 2, 551
+  size: 441, 381
+  orig: 441, 381
+  offset: 0, 0
+  index: -1
+level_active
+  rotate: false
+  xy: 2, 154
+  size: 393, 395
+  orig: 393, 395
+  offset: 0, 0
+  index: -1
+star_ungained
+  rotate: false
+  xy: 445, 741
+  size: 200, 191
+  orig: 200, 191
   offset: 0, 0
   index: -1

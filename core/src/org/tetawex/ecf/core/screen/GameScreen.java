@@ -12,36 +12,35 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import org.tetawex.ecf.actor.HexMapActor;
 import org.tetawex.ecf.core.ECFGame;
+import org.tetawex.ecf.core.GameStateManager;
 import org.tetawex.ecf.model.*;
 import org.tetawex.ecf.model.Cell;
+import org.tetawex.ecf.util.Bundle;
 
 /**
  * ...
  */
 public class GameScreen extends BaseScreen<ECFGame> {
-    private static final float PAUSE_BUTTON_WIDTH=1400f;
-    private static final float PAUSE_BUTTON_HEIGHT=350f;
-    private static final float PAUSE_BUTTON_PAD=50f;
-    private static final float PAUSE_BUTTON_FONT_SCALE=5f;
-    private static final float LABEL_FONT_SCALE=5f;
+    private static final float PAUSE_BUTTON_WIDTH =1275f;
+    private static final float PAUSE_BUTTON_HEIGHT =252f;
+    private static final float PAUSE_BUTTON_PAD=32f;
+    private static final float PAUSE_BUTTON_FONT_SCALE=1f;
+    private static final float MANA_LABEL_FONT_SCALE =1f;
+    private static final float SCORE_LABEL_FONT_SCALE =1f;
 
     private Stage gameStage;
     private HexMapActor hexMapActor;
     private Label scoreLabel;
-    private Label manaLabel;
+    private TextButton manaLabel;
 
     private GameData gameData;
 
-    public GameScreen(ECFGame game){
+    public GameScreen(ECFGame game,Bundle bundle){
         super(game);
 
-        Camera camera=new OrthographicCamera(2560f,1440f);
+        Camera camera=new OrthographicCamera(1440f,2560f);
         camera.position.set(camera.viewportWidth/2f,camera.viewportHeight/2f,0f);
-        gameStage=new Stage(new ExtendViewport(2560f,1440f,camera));
-
-        Music music=Gdx.audio.newMusic(Gdx.files.internal("music/ambient.ogg"));
-        music.setLooping(true);
-        music.play();
+        gameStage=new Stage(new ExtendViewport(1440f,2560f,camera));
 
         Gdx.input.setInputProcessor(gameStage);
 
@@ -50,7 +49,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
         initUi();
 
         gameData.setCellArray(CellArrayFactory.generateBasicCellArray(3,5));
-        gameData.setMana(20);
+        gameData.setMana(2);
         gameData.setScore(0);
     }
 
@@ -90,10 +89,9 @@ public class GameScreen extends BaseScreen<ECFGame> {
         Table topRowLeftTable = new Table();
         Table topRowCenterTable = new Table();
         Table topRowRightTable = new Table();
-        topRowTable.add(topRowLeftTable).width(600f);
-        topRowTable.add(topRowCenterTable).expandX();
-        topRowTable.add(topRowRightTable).width(600f);;
-
+        topRowTable.add(topRowLeftTable).width(300f);
+        topRowTable.add(topRowCenterTable).growX();
+        topRowTable.add(topRowRightTable).width(300f);
         Table midRowTable = new Table();
         Table bottomRowTable = new Table();
 
@@ -114,7 +112,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
                 return gameData.canMove(cellElementCount);
             }
         });
-        midRowTable.add(hexMapActor).center().expand();
+        midRowTable.add(hexMapActor).center().expand().padTop(60f);
 
         mainTable.setFillParent(true);
         mainTable.add(topRowTable).growX().row();
@@ -130,21 +128,19 @@ public class GameScreen extends BaseScreen<ECFGame> {
             }
         });
         topRowLeftTable.left().top();
-        topRowLeftTable.add(pauseButton).size(300f).pad(50f).center();
+        topRowLeftTable.add(pauseButton).size(120f).pad(40f).center();
 
-        scoreLabel =new Label("25670",StyleFactory.generateScoreLabelSkin(getGame()));
-        scoreLabel.setFontScale(LABEL_FONT_SCALE);
+        scoreLabel =new Label("",StyleFactory.generateStandardLabelSkin(getGame()));
+        scoreLabel.setFontScale(SCORE_LABEL_FONT_SCALE);
         topRowCenterTable.add(scoreLabel);
 
-        manaLabel =new Label("205",StyleFactory.generateManaLabelSkin(getGame()));
-        manaLabel.setFontScale(LABEL_FONT_SCALE);
-        topRowRightTable.add(manaLabel).padRight(25f);
-
-        topRowRightTable
-                .add(new Image(getGame().getTextureRegionFromAtlas("mana")))
-                .size(250f).padRight(50f);
+        Stack topRowRightStack=new Stack();
+        manaLabel =new TextButton("",StyleFactory.generateManaButtonSkin(getGame()));
+        topRowRightTable.add(manaLabel).size(150f).pad(40f);
 
         topRowTable.toFront();
+        topRowRightTable.right();
+        topRowLeftTable.left();
 
         gameData.setGameDataChangedListener(new GameData.GameDataChangedListener() {
             @Override
@@ -166,7 +162,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
         pauseTable.center();
 
         TextButton pauseMenuButtonContinue=
-                new TextButton("CONTINUE", StyleFactory.generatePauseMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("continue"), StyleFactory.generateStandardMenuButtonSkin(getGame()));
         pauseMenuButtonContinue.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -180,7 +176,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
                 .center().pad(PAUSE_BUTTON_PAD).row();
 
         TextButton pauseMenuButtonRetry=
-                new TextButton("RETRY", StyleFactory.generatePauseMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("retry"), StyleFactory.generateStandardMenuButtonSkin(getGame()));
         pauseMenuButtonRetry.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -188,7 +184,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
                 backgroundPause.setVisible(!backgroundPause.isVisible());
                 gameData.setCellArray(gameData.getOriginalCellArray());
                 gameData.setScore(0);
-                gameData.setMana(20);
+                gameData.setMana(2);
             }
         });
         pauseMenuButtonRetry.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
@@ -197,7 +193,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
                 .center().pad(PAUSE_BUTTON_PAD).row();
 
         TextButton pauseMenuButtonSkip=
-                new TextButton("SKIP", StyleFactory.generatePauseMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("next"), StyleFactory.generateStandardMenuButtonSkin(getGame()));
         pauseMenuButtonSkip.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -205,7 +201,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
                 backgroundPause.setVisible(!backgroundPause.isVisible());
                 gameData.setCellArray(CellArrayFactory.generateBasicCellArray(3,5));
                 gameData.setScore(0);
-                gameData.setMana(20);
+                gameData.setMana(2);
             }
         });
         pauseMenuButtonSkip.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
@@ -214,13 +210,13 @@ public class GameScreen extends BaseScreen<ECFGame> {
                 .center().pad(PAUSE_BUTTON_PAD).row();
 
         TextButton pauseMenuButtonQuit=
-                new TextButton("QUIT", StyleFactory.generatePauseMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("quit"), StyleFactory.generateStandardMenuButtonSkin(getGame()));
         pauseMenuButtonQuit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 pauseTable.setVisible(!pauseTable.isVisible());
                 backgroundPause.setVisible(!backgroundPause.isVisible());
-                Gdx.app.exit();
+               getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU,null);
             }
         });
         pauseMenuButtonQuit.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
