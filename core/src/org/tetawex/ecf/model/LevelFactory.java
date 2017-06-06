@@ -1,0 +1,73 @@
+package org.tetawex.ecf.model;
+
+import org.tetawex.ecf.util.IntVector2;
+
+/**
+ * Created by Tetawex on 06.06.2017.
+ */
+public class LevelFactory {
+    //TODO Replace with an adequate loading system
+    public static LevelData generateLevel(int number){
+        LevelData data=new LevelData();
+        Cell[][] cellArray= CellArrayFactory.generateEmptyCellArray(3,3);
+        if(number==0) {
+            cellArray = CellArrayFactory.generateEmptyCellArray(3,3);
+            cellArray[0][0] = null;
+            cellArray[0][1] = null;
+            cellArray[2][0] = null;
+            cellArray[2][1] = null;
+
+            cellArray[0][2].setElements(Element.WATER, Element.EARTH);
+            cellArray[1][1].setElements(Element.FIRE, Element.EARTH, Element.SHADOW);
+            cellArray[1][0].setElements(Element.FIRE, Element.AIR, Element.LIGHT);
+            cellArray[2][2].setElements(Element.WATER);
+            cellArray[1][2].setElements(Element.AIR);
+        }
+        else if(number==1) {
+            cellArray = CellArrayFactory.generateEmptyCellArray(4,3);
+            cellArray[0][0] = null;
+            cellArray[0][2] = null;
+            cellArray[1][2] = null;
+            cellArray[2][2] = null;
+            cellArray[3][0] = null;
+            cellArray[3][2] = null;
+
+            cellArray[0][1].setElements(Element.WATER, Element.AIR, Element.LIGHT);
+            cellArray[1][1].setElements(Element.FIRE, Element.AIR, Element. LIGHT);
+            cellArray[1][0].setElements(Element.SHADOW, Element.EARTH);
+            cellArray[2][1].setElements(Element.LIGHT, Element.EARTH, Element.FIRE );
+            cellArray[2][0].setElements(Element.AIR, Element.SHADOW, Element.WATER);
+            cellArray[3][1].setElements(Element.SHADOW, Element.WATER);
+        }
+        else if(number==2) {
+            cellArray = CellArrayFactory.generateEmptyCellArray(3,3);
+            cellArray[0][2] = null;
+            cellArray[2][0] = null;
+
+            cellArray[0][0].setElements(Element.SHADOW);
+            cellArray[0][1].setElements(Element.FIRE);
+            cellArray[1][0].setElements(Element.EARTH, Element.SHADOW);
+            cellArray[1][1].setElements(Element.SHADOW, Element.AIR);
+            cellArray[1][2].setElements(Element.LIGHT, Element.WATER, Element.AIR);
+            cellArray[2][1].setElements(Element.FIRE, Element.SHADOW, Element.EARTH);
+            cellArray[2][2].setElements(Element.WATER, Element.SHADOW);
+        }
+        else if(number==3) {
+            cellArray = CellArrayFactory.generateEmptyCellArray(3,3);
+            cellArray[0][0] = null;
+            cellArray[2][0] = null;
+
+            cellArray[0][1].setElements(Element.SHADOW, Element.AIR);
+            cellArray[0][2].setElements(Element.FIRE, Element.EARTH);
+            cellArray[1][0].setElements(Element.LIGHT, Element.WATER);
+            cellArray[1][1].setElements(Element.SHADOW, Element.EARTH, Element.FIRE);
+            cellArray[1][2].setElements(Element.LIGHT, Element.WATER);
+            cellArray[2][1].setElements(Element.SHADOW, Element.AIR);
+            cellArray[2][2].setElements(Element.EARTH, Element.FIRE);
+        }
+        data.setCellArray(cellArray);
+        data.setMana(1);
+        data.setMaxScore(4000);
+        return data;
+    }
+}

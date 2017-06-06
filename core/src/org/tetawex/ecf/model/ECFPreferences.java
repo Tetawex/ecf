@@ -8,12 +8,15 @@ import java.util.List;
  */
 public class ECFPreferences {
     private List<Score> scores = Collections.emptyList();
+    private List<LevelCompletionState> levelCompletionStateList=Collections.emptyList();
+
+    private boolean completedTutorial;
 
     private float soundVolume=0.5f;
     private float musicVolume=0.5f;
 
-    private String selectedLanguageCode="default";
-    private String selectedCountryCode="";
+    private String selectedLanguageCode;
+    private String selectedCountryCode;
 
     public List<Score> getScores() {
         return scores;
@@ -25,6 +28,14 @@ public class ECFPreferences {
 
     public String getSelectedLanguageCode() {
         return selectedLanguageCode;
+    }
+
+    public List<LevelCompletionState> getLevelCompletionStateList() {
+        return levelCompletionStateList;
+    }
+
+    public void setLevelCompletionStateList(List<LevelCompletionState> levelCompletionStateList) {
+        this.levelCompletionStateList = levelCompletionStateList;
     }
 
     public String getSelectedCountryCode() {
@@ -59,11 +70,19 @@ public class ECFPreferences {
         this.musicVolume = musicVolume;
     }
 
-    public void setSelectedLanguageCode(String code) {
+    public void setSelectedLanguageCode(String selectedLanguageCode) {
         this.selectedLanguageCode = selectedLanguageCode;
     }
 
     public void setSelectedCountryCode(String selectedCountryCode) {
         this.selectedCountryCode = selectedCountryCode;
+    }
+
+    public boolean isCompletedTutorial() {
+        return completedTutorial;
+    }
+
+    public void setCompletedTutorial(boolean completedTutorial) {
+        this.completedTutorial = completedTutorial;
     }
 }

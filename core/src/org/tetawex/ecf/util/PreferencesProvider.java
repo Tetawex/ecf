@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Json;
 import org.tetawex.ecf.model.ECFPreferences;
+import org.tetawex.ecf.model.LevelCompletionState;
 import org.tetawex.ecf.model.Score;
 
 import java.util.ArrayList;
@@ -24,9 +25,29 @@ public class PreferencesProvider {
         if(preferences==null){
             preferences=new ECFPreferences();
             preferences.setSelectedLanguageCode("default");
+            preferences.setSelectedCountryCode("");
             List<Score> list=new ArrayList<Score>();
             list.add(new Score(9000,"Cirno","1-9, Icicles"));
-            list.add(new Score(2000,"Some kid","1-8, Elementalism"));
+            list.add(new Score(8000,"Blazing Borkus","1-8, Elementalism"));
+            list.add(new Score(6000,"Vivid Turtle","1-4, The Grand Tortoise"));
+            list.add(new Score(4000,"Pro WOTE Player","1-10, Elemental Rampage"));
+            list.add(new Score(3400,"Casus Beli","1-64, Decimal Fail"));
+            list.add(new Score(2007,"Blazer Hero","1-2, Time Machine"));
+            list.add(new Score(1000,"Massive Croc","1-5, Cig Bock"));
+            list.add(new Score(900,"Cirno","1-15, The Reckoning of Ice"));
+            list.add(new Score(300,"Newbie","1-0, Eh? Is that a level?"));
+            list.add(new Score(100,"Bitter Butter","1-64, Decimal Fail"));
+
+            List<LevelCompletionState> levelList=new ArrayList<LevelCompletionState>();
+            levelList.add(new LevelCompletionState(0,false,true));
+            for (int i = 0; i < 3; i++) {
+                levelList.add(new LevelCompletionState(0,false,true));
+            }
+            for (int i = 3; i < 10; i++) {
+                levelList.add(new LevelCompletionState(0,false,false));
+            }
+            preferences.setLevelCompletionStateList(levelList);
+            preferences.setScores(list);
         }
         return preferences;
 

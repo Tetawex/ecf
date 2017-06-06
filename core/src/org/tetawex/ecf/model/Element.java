@@ -4,7 +4,7 @@ package org.tetawex.ecf.model;
  * Created by Tetawex on 02.05.17.
  */
 public enum Element {
-    FIRE,WATER,LIGHT,SHADOW,EARTH,WIND,NEUTRAL;
+    FIRE,WATER,LIGHT,SHADOW,EARTH, AIR,NEUTRAL;
     public static int getElementsCount(){
         //return values().length;
         return 6;
@@ -16,8 +16,8 @@ public enum Element {
             case FIRE:
                 return WATER;
             case EARTH:
-                return WIND;
-            case WIND:
+                return AIR;
+            case AIR:
                 return EARTH;
             case LIGHT:
                 return SHADOW;
@@ -33,7 +33,7 @@ public enum Element {
             case 2:
                 return WATER;
             case 3:
-                return WIND;
+                return AIR;
             case 4:
                 return EARTH;
             case 5:

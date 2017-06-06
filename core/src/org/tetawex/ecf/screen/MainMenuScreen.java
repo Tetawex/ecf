@@ -1,4 +1,4 @@
-package org.tetawex.ecf.core.screen;
+package org.tetawex.ecf.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.core.GameStateManager;
+import org.tetawex.ecf.model.ECFPreferences;
 import org.tetawex.ecf.util.Bundle;
 
 /**
@@ -22,10 +23,12 @@ import org.tetawex.ecf.util.Bundle;
 public class MainMenuScreen extends BaseScreen<ECFGame> {
     private static final float BUTTON_WIDTH =1275f;
     private static final float BUTTON_HEIGHT =252f;
-    private static final float BUTTON_PAD =32f;
+    private static final float BUTTON_PAD =40f;
     private static final float BUTTON_FONT_SCALE =1f;
     private static final float LABEL_FONT_SCALE=1f;
     private Stage stage;
+    private ECFPreferences preferences;
+
     public MainMenuScreen(ECFGame game,Bundle bundle) {
         super(game);
         Camera camera=new OrthographicCamera(1440f,2560f);
@@ -41,16 +44,23 @@ public class MainMenuScreen extends BaseScreen<ECFGame> {
                 getGame().getAssetManager()
                         .get("backgrounds/background.png",
                                 Texture.class)));
+        Table titleTable=new Table();
+        titleTable.add(new Image(
+                getGame().getAssetManager()
+                        .get("backgrounds/text_logo.png",
+                                Texture.class))).size(1270,134).padTop(300);
+        titleTable.top();
         Table mainTable=new Table();
         mainTable.setFillParent(true);
         stack.add(mainTable);
+        stack.add(titleTable);
         stage.addActor(stack);
         TextButton menuButtonPlay=
                 new TextButton(getGame().getLocalisedString("play"), StyleFactory.generateStandardMenuButtonSkin(getGame()));
         menuButtonPlay.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                getGame().getGameStateManager().setState(GameStateManager.GameState.GAME,null);
+                getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT,null);
             }
         });
         menuButtonPlay.getLabel().setFontScale(BUTTON_FONT_SCALE);
@@ -63,6 +73,7 @@ public class MainMenuScreen extends BaseScreen<ECFGame> {
         menuButtonHighscores.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                getGame().getGameStateManager().setState(GameStateManager.GameState.HIGHSCORES,null);
             }
         });
         menuButtonHighscores.getLabel().setFontScale(BUTTON_FONT_SCALE);

@@ -1,7 +1,6 @@
-package org.tetawex.ecf.core.screen;
+package org.tetawex.ecf.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,6 +15,7 @@ import org.tetawex.ecf.core.GameStateManager;
 import org.tetawex.ecf.model.*;
 import org.tetawex.ecf.model.Cell;
 import org.tetawex.ecf.util.Bundle;
+import org.tetawex.ecf.util.PreferencesProvider;
 
 /**
  * ...
@@ -47,10 +47,17 @@ public class GameScreen extends BaseScreen<ECFGame> {
         gameData=new GameData();
 
         initUi();
-
-        gameData.setCellArray(CellArrayFactory.generateBasicCellArray(3,5));
-        gameData.setMana(2);
-        gameData.setScore(0);
+        if(bundle!=null){
+            LevelData data=bundle.getItem("levelData",LevelData.class);
+            gameData.setCellArray(data.getCellArray());
+            gameData.setMana(data.getMana());
+            gameData.setScore(0);
+        }
+        else {
+            gameData.setCellArray(CellArrayFactory.generateBasicCellArray(4, 5));
+            gameData.setMana(2);
+            gameData.setScore(0);
+        }
     }
 
     @Override
@@ -96,6 +103,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
         Table bottomRowTable = new Table();
 
         hexMapActor=new HexMapActor(getGame());
+        hexMapActor.setSoundVolume(PreferencesProvider.getPreferences().getSoundVolume());
         hexMapActor.setCellActionListener(new HexMapActor.CellActionListener() {
             @Override
             public void cellMerged(int mergedElementsCount) {

@@ -1,4 +1,4 @@
-package org.tetawex.ecf.core.screen;
+package org.tetawex.ecf.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.ScreenAdapter;

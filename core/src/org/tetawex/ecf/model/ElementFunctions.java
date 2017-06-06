@@ -1,17 +1,9 @@
 package org.tetawex.ecf.model;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ai.GdxLogger;
 import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
-import org.tetawex.ecf.model.Cell;
-import org.tetawex.ecf.model.Element;
 import org.tetawex.ecf.util.RandomProvider;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by Tetawex on 17.05.2017.
@@ -39,7 +31,7 @@ public class ElementFunctions {
         if(random.nextBoolean()){
             if(random.nextBoolean())
                 set.add(Element.EARTH);
-            else set.add(Element.WIND);
+            else set.add(Element.AIR);
         }
         if(random.nextBoolean()){
             if(random.nextBoolean())

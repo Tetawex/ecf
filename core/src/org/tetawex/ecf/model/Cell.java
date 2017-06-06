@@ -34,6 +34,9 @@ public class Cell {
     public void setElements(OrderedSet<Element> elements) {
         this.elements = elements;
     }
+    public void setElements(Element... elementArray) {
+        elements.addAll(elementArray);
+    }
 
     public void clear(){
         elements.clear();

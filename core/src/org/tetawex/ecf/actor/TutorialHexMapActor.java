@@ -18,17 +18,20 @@ import org.tetawex.ecf.util.MathUtils;
 /**
  * Created by tetawex on 02.05.17.
  */
-public class HexMapActor extends BaseWidget<ECFGame> {
-    public interface CellActionListener {
+public class TutorialHexMapActor extends BaseWidget<ECFGame> {
+    public interface TutorialCellActionListener {
         void cellMerged(int mergedElementsCount);
         void cellMoved(int cellElementCount);
         boolean canMove(int cellElementCount);
     }
     private Cell[][] cellArray;
+    public boolean[][] unlockedCells =new boolean[4][4];
+    public IntVector2 fromCell=new IntVector2(1,3);
+    public IntVector2 toCell=new IntVector2(0,4);
 
-    private CellActionListener cellActionListener;
+    private TutorialCellActionListener cellActionListener;
+    public boolean acceptAnyClick=true;
 
-    private float soundVolume=1f;
     private float scalingFactor=1f;
 
     private float hexagonWidth;
@@ -42,6 +45,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
     private TextureRegion cellRegion;
     private TextureRegion selectedRegion;
     private TextureRegion adjacentRegion;
+    private TextureRegion disabledRegion;
 
     private Sound clickSound;
     private Sound errorSound;
@@ -49,12 +53,13 @@ public class HexMapActor extends BaseWidget<ECFGame> {
 
     private OrderedMap<Element,TextureRegion> textureToElementMap;
 
-    public HexMapActor(ECFGame game) {
+    public TutorialHexMapActor(ECFGame game) {
         super(game);
 
         cellRegion=getGame().getTextureRegionFromAtlas("hexagon");
         selectedRegion =getGame().getTextureRegionFromAtlas("hexagon_selected");
         adjacentRegion =getGame().getTextureRegionFromAtlas("hexagon_adjacent");
+        disabledRegion =getGame().getTextureRegionFromAtlas("hexagon_disabled");
 
         clickSound =getGame().getAssetManager().get("sounds/click.ogg",Sound.class);
         errorSound =getGame().getAssetManager().get("sounds/error.ogg",Sound.class);
@@ -94,6 +99,8 @@ public class HexMapActor extends BaseWidget<ECFGame> {
             @Override
             public boolean touchDown(InputEvent event, float x, float y,
                                         int pointer, int button) {
+                if(acceptAnyClick)
+                    cellActionListener.cellMoved(0);
                 processIndexClick(getCellIndexByVector(new Vector2(x,y)));
                 return true;
             }
@@ -187,6 +194,16 @@ public class HexMapActor extends BaseWidget<ECFGame> {
                 }
             }
         }
+        for(int i = 0; i <cellArray.length ; i++) {
+            for (int j = 0; j <cellArray[i].length ; j++) {
+                if(cellExistsAt(i,j)&& !unlockedCells[i][j]) {
+                    IntVector2 vec = cellArray[i][j].getPosition();
+                    Vector2 offset = findOffsetForIndex(vec);
+                    batch.draw(disabledRegion, getX() + vec.x * (hexagonWidth + offset.x), getY() + vec.y * hexagonHeight + offset.y,
+                            hexagonWidth, hexagonHeight);
+                }
+            }
+        }
     }
     private IntVector2 getCellIndexByVector(Vector2 vector){
         int i=(int)((vector.x-hexagonWidth*0.125f) /(hexagonWidth*0.75f));
@@ -227,41 +244,23 @@ public class HexMapActor extends BaseWidget<ECFGame> {
         Cell cell=getCellByIndex(position);
         if(selectedCell==null) {
             selectedCell = cell;
-            if(selectedCell.getElements().size==0) {
+            if(!(cell.getPosition().x==fromCell.x&&cell.getPosition().y==fromCell.y)) {
                 selectedCell=null;
-                errorSound.play(soundVolume);
+                errorSound.play();
                 return;
             }
-            clickSound.play(soundVolume);
+            clickSound.play(1f);
         }
         else {
             if(cell!=null) {
                 if(cell!=selectedCell) {
-                    if(isAdjacent(selectedCell.getPosition(),cell.getPosition())){
-                        if(cellActionListener.canMove(selectedCell.getElements().size)) {
-
+                    if(cell.getPosition().x==toCell.x&&cell.getPosition().y==toCell.y){
                             cellActionListener.cellMoved(selectedCell.getElements().size);
                             cellActionListener.cellMerged(cell.interactWith(selectedCell));
 
                             selectedCell = null;
-                            mergeSound.play(soundVolume);
-                        }
-                        else {
-                            errorSound.play(soundVolume);
-                            selectedCell=null;
-                        }
+                            mergeSound.play(1f);
                     }
-                    else {
-                        if(selectedCell!=null&&selectedCell.getElements().size!=0) {
-                            selectedCell = cell;
-                            clickSound.play(soundVolume);
-                        }
-                        else {
-                            selectedCell = null;
-                            errorSound.play(soundVolume);
-                        }
-                    }
-
 
                 }
                 else {
@@ -349,21 +348,51 @@ public class HexMapActor extends BaseWidget<ECFGame> {
             setHeight(hexagonHeight*cellArray[0].length);
         else
             setHeight(0);
+        cellArray[0][0]=null;
+        cellArray[2][0]=null;
+        cellArray[0][3]=null;
+        cellArray[1][3]=null;
     }
 
-    public CellActionListener getCellActionListener() {
+    public TutorialCellActionListener getCellActionListener() {
         return cellActionListener;
     }
 
-    public void setCellActionListener(CellActionListener cellActionListener) {
+    public void setCellActionListener(TutorialCellActionListener cellActionListener) {
         this.cellActionListener = cellActionListener;
     }
 
-    public float getSoundVolume() {
-        return soundVolume;
+    public boolean[][] getUnlockedCells() {
+        return unlockedCells;
     }
 
-    public void setSoundVolume(float soundVolume) {
-        this.soundVolume = soundVolume;
+    public void setUnlockedCells(boolean[][] unlockedCells) {
+        this.unlockedCells = unlockedCells;
+    }
+
+    public IntVector2 getFromCell() {
+        return fromCell;
+    }
+
+    public void setFromCell(IntVector2 fromCell) {
+        this.fromCell = fromCell;
+    }
+
+    public IntVector2 getToCell() {
+        return toCell;
+    }
+
+    public void setToCell(IntVector2 toCell) {
+        this.toCell = toCell;
+    }
+    public void lockCells(){
+        unlockedCells=new boolean[4][4];
+    }
+    public void unlockCells(){
+        for (int i = 0; i < unlockedCells.length; i++) {
+            for (int j = 0; j < unlockedCells[i].length; j++) {
+                unlockedCells[i][j]=true;
+            }
+        }
     }
 }

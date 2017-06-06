@@ -1,4 +1,4 @@
-package org.tetawex.ecf.core.screen;
+package org.tetawex.ecf.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -27,7 +27,7 @@ import org.tetawex.ecf.util.PreferencesProvider;
 public class SettingsScreen extends BaseScreen<ECFGame> {
     private static final float BUTTON_WIDTH =1275f;
     private static final float BUTTON_HEIGHT =255f;
-    private static final float BUTTON_HEIGHT_HALVED =150f;
+    private static final float BUTTON_HEIGHT_HALVED =120f;
     private static final float BUTTON_PAD =40f;
     private static final float BUTTON_FONT_SCALE =1f;
     private static final float LABEL_FONT_SCALE=1f;
@@ -63,7 +63,7 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
         //Sound table
         Table soundTable=new Table();
         soundSlider=new Slider(
-                0f,1f,0.05f,false,
+                0f,1f,0.0001f,false,
                 StyleFactory.generateStandardSliderSkin(getGame()));
         soundSlider.setValue(preferences.getSoundVolume());
         soundTable.add(new Label(getGame().getLocalisedString("sound"),
@@ -76,8 +76,14 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
         //Music table
         Table musicTable=new Table();
         musicSlider=new Slider(
-                0f,1f,0.05f,false,
+                0f,1f,0.0001f,false,
                 StyleFactory.generateStandardSliderSkin(getGame()));
+        musicSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                getGame().setMusicVolume(musicSlider.getValue());
+            }
+        });
         musicSlider.setValue(preferences.getMusicVolume());
         musicTable.add(new Label(getGame().getLocalisedString("music"),StyleFactory.generateStandardLabelSkin(getGame()))).width(250f).padRight(40f);
         musicTable.add(new Image(getGame().getTextureRegionFromAtlas("music_off"))).size(86f,86f);
@@ -126,11 +132,7 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
         langStack.add(languageSelectTable);
         stack.add(langStack);
         Table languageListTable=new Table();
-        languageListTable.setHeight(1500f);
-        ScrollPane scrollPane=new ScrollPane(
-                languageListTable,
-                StyleFactory.generateStandardScrollPaneSkin(getGame()));
-        languageSelectTable.add(scrollPane).pad(80f).growY().row();
+        languageSelectTable.add(languageListTable).pad(80f).row();
         TextButton languageSelectBackButton=
                 new TextButton(getGame().getLocalisedString("back"),
                         StyleFactory.generateStandardMenuButtonSkin(getGame()));
@@ -152,9 +154,11 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
         defaultButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                preferences.setSelectedLanguage("default_");
+                preferences.setSelectedLanguageCode("default");
+                preferences.setSelectedCountryCode("");
+                PreferencesProvider.setPreferences(preferences);
                 getGame().setupLocalisation();
-                getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU,null);
+                getGame().getGameStateManager().setState(GameStateManager.GameState.SETTINGS,null);
             }
         });
         for (final Language language: FontCharacters.getSupportedLanguages()) {

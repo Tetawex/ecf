@@ -1,11 +1,6 @@
 package org.tetawex.ecf.core;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import org.tetawex.ecf.core.screen.GameScreen;
-import org.tetawex.ecf.core.screen.MainMenuScreen;
-import org.tetawex.ecf.core.screen.SettingsScreen;
 import org.tetawex.ecf.util.Bundle;
 
 /**
@@ -13,7 +8,7 @@ import org.tetawex.ecf.util.Bundle;
  */
 public class GameStateManager
 {
-    public enum GameState{MAIN_MENU,GAME,SETTINGS,}
+    public enum GameState{MAIN_MENU,GAME,SETTINGS,HIGHSCORES,MODE_SELECT,LEVEL_SELECT,TUTORIAL}
 
     private Screen currentScreen;
     private GameState currentState;
@@ -58,14 +53,26 @@ public class GameStateManager
             case SETTINGS:
                 currentScreen=new ScreenAdapter();
                 break;*/
+            case TUTORIAL:
+                currentScreen=new org.tetawex.ecf.screen.TutorialScreen(game,bundle);
+                break;
+            case MODE_SELECT:
+                currentScreen=new org.tetawex.ecf.screen.PlayModeSelectScreen(game,bundle);
+                break;
+            case LEVEL_SELECT:
+                currentScreen=new org.tetawex.ecf.screen.LevelSelectScreen(game,bundle);
+                break;
+            case HIGHSCORES:
+                currentScreen=new org.tetawex.ecf.screen.HighscoresScreen(game,bundle);
+                break;
             case MAIN_MENU:
-                currentScreen=new MainMenuScreen(game,bundle);
+                currentScreen=new org.tetawex.ecf.screen.MainMenuScreen(game,bundle);
                 break;
             case SETTINGS:
-                currentScreen=new SettingsScreen(game,bundle);
+                currentScreen=new org.tetawex.ecf.screen.SettingsScreen(game,bundle);
                 break;
             case GAME:
-                currentScreen=new GameScreen(game,bundle);
+                currentScreen=new org.tetawex.ecf.screen.GameScreen(game,bundle);
                 break;
         }
     }

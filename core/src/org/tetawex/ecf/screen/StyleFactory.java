@@ -1,4 +1,4 @@
-package org.tetawex.ecf.core.screen;
+package org.tetawex.ecf.screen;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -83,6 +83,19 @@ public class StyleFactory {
         style.up = new Image(ninePatch).getDrawable();
         style.checked = new Image(ninePatch).getDrawable();
         ninePatch = new NinePatchDrawable(skin.getPatch("button_menu_pressed"));
+        style.down = new Image(ninePatch).getDrawable();
+
+        return style;
+    }
+    public static TextButton.TextButtonStyle generateStandardTutorialButtonSkin(ECFGame game){
+        Skin skin = new Skin();
+        skin.addRegions(game.getAssetManager().get("atlas.atlas",TextureAtlas.class));
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        NinePatchDrawable ninePatch = new NinePatchDrawable(skin.getPatch("tutorial_note"));
+        style.font = game.getAssetManager().get("fonts/font_main_medium.ttf",BitmapFont.class);
+        style.fontColor=new Color(0.3f,0.11f,0.18f,0.87f);
+        style.up = new Image(ninePatch).getDrawable();
+        style.checked = new Image(ninePatch).getDrawable();
         style.down = new Image(ninePatch).getDrawable();
 
         return style;

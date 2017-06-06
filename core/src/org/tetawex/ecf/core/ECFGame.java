@@ -31,6 +31,7 @@ public class ECFGame extends Game {
 	private TextureAtlas textureAtlas;
 	private GameStateManager gameStateManager;
 	private I18NBundle i18NBundle;
+    private Music music;
 
 	private ShaderProgram shaderProgram;
 	@Override
@@ -39,6 +40,7 @@ public class ECFGame extends Game {
 	    assetManager.load("atlas.atlas",TextureAtlas.class);
 		assetManager.load("backgrounds/background.png",Texture.class);
         assetManager.load("backgrounds/background_pause.png",Texture.class);
+        assetManager.load("backgrounds/text_logo.png",Texture.class);
 
 		assetManager.load("sounds/click.ogg", Sound.class);
 		assetManager.load("sounds/merge.ogg", Sound.class);
@@ -55,11 +57,14 @@ public class ECFGame extends Game {
 
 	    gameStateManager=new GameStateManager(this, GameStateManager.GameState.MAIN_MENU);
 
-        Music music=Gdx.audio.newMusic(Gdx.files.internal("music/ambient.ogg"));
+        music=Gdx.audio.newMusic(Gdx.files.internal("music/ambient.ogg"));
         music.setLooping(true);
+        music.setVolume(PreferencesProvider.getPreferences().getMusicVolume());
         music.play();
 	}
-
+	public void setMusicVolume(float volume){
+	    music.setVolume(volume);
+    }
 	@Override
 	public void render () {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -96,8 +101,10 @@ public class ECFGame extends Game {
 
         ECFPreferences preferences=PreferencesProvider.getPreferences();
 
-	    if(preferences.getSelectedLanguageCode().equals("default"))
+	    if(preferences.getSelectedLanguageCode().equals("default")) {
             i18NBundle = assetManager.get("i18n/bundle", I18NBundle.class);
+            //Gdx.app.log("dsdsd","dsdsds");
+        }
 	    else{
             FileHandle baseFileHandle = Gdx.files.internal("i18n/bundle");
             Locale locale =new Locale(preferences.getSelectedLanguageCode(),preferences.getSelectedCountryCode());

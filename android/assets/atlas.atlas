@@ -127,7 +127,7 @@ filter: Nearest,MipMapLinearNearest
 repeat: none
 button_menu_pressed
   rotate: false
-  xy: 2, 2
+  xy: 445, 412
   size: 150, 150
   split: 37, 37, 37, 37
   orig: 150, 150
@@ -135,70 +135,77 @@ button_menu_pressed
   index: -1
 button_pause
   rotate: false
-  xy: 445, 589
+  xy: 840, 809
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: -1
 element_earth
   rotate: false
-  xy: 647, 791
+  xy: 204, 52
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 element_fire
   rotate: false
-  xy: 154, 11
+  xy: 445, 269
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 element_light
   rotate: false
-  xy: 791, 791
+  xy: 597, 421
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 element_shadow
   rotate: false
-  xy: 298, 11
+  xy: 840, 666
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 element_water
   rotate: false
-  xy: 647, 648
+  xy: 840, 523
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 element_wind
   rotate: false
-  xy: 791, 648
+  xy: 348, 52
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
+hexagon_disabled
+  rotate: false
+  xy: 2, 578
+  size: 441, 381
+  orig: 441, 381
+  offset: 0, 0
+  index: -1
 hexagon_selected
   rotate: false
-  xy: 2, 551
+  xy: 2, 195
   size: 441, 381
   orig: 441, 381
   offset: 0, 0
   index: -1
 level_active
   rotate: false
-  xy: 2, 154
+  xy: 445, 564
   size: 393, 395
   orig: 393, 395
   offset: 0, 0
   index: -1
 star_ungained
   rotate: false
-  xy: 445, 741
+  xy: 2, 2
   size: 200, 191
   orig: 200, 191
   offset: 0, 0

@@ -14,6 +14,9 @@ public class Score {
         this.levelName = levelName;
     }
 
+    public Score() {
+    }
+
     public int getValue() {
         return value;
     }

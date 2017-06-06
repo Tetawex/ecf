@@ -18,6 +18,13 @@ public class GameData {
     private static final int SINGLE_MERGE_BONUS_MANA=2;
     private static final int SINGLE_MOVE_MANACOST=1;
 
+    private int fire;
+    private int water;
+    private int air;
+    private int earth;
+    private int shadow;
+    private int light;
+
     private int mana;
     private int score;
     private Cell[][] cellArray;
@@ -110,5 +117,53 @@ public class GameData {
 
     public void setGameDataChangedListener(GameDataChangedListener gameDataChangedListener) {
         this.gameDataChangedListener = gameDataChangedListener;
+    }
+
+    public int getFire() {
+        return fire;
+    }
+
+    public void setFire(int fire) {
+        this.fire = fire;
+    }
+
+    public int getWater() {
+        return water;
+    }
+
+    public void setWater(int water) {
+        this.water = water;
+    }
+
+    public int getAir() {
+        return air;
+    }
+
+    public void setAir(int air) {
+        this.air = air;
+    }
+
+    public int getEarth() {
+        return earth;
+    }
+
+    public void setEarth(int earth) {
+        this.earth = earth;
+    }
+
+    public int getShadow() {
+        return shadow;
+    }
+
+    public void setShadow(int shadow) {
+        this.shadow = shadow;
+    }
+
+    public int getLight() {
+        return light;
+    }
+
+    public void setLight(int light) {
+        this.light = light;
     }
 }
