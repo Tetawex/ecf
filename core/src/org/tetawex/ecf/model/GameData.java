@@ -11,6 +11,7 @@ public class GameData {
         void manaChanged(int newValue);
         void scoreChanged(int newValue);
         void cellMapChanged(Cell[][] newMap);
+        void gameLostOrWon(boolean won);
     }
     private GameDataChangedListener gameDataChangedListener;
 
@@ -89,6 +90,8 @@ public class GameData {
     public void processElementsMerge(int mergedElementsCount){
         setMana(mana+SINGLE_MERGE_BONUS_MANA*mergedElementsCount);
         setScore(score+=getTotalMergeScore(mergedElementsCount));
+        calculateElementsLeft();
+        checkIfLostOrWon();
     }
     private int getTotalMergeScore(int mergedElementsCount){
         if(mergedElementsCount>2)
@@ -118,7 +121,47 @@ public class GameData {
     public void setGameDataChangedListener(GameDataChangedListener gameDataChangedListener) {
         this.gameDataChangedListener = gameDataChangedListener;
     }
+    private void calculateElementsLeft(){
+        fire=0;
+        water=0;
+        earth=0;
+        air=0;
+        shadow=0;
+        light=0;
+        for (int i = 0; i < cellArray.length; i++) {
+            for (int j = 0; j < cellArray[i].length; j++) {
+                if(cellArray[i][j]!=null) {
+                    if (cellArray[i][j].getElements().contains(Element.FIRE))
+                        fire++;
+                    if (cellArray[i][j].getElements().contains(Element.WATER))
+                        water++;
+                    if (cellArray[i][j].getElements().contains(Element.EARTH))
+                        earth++;
+                    if (cellArray[i][j].getElements().contains(Element.AIR))
+                        air++;
+                    if (cellArray[i][j].getElements().contains(Element.SHADOW))
+                        shadow++;
+                    if (cellArray[i][j].getElements().contains(Element.LIGHT))
+                        light++;
+                }
 
+            }
+        }
+    }
+    private void checkIfLostOrWon(){
+        if(fire==0&&water==0&&earth==0&&air==0&&shadow==0&&light==0)
+            gameDataChangedListener.gameLostOrWon(true);
+        else{
+            if(mana<=0)
+                gameDataChangedListener.gameLostOrWon(false);
+            else if(fire==0&&water!=0||fire!=0&&water==0||
+                        air==0&&earth!=0||earth==0&&air!=0||
+                        shadow==0&&light!=0||light==0&&shadow!=0){
+                    gameDataChangedListener.gameLostOrWon(false);
+            }
+        }
+
+    }
     public int getFire() {
         return fire;
     }

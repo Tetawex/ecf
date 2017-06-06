@@ -12,9 +12,13 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.core.GameStateManager;
 import org.tetawex.ecf.model.ECFPreferences;
+import org.tetawex.ecf.model.LevelData;
+import org.tetawex.ecf.model.RandomLevelFactory;
 import org.tetawex.ecf.model.Score;
 import org.tetawex.ecf.util.Bundle;
 import org.tetawex.ecf.util.PreferencesProvider;
+
+import java.util.Random;
 
 /**
  * Created by Tetawex on 03.06.2017.
@@ -66,7 +70,10 @@ public class PlayModeSelectScreen extends BaseScreen<ECFGame> {
         menuButtonRandom.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //getGame().getGameStateManager().setState(GameStateManager.GameState.GAME,null);
+                Bundle bundle=new Bundle();
+                RandomLevelFactory factory=new RandomLevelFactory(new Random().nextInt(10000),new Random().nextInt(3)+2,new Random().nextInt(5)+3);
+                bundle.putItem("levelData",new LevelData(factory.getTheBoard(),factory.getMana(),10000));
+                getGame().getGameStateManager().setState(GameStateManager.GameState.GAME,bundle);
             }
         });
         TextButton menuButtonTutorial=

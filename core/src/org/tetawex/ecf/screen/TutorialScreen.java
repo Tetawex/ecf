@@ -173,6 +173,11 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
             public void cellMapChanged(Cell[][] newMap) {
                 hexMapActor.setCellArray(newMap);
             }
+
+            @Override
+            public void gameLostOrWon(boolean won) {
+
+            }
         });
         //pause ui
         pauseTable.center();

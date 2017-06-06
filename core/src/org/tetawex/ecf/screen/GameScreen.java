@@ -27,13 +27,28 @@ public class GameScreen extends BaseScreen<ECFGame> {
     private static final float PAUSE_BUTTON_FONT_SCALE=1f;
     private static final float MANA_LABEL_FONT_SCALE =1f;
     private static final float SCORE_LABEL_FONT_SCALE =1f;
+    private LevelData data;
 
     private Stage gameStage;
     private HexMapActor hexMapActor;
     private Label scoreLabel;
     private TextButton manaLabel;
 
+    private Label fireCounterLabel;
+    private Label waterCounterLabel;
+
+    private Label airCounterLabel;
+    private Label earthCounterLabel;
+
+    private Label shadowCounterLabel;
+    private Label lightCounterLabel;
+
     private GameData gameData;
+    private Label wlLabel;
+    private Label wlScore;
+    private Label wlSpareMana;
+    private Label wlTotal;
+    private TextButton winLossMenuButtonNext;
 
     public GameScreen(ECFGame game,Bundle bundle){
         super(game);
@@ -48,7 +63,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
 
         initUi();
         if(bundle!=null){
-            LevelData data=bundle.getItem("levelData",LevelData.class);
+            data=bundle.getItem("levelData",LevelData.class);
             gameData.setCellArray(data.getCellArray());
             gameData.setMana(data.getMana());
             gameData.setScore(0);
@@ -149,6 +164,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
         topRowTable.toFront();
         topRowRightTable.right();
         topRowLeftTable.left();
+        final Table wlTable=new Table();
 
         gameData.setGameDataChangedListener(new GameData.GameDataChangedListener() {
             @Override
@@ -165,7 +181,100 @@ public class GameScreen extends BaseScreen<ECFGame> {
             public void cellMapChanged(Cell[][] newMap) {
                 hexMapActor.setCellArray(newMap);
             }
+
+            @Override
+            public void gameLostOrWon(boolean won) {
+                backgroundPause.setVisible(true);
+                winLossMenuButtonNext.setVisible(won);
+                wlTable.setVisible(true);
+                wlScore.setText(" "+gameData.getScore());
+                wlSpareMana.setText(" "+gameData.getMana()*100);
+                wlTotal.setText(" "+(gameData.getScore()+gameData.getMana()*100));
+                if(won)
+                    wlLabel.setText(getGame().getLocalisedString("level_success"));
+                else
+                    wlLabel.setText(getGame().getLocalisedString("level_fail"));
+            }
         });
+          //Elemental counter
+        /*Label.LabelStyle elementLabelStyle=StyleFactory.generateDarkerLabelSkin(getGame());
+        fireCounterLabel=new Label("0",elementLabelStyle);
+        waterCounterLabel=new Label("0",elementLabelStyle);
+        airCounterLabel=new Label("0",elementLabelStyle);
+        earthCounterLabel=new Label("0",elementLabelStyle);
+        shadowCounterLabel=new Label("0",elementLabelStyle);
+        lightCounterLabel=new Label("0",elementLabelStyle);
+
+        Table fwTable=new Table();
+        Table fireTable=new Table();
+        Table waterTable=new Table();*/
+
+        //win/loss ui
+        wlTable.setVisible(false);
+        wlLabel = new Label("",StyleFactory.generateStandardLabelSkin(getGame()));
+        wlTable.add(wlLabel).row();
+
+        Table scoreTable=new Table();
+        scoreTable.add(new Label(getGame().getLocalisedString("score"),StyleFactory.generateStandardLabelSkin(getGame())));
+        wlScore = new Label("",StyleFactory.generateStandardLabelSkin(getGame()));
+        scoreTable.add(wlScore).padRight(40f);
+        wlTable.add(scoreTable).row();
+
+        Table spareTable=new Table();
+        spareTable.add(new Label(getGame().getLocalisedString("spare_mana"),StyleFactory.generateStandardLabelSkin(getGame())));
+        wlSpareMana = new Label("",StyleFactory.generateStandardLabelSkin(getGame()));
+        spareTable.add(wlSpareMana);
+        wlTable.add(spareTable).row();
+
+        Table totalTable=new Table();
+        totalTable.add(new Label(getGame().getLocalisedString("total"),StyleFactory.generateStandardLabelSkin(getGame())));
+        wlTotal = new Label("",StyleFactory.generateStandardLabelSkin(getGame()));
+        totalTable.add(wlTotal);
+        wlTable.add(totalTable).row();
+
+        stack.add(wlTable);
+
+        winLossMenuButtonNext=
+                new TextButton(getGame().getLocalisedString("next"), StyleFactory.generateStandardMenuButtonSkin(getGame()));
+        winLossMenuButtonNext.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, null);
+            }
+        });
+        wlTable.add(winLossMenuButtonNext)
+                .size(PAUSE_BUTTON_WIDTH,PAUSE_BUTTON_HEIGHT)
+                .center().pad(PAUSE_BUTTON_PAD).row();
+
+        TextButton winLossMenuButtonRetry=
+                new TextButton(getGame().getLocalisedString("retry"), StyleFactory.generateStandardMenuButtonSkin(getGame()));
+        winLossMenuButtonRetry.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                wlTable.setVisible(false);
+                backgroundPause.setVisible(false);
+                gameData.setCellArray(gameData.getOriginalCellArray());
+                gameData.setScore(0);
+                gameData.setMana(data.getMana());
+            }
+        });
+        wlTable.add(winLossMenuButtonRetry)
+                .size(PAUSE_BUTTON_WIDTH,PAUSE_BUTTON_HEIGHT)
+                .center().pad(PAUSE_BUTTON_PAD).row();
+
+
+        TextButton winLossMenuButtonQuit=
+                new TextButton(getGame().getLocalisedString("quit"), StyleFactory.generateStandardMenuButtonSkin(getGame()));
+        winLossMenuButtonQuit.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU, null);
+            }
+        });
+        wlTable.add(winLossMenuButtonQuit)
+                .size(PAUSE_BUTTON_WIDTH,PAUSE_BUTTON_HEIGHT)
+                .center().pad(PAUSE_BUTTON_PAD).row();
+
         //pause ui
         pauseTable.center();
 
@@ -192,7 +301,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
                 backgroundPause.setVisible(!backgroundPause.isVisible());
                 gameData.setCellArray(gameData.getOriginalCellArray());
                 gameData.setScore(0);
-                gameData.setMana(2);
+                gameData.setMana(data.getMana());
             }
         });
         pauseMenuButtonRetry.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
@@ -200,22 +309,6 @@ public class GameScreen extends BaseScreen<ECFGame> {
                 .size(PAUSE_BUTTON_WIDTH,PAUSE_BUTTON_HEIGHT)
                 .center().pad(PAUSE_BUTTON_PAD).row();
 
-        TextButton pauseMenuButtonSkip=
-                new TextButton(getGame().getLocalisedString("next"), StyleFactory.generateStandardMenuButtonSkin(getGame()));
-        pauseMenuButtonSkip.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                pauseTable.setVisible(!pauseTable.isVisible());
-                backgroundPause.setVisible(!backgroundPause.isVisible());
-                gameData.setCellArray(CellArrayFactory.generateBasicCellArray(3,5));
-                gameData.setScore(0);
-                gameData.setMana(2);
-            }
-        });
-        pauseMenuButtonSkip.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
-        pauseTable.add(pauseMenuButtonSkip)
-                .size(PAUSE_BUTTON_WIDTH,PAUSE_BUTTON_HEIGHT)
-                .center().pad(PAUSE_BUTTON_PAD).row();
 
         TextButton pauseMenuButtonQuit=
                 new TextButton(getGame().getLocalisedString("quit"), StyleFactory.generateStandardMenuButtonSkin(getGame()));

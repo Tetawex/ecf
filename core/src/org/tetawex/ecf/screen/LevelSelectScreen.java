@@ -97,7 +97,7 @@ public class LevelSelectScreen extends BaseScreen<ECFGame> {
         menuButtonBackToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU,null);
+                getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT,null);
             }
         });
         menuButtonBackToMainMenu.getLabel().setFontScale(BUTTON_FONT_SCALE);

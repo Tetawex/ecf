@@ -24,20 +24,17 @@ public class LevelFactory {
             cellArray[1][2].setElements(Element.AIR);
         }
         else if(number==1) {
-            cellArray = CellArrayFactory.generateEmptyCellArray(4,3);
-            cellArray[0][0] = null;
+            cellArray = CellArrayFactory.generateEmptyCellArray(3,3);
             cellArray[0][2] = null;
-            cellArray[1][2] = null;
             cellArray[2][2] = null;
-            cellArray[3][0] = null;
-            cellArray[3][2] = null;
+            cellArray[2][0] = null;
 
-            cellArray[0][1].setElements(Element.WATER, Element.AIR, Element.LIGHT);
-            cellArray[1][1].setElements(Element.FIRE, Element.AIR, Element. LIGHT);
+            cellArray[0][0].setElements(Element.WATER, Element.AIR, Element.LIGHT);
             cellArray[1][0].setElements(Element.SHADOW, Element.EARTH);
-            cellArray[2][1].setElements(Element.LIGHT, Element.EARTH, Element.FIRE );
-            cellArray[2][0].setElements(Element.AIR, Element.SHADOW, Element.WATER);
-            cellArray[3][1].setElements(Element.SHADOW, Element.WATER);
+            cellArray[2][1].setElements(Element.AIR, Element.SHADOW, Element.WATER);
+            cellArray[0][1].setElements(Element.LIGHT, Element.AIR, Element.FIRE);
+            cellArray[1][1].setElements(Element.LIGHT, Element.EARTH, Element.FIRE);
+            cellArray[1][2].setElements(Element.SHADOW, Element.WATER);
         }
         else if(number==2) {
             cellArray = CellArrayFactory.generateEmptyCellArray(3,3);
