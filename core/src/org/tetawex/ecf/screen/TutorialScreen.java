@@ -175,6 +175,11 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
             }
 
             @Override
+            public void elementsCountChanged(int fire, int water, int air, int earth, int shadow, int light) {
+
+            }
+
+            @Override
             public void gameLostOrWon(boolean won) {
 
             }

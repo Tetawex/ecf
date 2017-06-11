@@ -140,42 +140,42 @@ button_pause
   orig: 150, 150
   offset: 0, 0
   index: -1
-element_earth
+element_air
   rotate: false
   xy: 204, 52
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
-element_fire
+element_earth
   rotate: false
   xy: 445, 269
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
-element_light
+element_fire
   rotate: false
   xy: 597, 421
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
-element_shadow
+element_light
   rotate: false
   xy: 840, 666
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
-element_water
+element_shadow
   rotate: false
   xy: 840, 523
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
-element_wind
+element_water
   rotate: false
   xy: 348, 52
   size: 142, 141

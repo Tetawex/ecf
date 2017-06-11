@@ -11,6 +11,7 @@ public class GameData {
         void manaChanged(int newValue);
         void scoreChanged(int newValue);
         void cellMapChanged(Cell[][] newMap);
+        void elementsCountChanged(int fire,int water,int air,int earth,int shadow,int light);
         void gameLostOrWon(boolean won);
     }
     private GameDataChangedListener gameDataChangedListener;
@@ -77,6 +78,8 @@ public class GameData {
         }
         originalCellArray=arr;
         gameDataChangedListener.cellMapChanged(cellArray);
+
+        calculateElementsLeft();
     }
     private OrderedSet<Element> copyElementSet(OrderedSet<Element> oldSet){
         OrderedSet<Element> set=new OrderedSet<Element>();
@@ -147,6 +150,7 @@ public class GameData {
 
             }
         }
+        triggerElementsCountChangedEvent();
     }
     private void checkIfLostOrWon(){
         if(fire==0&&water==0&&earth==0&&air==0&&shadow==0&&light==0)
@@ -162,6 +166,10 @@ public class GameData {
         }
 
     }
+    private void triggerElementsCountChangedEvent(){
+        gameDataChangedListener.elementsCountChanged(fire,water,air,earth,shadow,light);
+    }
+
     public int getFire() {
         return fire;
     }

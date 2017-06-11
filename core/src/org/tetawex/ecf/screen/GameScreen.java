@@ -27,6 +27,8 @@ public class GameScreen extends BaseScreen<ECFGame> {
     private static final float PAUSE_BUTTON_FONT_SCALE=1f;
     private static final float MANA_LABEL_FONT_SCALE =1f;
     private static final float SCORE_LABEL_FONT_SCALE =1f;
+    private static final float ELEMENT_COUNTER_IMAGE_SIZE =130f;
+
     private LevelData data;
 
     private Stage gameStage;
@@ -140,7 +142,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
         mainTable.setFillParent(true);
         mainTable.add(topRowTable).growX().row();
         mainTable.add(midRowTable).growX().growY().row();
-        mainTable.add(bottomRowTable).growX().prefHeight(300f);
+        mainTable.add(bottomRowTable).growX();
 
         TextButton pauseButton=new TextButton(" ", StyleFactory.generatePauseButtonSkin(getGame()));
         pauseButton.addListener(new ChangeListener() {
@@ -183,6 +185,16 @@ public class GameScreen extends BaseScreen<ECFGame> {
             }
 
             @Override
+            public void elementsCountChanged(int fire, int water, int air, int earth, int shadow, int light) {
+                fireCounterLabel.setText(fire+"");
+                waterCounterLabel.setText(water+"");
+                airCounterLabel.setText(air+"");
+                earthCounterLabel.setText(earth+"");
+                shadowCounterLabel.setText(shadow+"");
+                lightCounterLabel.setText(light+"");
+            }
+
+            @Override
             public void gameLostOrWon(boolean won) {
                 backgroundPause.setVisible(true);
                 winLossMenuButtonNext.setVisible(won);
@@ -196,18 +208,64 @@ public class GameScreen extends BaseScreen<ECFGame> {
                     wlLabel.setText(getGame().getLocalisedString("level_fail"));
             }
         });
-          //Elemental counter
-        /*Label.LabelStyle elementLabelStyle=StyleFactory.generateDarkerLabelSkin(getGame());
-        fireCounterLabel=new Label("0",elementLabelStyle);
-        waterCounterLabel=new Label("0",elementLabelStyle);
+        //Element counter
+        Label.LabelStyle elementLabelStyle=StyleFactory.generateDarkestLabelSkin(getGame());
+        fireCounterLabel=new Label("4",elementLabelStyle);
+        waterCounterLabel=new Label("1",elementLabelStyle);
         airCounterLabel=new Label("0",elementLabelStyle);
         earthCounterLabel=new Label("0",elementLabelStyle);
         shadowCounterLabel=new Label("0",elementLabelStyle);
         lightCounterLabel=new Label("0",elementLabelStyle);
 
+        //fire-water
         Table fwTable=new Table();
         Table fireTable=new Table();
-        Table waterTable=new Table();*/
+        Table waterTable=new Table();
+
+        fireTable.add(new Image(
+                getGame().getTextureRegionFromAtlas("element_fire"))).size(ELEMENT_COUNTER_IMAGE_SIZE).row();
+        fireTable.add(fireCounterLabel);
+        waterTable.add(new Image(
+                getGame().getTextureRegionFromAtlas("element_water"))).size(ELEMENT_COUNTER_IMAGE_SIZE).row();
+        waterTable.add(waterCounterLabel);
+
+        fwTable.add(fireTable);
+        fwTable.add(waterTable);
+
+        //air-earth
+        Table aeTable=new Table();
+        Table airTable=new Table();
+        Table earthTable=new Table();
+
+        airTable.add(new Image(
+                getGame().getTextureRegionFromAtlas("element_air"))).size(ELEMENT_COUNTER_IMAGE_SIZE).row();
+        airTable.add(airCounterLabel);
+        earthTable.add(new Image(
+                getGame().getTextureRegionFromAtlas("element_earth"))).size(ELEMENT_COUNTER_IMAGE_SIZE).row();
+        earthTable.add(earthCounterLabel);
+
+        aeTable.add(airTable);
+        aeTable.add(earthTable);
+
+        //shadow-light
+        Table slTable=new Table();
+        Table shadowTable=new Table();
+        Table lightTable=new Table();
+
+        shadowTable.add(new Image(
+                getGame().getTextureRegionFromAtlas("element_shadow"))).size(ELEMENT_COUNTER_IMAGE_SIZE).row();
+        shadowTable.add(shadowCounterLabel);
+        lightTable.add(new Image(
+                getGame().getTextureRegionFromAtlas("element_light"))).size(ELEMENT_COUNTER_IMAGE_SIZE).row();
+        lightTable.add(lightCounterLabel);
+
+        slTable.add(shadowTable);
+        slTable.add(lightTable);
+
+        bottomRowTable.add(fwTable).pad(40f);
+        bottomRowTable.add(aeTable).prefWidth(1500f);
+        bottomRowTable.add(slTable).pad(40f);
+
 
         //win/loss ui
         wlTable.setVisible(false);

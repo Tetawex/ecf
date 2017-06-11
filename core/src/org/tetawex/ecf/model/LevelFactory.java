@@ -1,5 +1,8 @@
 package org.tetawex.ecf.model;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Json;
 import org.tetawex.ecf.util.IntVector2;
 
 /**
@@ -9,8 +12,22 @@ public class LevelFactory {
     //TODO Replace with an adequate loading system
     public static LevelData generateLevel(int number){
         LevelData data=new LevelData();
-        Cell[][] cellArray= CellArrayFactory.generateEmptyCellArray(3,3);
-        if(number==0) {
+        //Указать параметры
+        data.setMana(1);
+        data.setMaxScore(4000);
+        //Это объект для считывания
+        Json json=new Json();
+        //Объект для считывания, класс можно сделать например на jsonschema2pojo.org
+        YourJsonObject obj=json.fromJson(YourJsonObject.class,
+                readFile("levels/level"+number+".json"));
+
+        //...Делаешь какие-то нетривиальные преобразования и возвращаешь LevelData
+        return data;
+
+
+
+        //Cell[][] cellArray= CellArrayFactory.generateEmptyCellArray(3,3);
+        /*if(number==0) {
             cellArray = CellArrayFactory.generateEmptyCellArray(3,3);
             cellArray[0][0] = null;
             cellArray[0][1] = null;
@@ -62,9 +79,10 @@ public class LevelFactory {
             cellArray[2][1].setElements(Element.SHADOW, Element.AIR);
             cellArray[2][2].setElements(Element.EARTH, Element.FIRE);
         }
-        data.setCellArray(cellArray);
-        data.setMana(1);
-        data.setMaxScore(4000);
-        return data;
+        data.setCellArray(cellArray);*/
+    }
+    private static String readFile(String fileName){
+        FileHandle handle = Gdx.files.internal(fileName);
+        return handle.readString();
     }
 }

@@ -66,7 +66,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
         textureToElementMap.put(Element.WATER,getGame()
                 .getTextureRegionFromAtlas("element_water"));
         textureToElementMap.put(Element.AIR,getGame()
-                .getTextureRegionFromAtlas("element_wind"));
+                .getTextureRegionFromAtlas("element_air"));
         textureToElementMap.put(Element.EARTH,getGame()
                 .getTextureRegionFromAtlas("element_earth"));
         textureToElementMap.put(Element.SHADOW,getGame()

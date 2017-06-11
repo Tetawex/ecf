@@ -54,6 +54,16 @@ public class StyleFactory {
         style.fontColor=new Color(0.3f,0.11f,0.18f,0.87f);
         return style;
     }
+
+    public static Label.LabelStyle generateDarkestLabelSkin(ECFGame game){
+        Skin skin = new Skin();
+        skin.addRegions(game.getAssetManager().get("atlas.atlas",TextureAtlas.class));
+        Label.LabelStyle style = new Label.LabelStyle();
+        style.font = game.getAssetManager().get("fonts/font_main_medium.ttf",BitmapFont.class);
+        style.fontColor=new Color(0f,0f,0f,0.87f);
+        return style;
+    }
+
     public static Slider.SliderStyle generateStandardSliderSkin(ECFGame game){
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas",TextureAtlas.class));
