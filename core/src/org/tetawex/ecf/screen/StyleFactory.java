@@ -24,7 +24,7 @@ public class StyleFactory {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas",TextureAtlas.class));
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = game.getAssetManager().get("fonts/font_main_small.ttf",BitmapFont.class);
+        textButtonStyle.font = game.getAssetManager().get("fonts/font_main_medium.ttf",BitmapFont.class);
         textButtonStyle.up = skin.getDrawable("mana");
         textButtonStyle.down = skin.getDrawable("mana");
         textButtonStyle.fontColor=new Color(0f,0f,0f,0.87f);
@@ -35,6 +35,22 @@ public class StyleFactory {
         skin.addRegions(game.getAssetManager().get("atlas.atlas",TextureAtlas.class));
         Label.LabelStyle style = new Label.LabelStyle();
         style.font = game.getAssetManager().get("fonts/font_main_medium.ttf",BitmapFont.class);
+        style.fontColor=new Color(1f,1f,1f,0.87f);
+        return style;
+    }
+    public static Label.LabelStyle generateLargeStandardLabelSkin(ECFGame game){
+        Skin skin = new Skin();
+        skin.addRegions(game.getAssetManager().get("atlas.atlas",TextureAtlas.class));
+        Label.LabelStyle style = new Label.LabelStyle();
+        style.font = game.getAssetManager().get("fonts/font_main_large.ttf",BitmapFont.class);
+        style.fontColor=new Color(1f,1f,1f,0.87f);
+        return style;
+    }
+    public static Label.LabelStyle generateSmallStandardLabelSkin(ECFGame game){
+        Skin skin = new Skin();
+        skin.addRegions(game.getAssetManager().get("atlas.atlas",TextureAtlas.class));
+        Label.LabelStyle style = new Label.LabelStyle();
+        style.font = game.getAssetManager().get("fonts/font_main_small.ttf",BitmapFont.class);
         style.fontColor=new Color(1f,1f,1f,0.87f);
         return style;
     }

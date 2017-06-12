@@ -32,9 +32,13 @@ public class ECFGame extends Game {
 	private GameStateManager gameStateManager;
 	private I18NBundle i18NBundle;
     private Music music;
+    private ActionResolver actionResolver;
 
-	private ShaderProgram shaderProgram;
-	@Override
+    public ECFGame(ActionResolver actionResolver) {
+        this.actionResolver = actionResolver;
+    }
+
+    @Override
 	public void create () {
 	    assetManager =new AssetManager();
 	    assetManager.load("atlas.atlas",TextureAtlas.class);
@@ -45,6 +49,9 @@ public class ECFGame extends Game {
 		assetManager.load("sounds/click.ogg", Sound.class);
 		assetManager.load("sounds/merge.ogg", Sound.class);
 		assetManager.load("sounds/error.ogg", Sound.class);
+        assetManager.load("sounds/win.ogg", Sound.class);
+        assetManager.load("sounds/loss.ogg", Sound.class);
+
         assetManager.load("i18n/bundle", I18NBundle.class);
 
 		loadFonts();
@@ -103,7 +110,6 @@ public class ECFGame extends Game {
 
 	    if(preferences.getSelectedLanguageCode().equals("default")) {
             i18NBundle = assetManager.get("i18n/bundle", I18NBundle.class);
-            //Gdx.app.log("dsdsd","dsdsds");
         }
 	    else{
             FileHandle baseFileHandle = Gdx.files.internal("i18n/bundle");
@@ -124,14 +130,32 @@ public class ECFGame extends Game {
         // Note: you MUST specify a FreetypeFontGenerator defining the ttf font file name and the size
         // of the font to be generated. The names of the fonts are arbitrary and are not pointing
         // to a file on disk!
-        FreetypeFontLoader.FreeTypeFontLoaderParameter params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        params.fontParameters.characters= FontCharacters.en+FontCharacters.ru;
-        params.fontFileName = "fonts/font_main.ttf";
 
-        params.fontParameters.size = 48;
-        assetManager.load("fonts/font_main_small.ttf", BitmapFont.class, params);
 
-        params.fontParameters.size = 75;
-        assetManager.load("fonts/font_main_medium.ttf", BitmapFont.class, params);
+        FreetypeFontLoader.FreeTypeFontLoaderParameter paramsS = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        paramsS.fontParameters.characters= FontCharacters.en+FontCharacters.ru;
+        paramsS.fontFileName = "fonts/font_main.ttf";
+        paramsS.fontParameters.size = 48;
+        assetManager.load("fonts/font_main_small.ttf", BitmapFont.class, paramsS);
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter paramsM = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        paramsM.fontParameters.characters= FontCharacters.en+FontCharacters.ru;
+        paramsM.fontFileName = "fonts/font_main.ttf";
+        paramsM.fontParameters.size = 75;
+        assetManager.load("fonts/font_main_medium.ttf", BitmapFont.class, paramsM);
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter paramsL = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        paramsL.fontParameters.characters= FontCharacters.en+FontCharacters.ru;
+        paramsL.fontFileName = "fonts/font_main.ttf";
+        paramsL.fontParameters.size = 96;
+        assetManager.load("fonts/font_main_large.ttf", BitmapFont.class, paramsL);
+    }
+
+    public ActionResolver getActionResolver() {
+        return actionResolver;
+    }
+
+    public void setActionResolver(ActionResolver actionResolver) {
+        this.actionResolver = actionResolver;
     }
 }

@@ -1,47 +1,47 @@
-{ "height":3,
+{ "height":2,
  "hexsidelength":64,
  "layers":[
         {
-         "data":[0, 0, 1, 1, 1, 1, 0, 1, 1],
-         "height":3,
+         "data":[1, 1],
+         "height":2,
          "name":"cells",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":3,
+         "width":1,
          "x":0,
          "y":0
         }, 
         {
-         "data":[0, 0, 3, 2, 0, 0, 0, 2, 2],
-         "height":3,
+         "data":[3, 2],
+         "height":2,
          "name":"fire_water",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":3,
+         "width":1,
          "x":0,
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 7, 7, 6, 0, 0, 6],
-         "height":3,
+         "data":[0, 0],
+         "height":2,
          "name":"earth_wind",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":3,
+         "width":1,
          "x":0,
          "y":0
         }, 
         {
-         "data":[0, 0, 5, 4, 0, 4, 0, 5, 5],
-         "height":3,
+         "data":[0, 0],
+         "height":2,
          "name":"light_shadow",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":3,
+         "width":1,
          "x":0,
          "y":0
         }],
@@ -50,7 +50,7 @@
  "properties":
     {
      "mana":1,
-     "maxScore":500,
+     "maxScore":100,
      "name":"Flying Saucer"
     },
  "propertytypes":
@@ -70,5 +70,5 @@
         }],
  "tilewidth":128,
  "version":1,
- "width":3
+ "width":1
 }

@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         applicationId "org.tetawex.ecf"
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 25
     }
 }

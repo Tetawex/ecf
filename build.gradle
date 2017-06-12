@@ -81,6 +81,7 @@ project(":android") {
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
         compile "de.tomgrill.gdxdialogs:gdx-dialogs-android:1.2.0"
+        compile 'com.google.android.gms:play-services-ads:10.2.4'
     }
 }
 

@@ -3,6 +3,7 @@ package org.tetawex.ecf.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
+import org.tetawex.ecf.core.ActionResolverAdapter;
 import org.tetawex.ecf.core.ECFGame;
 
 public class HtmlLauncher extends GwtApplication {
@@ -14,6 +15,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new ECFGame();
+                return new ECFGame(new ActionResolverAdapter());
         }
 }

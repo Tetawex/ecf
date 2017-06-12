@@ -71,7 +71,7 @@ public class TutorialHexMapActor extends BaseWidget<ECFGame> {
         textureToElementMap.put(Element.WATER,getGame()
                 .getTextureRegionFromAtlas("element_water"));
         textureToElementMap.put(Element.AIR,getGame()
-                .getTextureRegionFromAtlas("element_wind"));
+                .getTextureRegionFromAtlas("element_air"));
         textureToElementMap.put(Element.EARTH,getGame()
                 .getTextureRegionFromAtlas("element_earth"));
         textureToElementMap.put(Element.SHADOW,getGame()
@@ -342,16 +342,6 @@ public class TutorialHexMapActor extends BaseWidget<ECFGame> {
 
     public void setCellArray(Cell[][] cellArray) {
         this.cellArray = cellArray;
-        int width=cellArray.length;
-        setWidth(hexagonWidth*width);
-        if(width!=0)
-            setHeight(hexagonHeight*cellArray[0].length);
-        else
-            setHeight(0);
-        cellArray[0][0]=null;
-        cellArray[2][0]=null;
-        cellArray[0][3]=null;
-        cellArray[1][3]=null;
     }
 
     public TutorialCellActionListener getCellActionListener() {

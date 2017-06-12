@@ -12,8 +12,9 @@ public class GameData {
         void scoreChanged(int newValue);
         void cellMapChanged(Cell[][] newMap);
         void elementsCountChanged(int fire,int water,int air,int earth,int shadow,int light);
-        void gameLostOrWon(boolean won);
+        void gameLostOrWon(boolean won, LossCondition lossCondition);
     }
+    public enum LossCondition{NO_MANA,NO_FIRE,NO_WATER,NO_AIR,NO_EARTH,NO_SHADOW,NO_LIGHT}
     private GameDataChangedListener gameDataChangedListener;
 
     private static final int SINGLE_MERGE_BONUS_SCORE=100;
@@ -154,15 +155,25 @@ public class GameData {
     }
     private void checkIfLostOrWon(){
         if(fire==0&&water==0&&earth==0&&air==0&&shadow==0&&light==0)
-            gameDataChangedListener.gameLostOrWon(true);
+            gameDataChangedListener.gameLostOrWon(true,null);
         else{
             if(mana<=0)
-                gameDataChangedListener.gameLostOrWon(false);
-            else if(fire==0&&water!=0||fire!=0&&water==0||
-                        air==0&&earth!=0||earth==0&&air!=0||
-                        shadow==0&&light!=0||light==0&&shadow!=0){
-                    gameDataChangedListener.gameLostOrWon(false);
-            }
+                gameDataChangedListener.gameLostOrWon(false,LossCondition.NO_MANA);
+
+            else if(fire==0&&water!=0)
+                gameDataChangedListener.gameLostOrWon(false,LossCondition.NO_FIRE);
+            else if(fire!=0&&water==0)
+                gameDataChangedListener.gameLostOrWon(false,LossCondition.NO_WATER);
+
+            else if(air==0&&earth!=0)
+                gameDataChangedListener.gameLostOrWon(false,LossCondition.NO_AIR);
+            else if(earth==0&&air!=0)
+                gameDataChangedListener.gameLostOrWon(false,LossCondition.NO_EARTH);
+
+            else if(shadow==0&&light!=0)
+                gameDataChangedListener.gameLostOrWon(false,LossCondition.NO_SHADOW);
+            else if(light==0&&shadow!=0)
+                gameDataChangedListener.gameLostOrWon(false,LossCondition.NO_LIGHT);
         }
 
     }

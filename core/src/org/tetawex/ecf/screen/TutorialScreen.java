@@ -180,7 +180,7 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
             }
 
             @Override
-            public void gameLostOrWon(boolean won) {
+            public void gameLostOrWon(boolean won, GameData.LossCondition lossCondition) {
 
             }
         });
@@ -218,14 +218,14 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
     }
     public void advanceTutorial(){
         tutorialStage++;
-        if(tutorialStage==1){
+        if(tutorialStage==2){
             hexMapActor.unlockedCells[2][1]=true;
             hexMapActor.unlockedCells[3][0]=true;
             hexMapActor.fromCell=new IntVector2(2,1);
             hexMapActor.toCell=new IntVector2(3,0);
             hexMapActor.acceptAnyClick=false;
         }
-        else if(tutorialStage==2){
+        else if(tutorialStage==3){
             hexMapActor.lockCells();
             hexMapActor.unlockedCells[3][2]=true;
             hexMapActor.unlockedCells[3][3]=true;
@@ -233,7 +233,7 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
             hexMapActor.toCell=new IntVector2(3,2);
             hexMapActor.acceptAnyClick=false;
         }
-        else if(tutorialStage==3){
+        else if(tutorialStage==4){
             hexMapActor.lockCells();
             hexMapActor.unlockedCells[3][1]=true;
             hexMapActor.unlockedCells[2][2]=true;
@@ -242,13 +242,13 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
             hexMapActor.toCell=new IntVector2(2,2);
             hexMapActor.acceptAnyClick=false;
         }
-        else if(tutorialStage==4){
+        else if(tutorialStage==5){
             hexMapActor.unlockedCells[2][3]=false;
             hexMapActor.fromCell=new IntVector2(2,2);
             hexMapActor.toCell=new IntVector2(3,1);
             hexMapActor.acceptAnyClick=false;
         }
-        else if(tutorialStage==5){
+        else if(tutorialStage==6){
             hexMapActor.lockCells();
             hexMapActor.unlockedCells[1][2]=true;
             hexMapActor.unlockedCells[1][1]=true;
@@ -256,19 +256,13 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
             hexMapActor.toCell=new IntVector2(1,1);
             hexMapActor.acceptAnyClick=false;
         }
-        else if(tutorialStage==6){
+        else if(tutorialStage==7){
             hexMapActor.lockCells();
             hexMapActor.unlockedCells[0][2]=true;
             hexMapActor.unlockedCells[1][1]=true;
             hexMapActor.fromCell=new IntVector2(0,2);
             hexMapActor.toCell=new IntVector2(1,1);
             hexMapActor.acceptAnyClick=false;
-        }
-        else if(tutorialStage==7){
-            hexMapActor.unlockCells();
-            hexMapActor.fromCell=new IntVector2(1000,1000);
-            hexMapActor.toCell=new IntVector2(1000,1000);
-            hexMapActor.acceptAnyClick=true;
         }
         else if(tutorialStage==8){
             hexMapActor.unlockCells();
@@ -277,6 +271,12 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
             hexMapActor.acceptAnyClick=true;
         }
         else if(tutorialStage==9){
+            hexMapActor.unlockCells();
+            hexMapActor.fromCell=new IntVector2(1000,1000);
+            hexMapActor.toCell=new IntVector2(1000,1000);
+            hexMapActor.acceptAnyClick=true;
+        }
+        else if(tutorialStage==10){
             preferences.setCompletedTutorial(true);
             PreferencesProvider.setPreferences(preferences);
             getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT,null);

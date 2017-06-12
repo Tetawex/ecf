@@ -11,8 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import org.tetawex.ecf.actor.LevelIconActor;
+import org.tetawex.ecf.actor.PagedScrollPane;
 import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.core.GameStateManager;
 import org.tetawex.ecf.model.ECFPreferences;
@@ -56,8 +58,8 @@ public class LevelSelectScreen extends BaseScreen<ECFGame> {
         mainTable.setFillParent(true);
         stack.add(mainTable);
         stage.addActor(stack);
-        Table levelTable=new Table();
-        int q=0;
+        //Table levelTable=new Table();
+        /*int q=0;
         for (int i=0;i<9;i++) {
             LevelIconActor actor=new LevelIconActor(getGame(),
                     preferences.getLevelCompletionStateList().get(i),
@@ -90,8 +92,63 @@ public class LevelSelectScreen extends BaseScreen<ECFGame> {
             }
             if(i>9)
                 break;
+        }*/
+        //mainTable.add(levelTable).pad(40f).row();
+
+        PagedScrollPane scroll = new PagedScrollPane();
+        scroll.setFlingTime(0.1f);
+        scroll.setPageSpacing(0);
+        int i = 0;
+        for (int l = 0; l < 2; l++) {
+            Table levelTable=new Table();
+            if(l==0)
+                levelTable.padTop(40f).padBottom(40f).padLeft(50f).padRight(25);
+            if(l==1)
+                levelTable.padTop(40f).padBottom(40f).padLeft(25f).padRight(50);
+            levelTable.defaults().pad(0, 0, 0, 0);
+            for (int y = 0; y < 4; y++) {
+                levelTable.row();
+                for (int x = 0; x < 3; x++) {
+                    LevelIconActor actor=new LevelIconActor(getGame(),
+                            preferences.getLevelCompletionStateList().get(i),
+                            getGame().getAssetManager().get("fonts/font_main_medium.ttf",BitmapFont.class),
+                            i+1);
+                    levelTable.add(actor).pad(20).right();
+                    final int finalI = i;
+                    actor.addListener(
+                            new InputListener() {
+                        @Override
+                        public void touchUp(InputEvent event, float x, float y,
+                                            int pointer, int button) {
+                            if(preferences.getLevelCompletionStateList().get(finalI).isUnlocked()) {
+                                Bundle bundle = new Bundle();
+                                bundle.putItem("levelData", LevelFactory.generateLevel(finalI));
+                                getGame().getGameStateManager().setState(GameStateManager.GameState.GAME, bundle);
+                            }
+                        }
+                        @Override
+                        public void touchDragged (InputEvent event, float x, float y, int pointer) {
+                            //dragged=true;
+                        }
+                        @Override
+                        public boolean touchDown(InputEvent event, float x, float y,
+                                                 int pointer, int button) {
+                            //dragged=false;
+                            return true;
+                        }
+
+
+                    });
+                    i++;
+                    if(preferences.getLevelCompletionStateList().size()<=i)
+                        break;
+                }
+            }
+            scroll.addPage(levelTable);
         }
-        mainTable.add(levelTable).pad(40f).row();
+        mainTable.add(scroll).expand().fill().row();
+
+
         TextButton menuButtonBackToMainMenu=
                 new TextButton(getGame().getLocalisedString("back"), org.tetawex.ecf.screen.StyleFactory.generateStandardMenuButtonSkin(getGame()));
         menuButtonBackToMainMenu.addListener(new ChangeListener() {

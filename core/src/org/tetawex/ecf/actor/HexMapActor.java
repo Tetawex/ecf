@@ -192,7 +192,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
         int i=(int)((vector.x-hexagonWidth*0.125f) /(hexagonWidth*0.75f));
         int j=(i%2==0)?
                 (int)(vector.y /hexagonHeight):
-                (int)(((vector.y-hexagonHeight*0.5f) /hexagonHeight));
+                (int)(((vector.y+hexagonHeight*0.5f) /hexagonHeight)-1);
         return new IntVector2(i,j);
     }
     private Cell getCellByIndex(IntVector2 vector){
@@ -252,7 +252,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
                         }
                     }
                     else {
-                        if(selectedCell!=null&&selectedCell.getElements().size!=0) {
+                        if(selectedCell!=null&&cell.getElements().size>0) {
                             selectedCell = cell;
                             clickSound.play(soundVolume);
                         }
@@ -343,12 +343,6 @@ public class HexMapActor extends BaseWidget<ECFGame> {
 
     public void setCellArray(Cell[][] cellArray) {
         this.cellArray = cellArray;
-        int width=cellArray.length;
-        setWidth(hexagonWidth*width);
-        if(width!=0)
-            setHeight(hexagonHeight*cellArray[0].length);
-        else
-            setHeight(0);
     }
 
     public CellActionListener getCellActionListener() {

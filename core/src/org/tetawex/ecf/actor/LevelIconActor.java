@@ -36,13 +36,16 @@ public class LevelIconActor extends BaseWidget<ECFGame>{
     @Override
     public void draw(Batch batch, float parentAlpha){
         batch.draw(backgroundRegion, getX(), getY(), 400, 400);
-        font.draw(batch, number + "", getX()+getWidth()/2 - 20, getY() +getHeight()/2+40);
+        if(number<10)
+            font.draw(batch, number + "", getX()+getWidth()/2 - 20, getY() +getHeight()/2+40);
+        else
+            font.draw(batch, number + "", getX()+getWidth()/2 - 40, getY() +getHeight()/2+40);
         if(levelCompletionState.isCompleted()) {
             for (int i = 1; i <= 3; i++) {
                 if (levelCompletionState.getStars() >= i)
-                    batch.draw(starRegion, getX() + starSize * (i - 1), getY(), starSize, starSize);
+                    batch.draw(starRegion, 80+getX() + starSize * (i - 1), 60+getY(), starSize, starSize);
                 else
-                    batch.draw(starDisabledRegion, getX() + starSize * (i - 1), getY(), starSize, starSize);
+                    batch.draw(starDisabledRegion, 80+getX() + starSize * (i - 1), 60+getY(), starSize, starSize);
             }
         }
         if(!levelCompletionState.isUnlocked()){

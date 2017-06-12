@@ -1,13 +1,18 @@
 package org.tetawex.ecf.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import org.tetawex.ecf.actor.HexMapActor;
 import org.tetawex.ecf.core.ECFGame;
@@ -16,6 +21,9 @@ import org.tetawex.ecf.model.*;
 import org.tetawex.ecf.model.Cell;
 import org.tetawex.ecf.util.Bundle;
 import org.tetawex.ecf.util.PreferencesProvider;
+import org.tetawex.ecf.util.RandomProvider;
+
+import java.util.*;
 
 /**
  * ...
@@ -29,7 +37,12 @@ public class GameScreen extends BaseScreen<ECFGame> {
     private static final float SCORE_LABEL_FONT_SCALE =1f;
     private static final float ELEMENT_COUNTER_IMAGE_SIZE =130f;
 
-    private LevelData data;
+    private LevelData levelData;
+
+    private TextureRegion starRegion;
+    private TextureRegion starDisabledRegion;
+    private Sound winSound;
+    private Sound lossSound;
 
     private Stage gameStage;
     private HexMapActor hexMapActor;
@@ -50,10 +63,22 @@ public class GameScreen extends BaseScreen<ECFGame> {
     private Label wlScore;
     private Label wlSpareMana;
     private Label wlTotal;
+    private Label wlReasonLabel;
     private TextButton winLossMenuButtonNext;
+
+    private ECFPreferences preferences;
+
+    private Map<GameData.LossCondition,String> lcToStringMap;
+    private Image[] stars;
 
     public GameScreen(ECFGame game,Bundle bundle){
         super(game);
+        winSound =getGame().getAssetManager().get("sounds/win.ogg",Sound.class);
+        lossSound =getGame().getAssetManager().get("sounds/loss.ogg",Sound.class);
+        getGame().getActionResolver().loadAd();
+
+        starRegion =getGame().getTextureRegionFromAtlas("star");
+        starDisabledRegion =getGame().getTextureRegionFromAtlas("star_ungained");
 
         Camera camera=new OrthographicCamera(1440f,2560f);
         camera.position.set(camera.viewportWidth/2f,camera.viewportHeight/2f,0f);
@@ -65,9 +90,9 @@ public class GameScreen extends BaseScreen<ECFGame> {
 
         initUi();
         if(bundle!=null){
-            data=bundle.getItem("levelData",LevelData.class);
-            gameData.setCellArray(data.getCellArray());
-            gameData.setMana(data.getMana());
+            levelData =bundle.getItem("levelData",LevelData.class);
+            gameData.setCellArray(levelData.getCellArray());
+            gameData.setMana(levelData.getMana());
             gameData.setScore(0);
         }
         else {
@@ -75,6 +100,20 @@ public class GameScreen extends BaseScreen<ECFGame> {
             gameData.setMana(2);
             gameData.setScore(0);
         }
+
+        preferences=PreferencesProvider.getPreferences();
+
+        lcToStringMap=new HashMap<GameData.LossCondition, String>();
+        lcToStringMap.put(GameData.LossCondition.NO_MANA,"lc_no_mana");
+
+        lcToStringMap.put(GameData.LossCondition.NO_FIRE,"lc_no_fire");
+        lcToStringMap.put(GameData.LossCondition.NO_WATER,"lc_no_water");
+
+        lcToStringMap.put(GameData.LossCondition.NO_AIR,"lc_no_air");
+        lcToStringMap.put(GameData.LossCondition.NO_EARTH,"lc_no_earth");
+
+        lcToStringMap.put(GameData.LossCondition.NO_SHADOW,"lc_no_shadow");
+        lcToStringMap.put(GameData.LossCondition.NO_LIGHT,"lc_no_light");
     }
 
     @Override
@@ -137,7 +176,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
                 return gameData.canMove(cellElementCount);
             }
         });
-        midRowTable.add(hexMapActor).center().expand().padTop(60f);
+        midRowTable.add(hexMapActor).center().expand();
 
         mainTable.setFillParent(true);
         mainTable.add(topRowTable).growX().row();
@@ -195,23 +234,62 @@ public class GameScreen extends BaseScreen<ECFGame> {
             }
 
             @Override
-            public void gameLostOrWon(boolean won) {
+            public void gameLostOrWon(boolean won, GameData.LossCondition lossCondition) {
                 backgroundPause.setVisible(true);
                 winLossMenuButtonNext.setVisible(won);
                 wlTable.setVisible(true);
                 wlScore.setText(" "+gameData.getScore());
-                wlSpareMana.setText(" "+gameData.getMana()*100);
-                wlTotal.setText(" "+(gameData.getScore()+gameData.getMana()*100));
-                if(won)
+                wlSpareMana.setText(" "+(int)(gameData.getMana()*100));
+                wlTotal.setText(" "+(int)(gameData.getScore()+gameData.getMana()*100));
+                int frequency=3;
+                if(won) {
+                    winSound.play(preferences.getSoundVolume());
+                    //Omg ads tetawex sold out -_-
+
+                    if(levelData.getLevelNumber()==-1) {
+                        int i=0;
+                        java.util.List<Score> list=preferences.getScores();
+                        for (Score s:list) {
+                            if(gameData.getScore()>s.getValue()) {
+                                break;
+                            }
+                            i++;
+                        }
+                        if(i<12)
+                            preferences.getScores().add(i, new Score(gameData.getScore(), "Player", levelData.getName()));
+                    }
+                    winLossMenuButtonNext.setHeight(PAUSE_BUTTON_HEIGHT);
+                    wlReasonLabel.setVisible(false);
                     wlLabel.setText(getGame().getLocalisedString("level_success"));
-                else
+                    int starsCount =3*(gameData.getScore()/ levelData.getMaxScore());
+                    if(starsCount>3)
+                        starsCount=3;
+                    for (int i = 0; i <starsCount ; i++) {
+                        stars[i].setDrawable(new TextureRegionDrawable(starRegion));
+                    }
+                    if(levelData.getLevelNumber()!=-1&&levelData.getLevelNumber()<PreferencesProvider.LEVELS_COUNT) {
+                        preferences.getLevelCompletionStateList().get(levelData.getLevelNumber()).setCompleted(true);
+                        if(preferences.getLevelCompletionStateList().get(levelData.getLevelNumber()).getStars()<starsCount)
+                            preferences.getLevelCompletionStateList().get(levelData.getLevelNumber()).setStars(starsCount);
+                        preferences.getLevelCompletionStateList().get(levelData.getLevelNumber()+1).setUnlocked(true);
+                    }
+                }
+                else {
+                    frequency=9;
+                    lossSound.play(preferences.getSoundVolume());
+                    winLossMenuButtonNext.setHeight(0);
                     wlLabel.setText(getGame().getLocalisedString("level_fail"));
+                    wlReasonLabel.setText(getGame().getLocalisedString(lcToStringMap.get(lossCondition)));
+                    wlReasonLabel.setVisible(true);
+                }
+                if(RandomProvider.getRandom().nextInt(frequency)==1)
+                    getGame().getActionResolver().showAd();
             }
         });
         //Element counter
         Label.LabelStyle elementLabelStyle=StyleFactory.generateDarkestLabelSkin(getGame());
-        fireCounterLabel=new Label("4",elementLabelStyle);
-        waterCounterLabel=new Label("1",elementLabelStyle);
+        fireCounterLabel=new Label("0",elementLabelStyle);
+        waterCounterLabel=new Label("0",elementLabelStyle);
         airCounterLabel=new Label("0",elementLabelStyle);
         earthCounterLabel=new Label("0",elementLabelStyle);
         shadowCounterLabel=new Label("0",elementLabelStyle);
@@ -269,26 +347,40 @@ public class GameScreen extends BaseScreen<ECFGame> {
 
         //win/loss ui
         wlTable.setVisible(false);
-        wlLabel = new Label("",StyleFactory.generateStandardLabelSkin(getGame()));
-        wlTable.add(wlLabel).row();
+        wlLabel = new Label("",StyleFactory.generateLargeStandardLabelSkin(getGame()));
+        wlReasonLabel = new Label("",StyleFactory.generateStandardLabelSkin(getGame()));
+        wlReasonLabel.setWrap(true);
+        wlReasonLabel.setAlignment(Align.center);
+        wlTable.add(wlLabel).pad(20f).row();
+        wlTable.add(wlReasonLabel).pad(20f).width(PAUSE_BUTTON_WIDTH).row();
+
+        Table starsTable=new Table();
+        stars=new Image[3];
+
+        for(int i=0;i<stars.length;i++) {
+            Image image=new Image(starDisabledRegion);
+            stars[i]=image;
+            starsTable.add(image).size(200).pad(20);
+        }
 
         Table scoreTable=new Table();
         scoreTable.add(new Label(getGame().getLocalisedString("score"),StyleFactory.generateStandardLabelSkin(getGame())));
         wlScore = new Label("",StyleFactory.generateStandardLabelSkin(getGame()));
         scoreTable.add(wlScore).padRight(40f);
-        wlTable.add(scoreTable).row();
+        wlTable.add(scoreTable).pad(20f).row();
 
         Table spareTable=new Table();
         spareTable.add(new Label(getGame().getLocalisedString("spare_mana"),StyleFactory.generateStandardLabelSkin(getGame())));
         wlSpareMana = new Label("",StyleFactory.generateStandardLabelSkin(getGame()));
         spareTable.add(wlSpareMana);
-        wlTable.add(spareTable).row();
+        wlTable.add(spareTable).pad(20f).row();
 
         Table totalTable=new Table();
         totalTable.add(new Label(getGame().getLocalisedString("total"),StyleFactory.generateStandardLabelSkin(getGame())));
         wlTotal = new Label("",StyleFactory.generateStandardLabelSkin(getGame()));
         totalTable.add(wlTotal);
-        wlTable.add(totalTable).row();
+        wlTable.add(totalTable).pad(20f).row();
+        wlTable.add(starsTable).pad(20f).row();
 
         stack.add(wlTable);
 
@@ -297,7 +389,15 @@ public class GameScreen extends BaseScreen<ECFGame> {
         winLossMenuButtonNext.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, null);
+                if(levelData.getLevelNumber()==-1)
+                    getGame().getGameStateManager().setState(GameStateManager.GameState.HIGHSCORES, null);
+                else if(levelData.getLevelNumber()+1>=PreferencesProvider.LEVELS_COUNT)
+                    getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, null);
+                else {
+                    Bundle bundle = new Bundle();
+                    bundle.putItem("levelData", LevelFactory.generateLevel(levelData.getLevelNumber() + 1));
+                    getGame().getGameStateManager().setState(GameStateManager.GameState.GAME, bundle);
+                }
             }
         });
         wlTable.add(winLossMenuButtonNext)
@@ -310,10 +410,11 @@ public class GameScreen extends BaseScreen<ECFGame> {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 wlTable.setVisible(false);
+                getGame().getActionResolver().loadAd();
                 backgroundPause.setVisible(false);
                 gameData.setCellArray(gameData.getOriginalCellArray());
                 gameData.setScore(0);
-                gameData.setMana(data.getMana());
+                gameData.setMana(levelData.getMana());
             }
         });
         wlTable.add(winLossMenuButtonRetry)
@@ -359,7 +460,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
                 backgroundPause.setVisible(!backgroundPause.isVisible());
                 gameData.setCellArray(gameData.getOriginalCellArray());
                 gameData.setScore(0);
-                gameData.setMana(data.getMana());
+                gameData.setMana(levelData.getMana());
             }
         });
         pauseMenuButtonRetry.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
@@ -375,12 +476,19 @@ public class GameScreen extends BaseScreen<ECFGame> {
             public void changed(ChangeEvent event, Actor actor) {
                 pauseTable.setVisible(!pauseTable.isVisible());
                 backgroundPause.setVisible(!backgroundPause.isVisible());
-               getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU,null);
+                if(levelData.getLevelNumber()!=-1)
+                    getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT,null);
+                else
+                    getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT,null);
             }
         });
         pauseMenuButtonQuit.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
         pauseTable.add(pauseMenuButtonQuit)
                 .size(PAUSE_BUTTON_WIDTH,PAUSE_BUTTON_HEIGHT)
                 .center().pad(PAUSE_BUTTON_PAD).row();
+    }
+    @Override
+    public void dispose(){
+        PreferencesProvider.setPreferences(preferences);
     }
 }
