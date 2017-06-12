@@ -1,64 +1,92 @@
-{ "height":5,
+{ "height":2,
  "hexsidelength":64,
  "layers":[
         {
-         "data":[0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0],
-         "height":5,
+         "data":[1, 1, 0, 1],
+         "height":2,
          "name":"cells",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":4,
+         "width":2,
          "x":0,
          "y":0
-        },
+        }, 
         {
-         "data":[0, 0, 0, 0, 0, 2, 3, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 3, 0, 0],
-         "height":5,
+         "data":[2, 3, 0, 2],
+         "height":2,
          "name":"fire_water",
          "opacity":1,
+         "properties":
+            {
+             "mana":1
+            },
+         "propertytypes":
+            {
+             "mana":"int"
+            },
          "type":"tilelayer",
          "visible":true,
-         "width":4,
+         "width":2,
          "x":0,
          "y":0
-        },
+        }, 
         {
-         "data":[0, 0, 0, 0, 0, 6, 7, 0, 0, 7, 7, 0, 0, 7, 6, 0, 0, 0, 0, 0],
-         "height":5,
+         "data":[0, 0, 0, 0],
+         "height":2,
          "name":"earth_wind",
          "opacity":1,
+          "properties":
+          {
+            "mana":1,
+            "maxScore":2000,
+            "name":"Flying Saucer"
+          },
+          "propertytypes":
+          {
+            "mana":"int",
+            "maxScore":"int",
+            "name":"string"
+          },
          "type":"tilelayer",
          "visible":true,
-         "width":4,
+         "width":2,
          "x":0,
          "y":0
-        },
+        }, 
         {
-         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0],
-         "height":5,
+         "data":[0, 4, 0, 5],
+         "height":2,
          "name":"light_shadow",
          "opacity":1,
+         "properties":
+            {
+             "mana":2
+            },
+         "propertytypes":
+            {
+             "mana":"int"
+            },
          "type":"tilelayer",
          "visible":true,
-         "width":4,
+         "width":2,
          "x":0,
          "y":0
         }],
  "nextobjectid":35,
  "orientation":"hexagonal",
- "properties":
-    {
-     "mana":"2",
-     "maxScore":"4000",
-     "name":"The Eightball"
-    },
- "propertytypes":
-    {
-     "mana":"int",
-     "maxScore":"int",
-     "name":"string"
-    },
+  "properties":
+  {
+    "mana":"2",
+    "maxScore":"900",
+    "name":"Spinner"
+  },
+  "propertytypes":
+  {
+    "mana":"int",
+    "maxScore":"int",
+    "name":"string"
+  },
  "renderorder":"right-down",
  "staggeraxis":"x",
  "staggerindex":"even",
@@ -66,9 +94,10 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/Downloads\/ElementalyChallenged\/tileset.json"
+         "source":"tileset.json"
         }],
  "tilewidth":128,
- "version":1,
- "width":4
+ "type":"map",
+ "version":"2017.05.26",
+ "width":2
 }

@@ -47,6 +47,7 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
     public TutorialScreen(ECFGame game, Bundle bundle){
         super(game);
         preferences= PreferencesProvider.getPreferences();
+        preferences.setCompletedTutorial(true);
         Camera camera=new OrthographicCamera(1440f,2560f);
         camera.position.set(camera.viewportWidth/2f,camera.viewportHeight/2f,0f);
         gameStage=new Stage(new ExtendViewport(1440f,2560f,camera));
@@ -278,7 +279,6 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
         }
         else if(tutorialStage==10){
             preferences.setCompletedTutorial(true);
-            PreferencesProvider.setPreferences(preferences);
             getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT,null);
             return;
         }

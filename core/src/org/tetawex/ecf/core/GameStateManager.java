@@ -8,6 +8,10 @@ import org.tetawex.ecf.util.Bundle;
  */
 public class GameStateManager
 {
+    public void dispose() {
+        currentScreen.dispose();
+    }
+
     public enum GameState{MAIN_MENU,GAME,SETTINGS,HIGHSCORES,MODE_SELECT,LEVEL_SELECT,TUTORIAL}
 
     private Screen currentScreen;

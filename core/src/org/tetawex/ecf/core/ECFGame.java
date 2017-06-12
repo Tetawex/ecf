@@ -40,6 +40,7 @@ public class ECFGame extends Game {
 
     @Override
 	public void create () {
+        PreferencesProvider.getPreferences();
 	    assetManager =new AssetManager();
 	    assetManager.load("atlas.atlas",TextureAtlas.class);
 		assetManager.load("backgrounds/background.png",Texture.class);
@@ -81,6 +82,8 @@ public class ECFGame extends Game {
 	@Override
 	public void dispose () {
 		assetManager.dispose();
+		gameStateManager.dispose();
+        PreferencesProvider.flushPreferences();
 	}
 
     @Override

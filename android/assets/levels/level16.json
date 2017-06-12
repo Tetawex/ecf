@@ -1,63 +1,47 @@
-{ "height":3,
+{ "height":5,
  "hexsidelength":64,
  "layers":[
         {
-         "data":[0, 1, 0, 1, 1, 1, 0, 0, 0],
-         "height":3,
+         "data":[0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0],
+         "height":5,
          "name":"cells",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":3,
+         "width":4,
          "x":0,
          "y":0
-        }, 
+        },
         {
-         "data":[0, 0, 0, 3, 2, 0, 0, 0, 0],
-         "height":3,
+         "data":[0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 3, 0, 3, 0, 0, 0, 0, 0, 0],
+         "height":5,
          "name":"fire_water",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":3,
+         "width":4,
          "x":0,
          "y":0
-        }, 
+        },
         {
-         "data":[0, 0, 0, 0, 6, 7, 0, 0, 0],
-         "height":3,
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 7, 6, 0, 7, 0, 0],
+         "height":5,
          "name":"earth_wind",
          "opacity":1,
-         "properties":
-            {
-             "mana":3
-            },
-         "propertytypes":
-            {
-             "mana":"int"
-            },
          "type":"tilelayer",
          "visible":true,
-         "width":3,
+         "width":4,
          "x":0,
          "y":0
-        }, 
+        },
         {
-         "data":[0, 0, 0, 5, 4, 5, 0, 0, 0],
-         "height":3,
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 4, 0, 4, 4, 0, 0, 0, 0, 0],
+         "height":5,
          "name":"light_shadow",
          "opacity":1,
-         "properties":
-            {
-             "mana":1
-            },
-         "propertytypes":
-            {
-             "mana":"int"
-            },
          "type":"tilelayer",
          "visible":true,
-         "width":3,
+         "width":4,
          "x":0,
          "y":0
         }],
@@ -65,9 +49,9 @@
  "orientation":"hexagonal",
   "properties":
   {
-    "mana":4,
-    "maxScore":2600,
-    "name":"Flying Saucer"
+    "mana":"1",
+    "maxScore":"4000",
+    "name":"The Pit"
   },
   "propertytypes":
   {
@@ -82,10 +66,9 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"tileset.json"
+         "source":"..\/Downloads\/ElementalyChallenged\/tileset.json"
         }],
  "tilewidth":128,
- "type":"map",
- "version":"2017.05.26",
- "width":3
+ "version":1,
+ "width":4
 }

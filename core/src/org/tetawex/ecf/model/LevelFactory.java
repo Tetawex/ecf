@@ -17,14 +17,14 @@ public class LevelFactory {
         int height = jsonData.get("height").asInt();
         int width = jsonData.get("width").asInt();
         int mana=1;
-        int maxScore=4000;
+        int maxScore=2000;
         String name="";
         try{
             mana = jsonData.get("properties").get("mana").asInt();
             maxScore = jsonData.get("properties").get("maxScore").asInt();
             name= jsonData.get("properties").get("name").asString();
         }
-            catch (Exception e){mana=1;}
+        catch (Exception e){}
         Cell[][] cellArray = new Cell[width][height];
 
         JsonValue.JsonIterator layersIter = jsonData.get("layers").iterator();

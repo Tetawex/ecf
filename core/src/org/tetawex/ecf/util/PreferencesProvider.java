@@ -16,31 +16,34 @@ import java.util.List;
 public class PreferencesProvider {
     private static final String PREFERENCES_NAME="ECF Preferences";
     private static final String PREFERENCES_CODE="serialized";
-    public static final int LEVELS_COUNT=24;
+    public static final int LEVELS_COUNT=18;
+    private static ECFPreferences preferences;
 
     public static ECFPreferences getPreferences(){
-        Json json=new Json();
-        Preferences prefs=Gdx.app.getPreferences(PREFERENCES_NAME);
-        ECFPreferences preferences=json.fromJson(ECFPreferences.class,
-                prefs.getString(PREFERENCES_CODE));
-        if(preferences==null){
-            preferences=new ECFPreferences();
-            initEmptyPreferences(preferences);
-            setPreferences(preferences);
-        }
-        int size=preferences.getLevelCompletionStateList().size();
-        if(size!=LEVELS_COUNT){
-            for (int i=LEVELS_COUNT-size-1;i<=LEVELS_COUNT;i++){
-                preferences.getLevelCompletionStateList().add(new LevelCompletionState(0,false,false));
+        if(preferences==null) {
+            Json json = new Json();
+            Preferences prefs = Gdx.app.getPreferences(PREFERENCES_NAME);
+            preferences = json.fromJson(ECFPreferences.class,
+                    prefs.getString(PREFERENCES_CODE));
+            if (preferences == null) {
+                preferences = new ECFPreferences();
+                initEmptyPreferences(preferences);
+                flushPreferences();
+            }
+            int size = preferences.getLevelCompletionStateList().size();
+            if (size != LEVELS_COUNT) {
+                for (int i = LEVELS_COUNT - size - 1; i <= LEVELS_COUNT; i++) {
+                    preferences.getLevelCompletionStateList().add(new LevelCompletionState(0, false, false));
+                }
             }
         }
         return preferences;
 
     }
-    public static void setPreferences(ECFPreferences preferences){
+    public static void flushPreferences(){
         Json json=new Json();
         Preferences prefs=Gdx.app.getPreferences(PREFERENCES_NAME);
-        prefs.putString(PREFERENCES_CODE,json.toJson(preferences));
+        prefs.putString(PREFERENCES_CODE,json.toJson(getPreferences()));
         prefs.flush();
     }
     private static void initEmptyPreferences(ECFPreferences preferences){

@@ -343,6 +343,12 @@ public class HexMapActor extends BaseWidget<ECFGame> {
 
     public void setCellArray(Cell[][] cellArray) {
         this.cellArray = cellArray;
+        if(cellArray.length>4) {
+            elementHeight = 90;
+            elementWidth = 90;
+            hexagonHeight = 242f;
+            hexagonWidth = hexagonHeight * MathUtils.getHexagonWidthToHeightRatio();
+        }
     }
 
     public CellActionListener getCellActionListener() {

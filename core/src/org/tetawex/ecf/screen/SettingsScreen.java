@@ -156,7 +156,7 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
             public void changed(ChangeEvent event, Actor actor) {
                 preferences.setSelectedLanguageCode("default");
                 preferences.setSelectedCountryCode("");
-                PreferencesProvider.setPreferences(preferences);
+                PreferencesProvider.flushPreferences();
                 getGame().setupLocalisation();
                 getGame().getGameStateManager().setState(GameStateManager.GameState.SETTINGS,null);
             }
@@ -171,7 +171,7 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     preferences.setSelectedLanguage(language.getCode());
-                    PreferencesProvider.setPreferences(preferences);
+                    PreferencesProvider.flushPreferences();
                     getGame().setupLocalisation();
                     getGame().getGameStateManager().setState(GameStateManager.GameState.SETTINGS,null);
                 }
@@ -221,6 +221,5 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
     public void dispose() {
         preferences.setMusicVolume(musicSlider.getValue());
         preferences.setSoundVolume(soundSlider.getValue());
-        PreferencesProvider.setPreferences(preferences);
     }
 }

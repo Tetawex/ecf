@@ -16,6 +16,7 @@ import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.core.GameStateManager;
 import org.tetawex.ecf.model.ECFPreferences;
 import org.tetawex.ecf.util.Bundle;
+import org.tetawex.ecf.util.PreferencesProvider;
 
 /**
  * Created by Tetawex on 03.06.2017.
@@ -35,6 +36,7 @@ public class MainMenuScreen extends BaseScreen<ECFGame> {
         camera.position.set(camera.viewportWidth/2f,camera.viewportHeight/2f,0f);
         stage=new Stage(new ExtendViewport(1440f,2560f,camera));
         Gdx.input.setInputProcessor(stage);
+        preferences= PreferencesProvider.getPreferences();
         initUi();
     }
     private void initUi() {
@@ -60,7 +62,10 @@ public class MainMenuScreen extends BaseScreen<ECFGame> {
         menuButtonPlay.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT,null);
+                if(preferences.isCompletedTutorial())
+                    getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT,null);
+                else
+                    getGame().getGameStateManager().setState(GameStateManager.GameState.TUTORIAL,null);
             }
         });
         menuButtonPlay.getLabel().setFontScale(BUTTON_FONT_SCALE);

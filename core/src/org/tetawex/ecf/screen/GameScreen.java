@@ -235,33 +235,34 @@ public class GameScreen extends BaseScreen<ECFGame> {
 
             @Override
             public void gameLostOrWon(boolean won, GameData.LossCondition lossCondition) {
+                int totalScore=(int)(gameData.getScore()+gameData.getMana()*100);
+                int frequency=4;
                 backgroundPause.setVisible(true);
                 winLossMenuButtonNext.setVisible(won);
                 wlTable.setVisible(true);
                 wlScore.setText(" "+gameData.getScore());
                 wlSpareMana.setText(" "+(int)(gameData.getMana()*100));
-                wlTotal.setText(" "+(int)(gameData.getScore()+gameData.getMana()*100));
-                int frequency=3;
+                wlTotal.setText(" "+totalScore);
                 if(won) {
                     winSound.play(preferences.getSoundVolume());
-                    //Omg ads tetawex sold out -_-
 
                     if(levelData.getLevelNumber()==-1) {
                         int i=0;
                         java.util.List<Score> list=preferences.getScores();
                         for (Score s:list) {
-                            if(gameData.getScore()>s.getValue()) {
+                            if(totalScore>s.getValue()) {
                                 break;
                             }
                             i++;
                         }
                         if(i<12)
-                            preferences.getScores().add(i, new Score(gameData.getScore(), "Player", levelData.getName()));
+                            preferences.getScores().add(i, new Score(totalScore, "Player", levelData.getName()));
                     }
                     winLossMenuButtonNext.setHeight(PAUSE_BUTTON_HEIGHT);
                     wlReasonLabel.setVisible(false);
                     wlLabel.setText(getGame().getLocalisedString("level_success"));
-                    int starsCount =3*(gameData.getScore()/ levelData.getMaxScore());
+                    System.out.print(totalScore+" "+levelData.getMaxScore());
+                    int starsCount =Math.round(1+2*(totalScore/ levelData.getMaxScore()));
                     if(starsCount>3)
                         starsCount=3;
                     for (int i = 0; i <starsCount ; i++) {
@@ -282,6 +283,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
                     wlReasonLabel.setText(getGame().getLocalisedString(lcToStringMap.get(lossCondition)));
                     wlReasonLabel.setVisible(true);
                 }
+                //Omg ads tetawex sold out -_-
                 if(RandomProvider.getRandom().nextInt(frequency)==1)
                     getGame().getActionResolver().showAd();
             }
@@ -427,7 +429,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
         winLossMenuButtonQuit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU, null);
+                getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, null);
             }
         });
         wlTable.add(winLossMenuButtonQuit)
@@ -489,6 +491,6 @@ public class GameScreen extends BaseScreen<ECFGame> {
     }
     @Override
     public void dispose(){
-        PreferencesProvider.setPreferences(preferences);
+
     }
 }

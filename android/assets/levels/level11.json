@@ -2,7 +2,7 @@
  "hexsidelength":64,
  "layers":[
         {
-         "data":[0, 1, 0, 1, 1, 1, 0, 0, 0],
+         "data":[1, 1, 1, 1, 1, 1, 0, 1, 0],
          "height":3,
          "name":"cells",
          "opacity":1,
@@ -13,7 +13,7 @@
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 3, 2, 0, 0, 0, 0],
+         "data":[2, 0, 2, 3, 2, 2, 0, 2, 0],
          "height":3,
          "name":"fire_water",
          "opacity":1,
@@ -24,7 +24,7 @@
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 0, 6, 7, 0, 0, 0],
+         "data":[7, 7, 6, 6, 7, 0, 0, 6, 0],
          "height":3,
          "name":"earth_wind",
          "opacity":1,
@@ -43,7 +43,7 @@
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 5, 4, 5, 0, 0, 0],
+         "data":[0, 5, 4, 0, 4, 5, 0, 0, 0],
          "height":3,
          "name":"light_shadow",
          "opacity":1,
@@ -65,8 +65,8 @@
  "orientation":"hexagonal",
   "properties":
   {
-    "mana":4,
-    "maxScore":2600,
+    "mana":1,
+    "maxScore":2900,
     "name":"Flying Saucer"
   },
   "propertytypes":

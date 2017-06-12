@@ -1,64 +1,80 @@
-{ "height":3,
+{ "height":4,
  "hexsidelength":64,
  "layers":[
         {
-         "data":[0, 0, 1, 1, 1, 1, 0, 1, 1],
-         "height":3,
+         "data":[1, 1, 1, 1],
+         "height":4,
          "name":"cells",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":3,
+         "width":1,
          "x":0,
          "y":0
         }, 
         {
-         "data":[0, 0, 3, 2, 0, 0, 0, 2, 2],
-         "height":3,
+         "data":[3, 3, 0, 2],
+         "height":4,
          "name":"fire_water",
          "opacity":1,
+         "properties":
+            {
+             "mana":3
+            },
+         "propertytypes":
+            {
+             "mana":"int"
+            },
          "type":"tilelayer",
          "visible":true,
-         "width":3,
+         "width":1,
          "x":0,
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 7, 7, 6, 0, 0, 6],
-         "height":3,
+         "data":[0, 0, 0, 0],
+         "height":4,
          "name":"earth_wind",
          "opacity":1,
+         "properties":
+            {
+             "mana":1
+            },
+         "propertytypes":
+            {
+             "mana":"int"
+            },
          "type":"tilelayer",
          "visible":true,
-         "width":3,
+         "width":1,
          "x":0,
          "y":0
         }, 
         {
-         "data":[0, 0, 5, 4, 0, 4, 0, 5, 5],
-         "height":3,
+         "data":[0, 0, 0, 0],
+         "height":4,
          "name":"light_shadow",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":3,
+         "width":1,
          "x":0,
          "y":0
         }],
  "nextobjectid":35,
  "orientation":"hexagonal",
- "properties":
-    {
-     "mana":1,
-     "maxScore":500,
-     "name":"Flying Saucer"
-    },
- "propertytypes":
-    {
-     "mana":"int",
-     "maxScore":"int",
-     "name":"string"
-    },
+  "properties":
+  {
+    "mana":"3",
+    "maxScore":"300",
+    "name":"The Pit"
+  },
+  "propertytypes":
+  {
+    "mana":"int",
+    "maxScore":"int",
+    "name":"string"
+  },
  "renderorder":"right-down",
  "staggeraxis":"x",
  "staggerindex":"even",
@@ -69,6 +85,7 @@
          "source":"tileset.json"
         }],
  "tilewidth":128,
- "version":1,
- "width":3
+ "type":"map",
+ "version":"2017.05.26",
+ "width":1
 }

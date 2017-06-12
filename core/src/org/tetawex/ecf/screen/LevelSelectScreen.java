@@ -96,7 +96,7 @@ public class LevelSelectScreen extends BaseScreen<ECFGame> {
         //mainTable.add(levelTable).pad(40f).row();
 
         PagedScrollPane scroll = new PagedScrollPane();
-        scroll.setFlingTime(0.1f);
+        scroll.setFlingTime(10f);
         scroll.setPageSpacing(0);
         int i = 0;
         for (int l = 0; l < 2; l++) {
@@ -106,7 +106,7 @@ public class LevelSelectScreen extends BaseScreen<ECFGame> {
             if(l==1)
                 levelTable.padTop(40f).padBottom(40f).padLeft(25f).padRight(50);
             levelTable.defaults().pad(0, 0, 0, 0);
-            for (int y = 0; y < 4; y++) {
+            for (int y = 0; y < 3; y++) {
                 levelTable.row();
                 for (int x = 0; x < 3; x++) {
                     LevelIconActor actor=new LevelIconActor(getGame(),

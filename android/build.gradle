@@ -20,9 +20,11 @@ android {
     defaultConfig {
         applicationId "org.tetawex.ecf"
         minSdkVersion 14
+        multiDexEnabled false
         targetSdkVersion 25
     }
 }
+
 
 
 // called every time gradle gets executed, takes the native dependencies of

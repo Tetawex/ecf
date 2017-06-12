@@ -2,7 +2,7 @@
  "hexsidelength":64,
  "layers":[
         {
-         "data":[0, 1, 0, 1, 1, 1, 0, 0, 0],
+         "data":[0, 1, 1, 1, 1, 1, 1, 1, 0],
          "height":3,
          "name":"cells",
          "opacity":1,
@@ -13,24 +13,13 @@
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 3, 2, 0, 0, 0, 0],
+         "data":[0, 3, 3, 2, 0, 2, 0, 0, 0],
          "height":3,
          "name":"fire_water",
          "opacity":1,
-         "type":"tilelayer",
-         "visible":true,
-         "width":3,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "data":[0, 0, 0, 0, 6, 7, 0, 0, 0],
-         "height":3,
-         "name":"earth_wind",
-         "opacity":1,
          "properties":
             {
-             "mana":3
+             "mana":1
             },
          "propertytypes":
             {
@@ -43,7 +32,26 @@
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 5, 4, 5, 0, 0, 0],
+         "data":[0, 6, 0, 0, 6, 7, 0, 7, 0],
+         "height":3,
+         "name":"earth_wind",
+         "opacity":1,
+         "properties":
+            {
+             "mana":1
+            },
+         "propertytypes":
+            {
+             "mana":"int"
+            },
+         "type":"tilelayer",
+         "visible":true,
+         "width":3,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "data":[0, 5, 4, 0, 4, 4, 4, 4, 0],
          "height":3,
          "name":"light_shadow",
          "opacity":1,
@@ -65,9 +73,9 @@
  "orientation":"hexagonal",
   "properties":
   {
-    "mana":4,
-    "maxScore":2600,
-    "name":"Flying Saucer"
+    "mana":1,
+    "maxScore":1200,
+    "name":"A Shadow to prevail"
   },
   "propertytypes":
   {

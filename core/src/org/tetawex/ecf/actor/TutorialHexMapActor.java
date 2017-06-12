@@ -14,6 +14,7 @@ import org.tetawex.ecf.model.Cell;
 import org.tetawex.ecf.model.Element;
 import org.tetawex.ecf.util.IntVector2;
 import org.tetawex.ecf.util.MathUtils;
+import org.tetawex.ecf.util.PreferencesProvider;
 
 /**
  * Created by tetawex on 02.05.17.
@@ -47,6 +48,8 @@ public class TutorialHexMapActor extends BaseWidget<ECFGame> {
     private TextureRegion adjacentRegion;
     private TextureRegion disabledRegion;
 
+    private float soundVolume;
+
     private Sound clickSound;
     private Sound errorSound;
     private Sound mergeSound;
@@ -55,6 +58,8 @@ public class TutorialHexMapActor extends BaseWidget<ECFGame> {
 
     public TutorialHexMapActor(ECFGame game) {
         super(game);
+
+        soundVolume= PreferencesProvider.getPreferences().getSoundVolume();
 
         cellRegion=getGame().getTextureRegionFromAtlas("hexagon");
         selectedRegion =getGame().getTextureRegionFromAtlas("hexagon_selected");
@@ -246,10 +251,10 @@ public class TutorialHexMapActor extends BaseWidget<ECFGame> {
             selectedCell = cell;
             if(!(cell.getPosition().x==fromCell.x&&cell.getPosition().y==fromCell.y)) {
                 selectedCell=null;
-                errorSound.play();
+                errorSound.play(soundVolume);
                 return;
             }
-            clickSound.play(1f);
+            clickSound.play(soundVolume);
         }
         else {
             if(cell!=null) {
@@ -259,7 +264,7 @@ public class TutorialHexMapActor extends BaseWidget<ECFGame> {
                             cellActionListener.cellMerged(cell.interactWith(selectedCell));
 
                             selectedCell = null;
-                            mergeSound.play(1f);
+                            mergeSound.play(soundVolume);
                     }
 
                 }

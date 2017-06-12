@@ -1,9 +1,9 @@
-{ "height":3,
+{ "height":4,
  "hexsidelength":64,
  "layers":[
         {
-         "data":[0, 1, 0, 1, 1, 1, 0, 0, 0],
-         "height":3,
+         "data":[0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1],
+         "height":4,
          "name":"cells",
          "opacity":1,
          "type":"tilelayer",
@@ -13,8 +13,8 @@
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 3, 2, 0, 0, 0, 0],
-         "height":3,
+         "data":[0, 3, 0, 0, 3, 0, 2, 2, 3, 0, 0, 2],
+         "height":4,
          "name":"fire_water",
          "opacity":1,
          "type":"tilelayer",
@@ -24,18 +24,10 @@
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 0, 6, 7, 0, 0, 0],
-         "height":3,
+         "data":[0, 6, 0, 0, 6, 0, 6, 7, 7, 0, 7, 6],
+         "height":4,
          "name":"earth_wind",
          "opacity":1,
-         "properties":
-            {
-             "mana":3
-            },
-         "propertytypes":
-            {
-             "mana":"int"
-            },
          "type":"tilelayer",
          "visible":true,
          "width":3,
@@ -43,8 +35,8 @@
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 5, 4, 5, 0, 0, 0],
-         "height":3,
+         "data":[0, 0, 0, 0, 0, 5, 4, 4, 5, 0, 5, 4],
+         "height":4,
          "name":"light_shadow",
          "opacity":1,
          "properties":
@@ -65,8 +57,8 @@
  "orientation":"hexagonal",
   "properties":
   {
-    "mana":4,
-    "maxScore":2600,
+    "mana":1,
+    "maxScore":2900,
     "name":"Flying Saucer"
   },
   "propertytypes":
@@ -85,7 +77,6 @@
          "source":"tileset.json"
         }],
  "tilewidth":128,
- "type":"map",
- "version":"2017.05.26",
+ "version":1,
  "width":3
 }
