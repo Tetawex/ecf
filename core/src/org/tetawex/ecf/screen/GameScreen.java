@@ -236,7 +236,7 @@ public class GameScreen extends BaseScreen<ECFGame> {
             @Override
             public void gameLostOrWon(boolean won, GameData.LossCondition lossCondition) {
                 int totalScore=(int)(gameData.getScore()+gameData.getMana()*100);
-                int frequency=4;
+                int frequency=5;
                 backgroundPause.setVisible(true);
                 winLossMenuButtonNext.setVisible(won);
                 wlTable.setVisible(true);
@@ -261,22 +261,23 @@ public class GameScreen extends BaseScreen<ECFGame> {
                     winLossMenuButtonNext.setHeight(PAUSE_BUTTON_HEIGHT);
                     wlReasonLabel.setVisible(false);
                     wlLabel.setText(getGame().getLocalisedString("level_success"));
-                    System.out.print(totalScore+" "+levelData.getMaxScore());
                     int starsCount =Math.round(1+2*(totalScore/ levelData.getMaxScore()));
                     if(starsCount>3)
                         starsCount=3;
                     for (int i = 0; i <starsCount ; i++) {
                         stars[i].setDrawable(new TextureRegionDrawable(starRegion));
                     }
-                    if(levelData.getLevelNumber()!=-1&&levelData.getLevelNumber()<PreferencesProvider.LEVELS_COUNT) {
+                    if(levelData.getLevelNumber()!=-1) {
                         preferences.getLevelCompletionStateList().get(levelData.getLevelNumber()).setCompleted(true);
                         if(preferences.getLevelCompletionStateList().get(levelData.getLevelNumber()).getStars()<starsCount)
                             preferences.getLevelCompletionStateList().get(levelData.getLevelNumber()).setStars(starsCount);
-                        preferences.getLevelCompletionStateList().get(levelData.getLevelNumber()+1).setUnlocked(true);
+                        if(levelData.getLevelNumber()+1<PreferencesProvider.LEVELS_COUNT)
+                            preferences.getLevelCompletionStateList().get(levelData.getLevelNumber()+1).setUnlocked(true);
                     }
+                    PreferencesProvider.flushPreferences();
                 }
                 else {
-                    frequency=9;
+                    frequency=10;
                     lossSound.play(preferences.getSoundVolume());
                     winLossMenuButtonNext.setHeight(0);
                     wlLabel.setText(getGame().getLocalisedString("level_fail"));

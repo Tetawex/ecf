@@ -50,7 +50,7 @@
  "properties":
     {
      "mana":1,
-     "maxScore":2000,
+     "maxScore":1400,
      "name":"Flying Saucer"
     },
  "propertytypes":

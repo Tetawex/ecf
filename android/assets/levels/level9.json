@@ -13,7 +13,7 @@
          "y":0
         }, 
         {
-         "data":[0, 0, 2, 2, 2, 3, 0, 2, 0],
+         "data":[0, 0, 2, 2, 2, 3, 0, 2, 3],
          "height":3,
          "name":"fire_water",
          "opacity":1,
@@ -47,18 +47,18 @@
         }],
  "nextobjectid":35,
  "orientation":"hexagonal",
-  "properties":
-  {
-    "mana":1,
-    "maxScore":3000,
-    "name":"Flying Saucer"
-  },
-  "propertytypes":
-  {
-    "mana":"int",
-    "maxScore":"int",
-    "name":"string"
-  },
+ "properties":
+    {
+     "mana":1,
+     "maxScore":3000,
+     "name":"Flying Saucer"
+    },
+ "propertytypes":
+    {
+     "mana":"int",
+     "maxScore":"int",
+     "name":"string"
+    },
  "renderorder":"right-down",
  "staggeraxis":"x",
  "staggerindex":"even",
@@ -69,7 +69,6 @@
          "source":"tileset.json"
         }],
  "tilewidth":128,
- "type":"map",
- "version":"2017.05.26",
+ "version":1,
  "width":3
 }
