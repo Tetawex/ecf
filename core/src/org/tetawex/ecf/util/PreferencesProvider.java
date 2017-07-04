@@ -28,7 +28,6 @@ public class PreferencesProvider {
             if (preferences == null) {
                 preferences = new ECFPreferences();
                 initEmptyPreferences(preferences);
-                flushPreferences();
             }
             int size = preferences.getLevelCompletionStateList().size();
             if (size != LEVELS_COUNT) {
