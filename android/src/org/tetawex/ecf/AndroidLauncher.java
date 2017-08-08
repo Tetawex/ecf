@@ -9,21 +9,25 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import org.tetawex.ecf.core.ActionResolver;
+import org.tetawex.ecf.core.ActionResolverAdapter;
 import org.tetawex.ecf.core.ECFGame;
 
-public class AndroidLauncher extends AndroidApplication implements ActionResolver {
-    private InterstitialAd mInterstitialAd;
+public class AndroidLauncher extends AndroidApplication /*implements ActionResolver*/ {
+    //private InterstitialAd mInterstitialAd;
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        MobileAds.initialize(this, "pub-2665687280252523");
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useImmersiveMode=true;
-		initialize(new ECFGame(this), config);
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-2665687280252523/4628518690");
+		initialize(new ECFGame(new ActionResolverAdapter()), config);
+        //MobileAds.initialize(this, "pub-2665687280252523");
+        //mInterstitialAd = new InterstitialAd(this);
+        //mInterstitialAd.setAdUnitId("ca-app-pub-2665687280252523/4628518690");
 	}
-
+    @Override
+    public void onBackPressed() {
+    }
+/*
 	@Override
 	public void loadAd() {
         runOnUiThread(new Runnable() {
@@ -49,5 +53,5 @@ public class AndroidLauncher extends AndroidApplication implements ActionResolve
                 }
             }
         });
-	}
+	}*/
 }
