@@ -15,7 +15,8 @@ public class FontCharacters {
     public static void setSupportedLanguages(Language[] supportedLanguages) {
         FontCharacters.supportedLanguages = supportedLanguages;
     }
-    public static Map<String,String> codeToLanguageMap;
+
+    public static Map<String, String> codeToLanguageMap;
     public static Language[] supportedLanguages;
 
     public static final String ru = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"

@@ -20,11 +20,11 @@ import org.tetawex.ecf.util.PreferencesProvider;
  * Created by Tetawex on 03.06.2017.
  */
 public class HighscoresScreen extends BaseScreen<ECFGame> {
-    private static final float BUTTON_WIDTH =1275f;
-    private static final float BUTTON_HEIGHT =255f;
-    private static final float BUTTON_PAD =40f;
-    private static final float BUTTON_FONT_SCALE =1f;
-    private static final float LABEL_FONT_SCALE=1f;
+    private static final float BUTTON_WIDTH = 1275f;
+    private static final float BUTTON_HEIGHT = 255f;
+    private static final float BUTTON_PAD = 40f;
+    private static final float BUTTON_FONT_SCALE = 1f;
+    private static final float LABEL_FONT_SCALE = 1f;
 
     private ECFPreferences preferences;
 
@@ -32,49 +32,50 @@ public class HighscoresScreen extends BaseScreen<ECFGame> {
 
     public HighscoresScreen(ECFGame game, Bundle bundle) {
         super(game);
-        Camera camera=new OrthographicCamera(1440f,2560f);
-        camera.position.set(camera.viewportWidth/2f,camera.viewportHeight/2f,0f);
-        stage=new Stage(new ExtendViewport(1440f,2560f,camera));
+        Camera camera = new OrthographicCamera(1440f, 2560f);
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0f);
+        stage = new Stage(new ExtendViewport(1440f, 2560f, camera));
         Gdx.input.setInputProcessor(stage);
-        preferences= PreferencesProvider.getPreferences();
+        preferences = PreferencesProvider.getPreferences();
         initUi();
     }
+
     private void initUi() {
-        Stack stack=new Stack();
+        Stack stack = new Stack();
         stack.setFillParent(true);
         stack.add(new Image(
                 getGame().getAssetManager()
                         .get("backgrounds/background.png",
                                 Texture.class)));
-        Table mainTable=new Table();
+        Table mainTable = new Table();
         mainTable.setFillParent(true);
         stack.add(mainTable);
         stage.addActor(stack);
-        Label.LabelStyle labelStyle=StyleFactory.generateStandardLabelSkin(getGame());
-        int i=1;
-        for (Score score: preferences.getScores()) {
-            Table table= new Table();
-            table.add(new Label(String.valueOf(i),labelStyle))
+        Label.LabelStyle labelStyle = SkinFactory.generateStandardLabelSkin(getGame());
+        int i = 1;
+        for (Score score : preferences.getScores()) {
+            Table table = new Table();
+            table.add(new Label(String.valueOf(i), labelStyle))
                     .padLeft(80f).padRight(80f).padBottom(40f).padTop(40f);
-            table.add(new Label(score.getName(),labelStyle))
+            table.add(new Label(score.getName(), labelStyle))
                     .padLeft(80f).padRight(80f).padBottom(40f).padTop(40f).growX();
-            table.add(new Label(String.valueOf(score.getValue()),labelStyle))
+            table.add(new Label(String.valueOf(score.getValue()), labelStyle))
                     .padLeft(80f).padRight(80f).padBottom(40f).padTop(40f);
             mainTable.add(table).growX().row();
             i++;
-            if(i>9)
+            if (i > 9)
                 break;
         }
-        TextButton menuButtonBackToMainMenu=
-                new TextButton(getGame().getLocalisedString("back"), StyleFactory.generateStandardMenuButtonSkin(getGame()));
+        TextButton menuButtonBackToMainMenu =
+                new TextButton(getGame().getLocalisedString("back"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
         menuButtonBackToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU,null);
+                getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU, null);
             }
         });
         menuButtonBackToMainMenu.getLabel().setFontScale(BUTTON_FONT_SCALE);
-        mainTable.add(menuButtonBackToMainMenu).size(BUTTON_WIDTH,BUTTON_HEIGHT).pad(BUTTON_PAD);
+        mainTable.add(menuButtonBackToMainMenu).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD);
     }
 
     @Override
@@ -85,7 +86,7 @@ public class HighscoresScreen extends BaseScreen<ECFGame> {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width,height,true);
+        stage.getViewport().update(width, height, true);
         stage.getViewport().getCamera().update();
     }
 }

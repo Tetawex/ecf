@@ -17,22 +17,22 @@ public class PagedScrollPane extends ScrollPane {
 
     private Table content;
 
-    public PagedScrollPane () {
+    public PagedScrollPane() {
         super(null);
         setup();
     }
 
-    public PagedScrollPane (Skin skin) {
+    public PagedScrollPane(Skin skin) {
         super(null, skin);
         setup();
     }
 
-    public PagedScrollPane (Skin skin, String styleName) {
+    public PagedScrollPane(Skin skin, String styleName) {
         super(null, skin, styleName);
         setup();
     }
 
-    public PagedScrollPane (Actor widget, ScrollPaneStyle style) {
+    public PagedScrollPane(Actor widget, ScrollPaneStyle style) {
         super(null, style);
         setup();
     }
@@ -43,18 +43,18 @@ public class PagedScrollPane extends ScrollPane {
         super.setWidget(content);
     }
 
-    public void addPages (Actor... pages) {
+    public void addPages(Actor... pages) {
         for (Actor page : pages) {
             content.add(page).expandY().fillY();
         }
     }
 
-    public void addPage (Actor page) {
+    public void addPage(Actor page) {
         content.add(page).expandY().fillY();
     }
 
     @Override
-    public void act (float delta) {
+    public void act(float delta) {
         super.act(delta);
         if (wasPanDragFling && !isPanning() && !isDragging() && !isFlinging()) {
             wasPanDragFling = false;
@@ -67,12 +67,12 @@ public class PagedScrollPane extends ScrollPane {
     }
 
     @Override
-    public void setWidget (Actor widget) {
+    public void setWidget(Actor widget) {
         //throw new UnsupportedOperationException("Use PagedScrollPane#addPage.");
     }
 
     @Override
-    public void setWidth (float width) {
+    public void setWidth(float width) {
         super.setWidth(width);
         if (content != null) {
             for (Cell cell : content.getCells()) {
@@ -82,7 +82,7 @@ public class PagedScrollPane extends ScrollPane {
         }
     }
 
-    public void setPageSpacing (float pageSpacing) {
+    public void setPageSpacing(float pageSpacing) {
         if (content != null) {
             content.defaults().space(pageSpacing);
             for (Cell cell : content.getCells()) {
@@ -92,7 +92,7 @@ public class PagedScrollPane extends ScrollPane {
         }
     }
 
-    private void scrollToPage () {
+    private void scrollToPage() {
         final float width = getWidth();
         final float scrollX = getScrollX();
         final float maxX = getMaxX();

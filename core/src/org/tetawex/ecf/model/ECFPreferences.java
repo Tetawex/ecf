@@ -8,12 +8,13 @@ import java.util.List;
  */
 public class ECFPreferences {
     private List<Score> scores = Collections.emptyList();
-    private List<LevelCompletionState> levelCompletionStateList=Collections.emptyList();
+    private List<LevelCompletionState> levelCompletionStateList = Collections.emptyList();
+    private List<LevelCompletionState> levelCompletionStateListMot = Collections.emptyList();
 
     private boolean completedTutorial;
 
-    private float soundVolume=0.5f;
-    private float musicVolume=0.5f;
+    private float soundVolume = 0.5f;
+    private float musicVolume = 0.5f;
 
     private String selectedLanguageCode;
     private String selectedCountryCode;
@@ -30,12 +31,17 @@ public class ECFPreferences {
         return selectedLanguageCode;
     }
 
-    public List<LevelCompletionState> getLevelCompletionStateList() {
+    public List<LevelCompletionState> getLevelCompletionStateList(String code) {
+        if (code == "mot")
+            return levelCompletionStateListMot;
         return levelCompletionStateList;
     }
 
-    public void setLevelCompletionStateList(List<LevelCompletionState> levelCompletionStateList) {
-        this.levelCompletionStateList = levelCompletionStateList;
+    public void setLevelCompletionStateList(List<LevelCompletionState> levelCompletionStateList, String levelCode) {
+        if (levelCode == "")
+            this.levelCompletionStateList = levelCompletionStateList;
+        if(levelCode == "mot")
+            this.levelCompletionStateListMot=levelCompletionStateList;
     }
 
     public String getSelectedCountryCode() {
@@ -43,15 +49,16 @@ public class ECFPreferences {
     }
 
     public void setSelectedLanguage(String language) {
-        String[] str=language.split("_");
+        String[] str = language.split("_");
         selectedLanguageCode = str[0];
-        if(str.length>1)
-            selectedCountryCode=str[1];
-        else selectedCountryCode="";
+        if (str.length > 1)
+            selectedCountryCode = str[1];
+        else selectedCountryCode = "";
     }
+
     public String getSelectedLanguage() {
-        return selectedLanguageCode +"_"+
-        selectedCountryCode;
+        return selectedLanguageCode + "_" +
+                selectedCountryCode;
     }
 
     public float getSoundVolume() {

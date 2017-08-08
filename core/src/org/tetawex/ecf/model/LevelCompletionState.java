@@ -4,10 +4,10 @@ package org.tetawex.ecf.model;
  * Created by Tetawex on 05.06.2017.
  */
 public class LevelCompletionState {
-    private int stars=0;
-    private boolean completed=false;
-    private boolean unlocked=false;
-    private boolean gemLocked=false;
+    private int stars = 0;
+    private boolean completed = false;
+    private boolean unlocked = false;
+    private boolean gemLocked = false;
 
     public LevelCompletionState() {
     }

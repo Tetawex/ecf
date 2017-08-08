@@ -24,12 +24,12 @@ import org.tetawex.ecf.util.PreferencesProvider;
  * ...
  */
 public class TutorialScreen extends BaseScreen<ECFGame> {
-    private static final float PAUSE_BUTTON_WIDTH =1275f;
-    private static final float PAUSE_BUTTON_HEIGHT =252f;
-    private static final float PAUSE_BUTTON_PAD=40f;
-    private static final float PAUSE_BUTTON_FONT_SCALE=1f;
-    private static final float MANA_LABEL_FONT_SCALE =1f;
-    private static final float SCORE_LABEL_FONT_SCALE =1f;
+    private static final float PAUSE_BUTTON_WIDTH = 1275f;
+    private static final float PAUSE_BUTTON_HEIGHT = 252f;
+    private static final float PAUSE_BUTTON_PAD = 40f;
+    private static final float PAUSE_BUTTON_FONT_SCALE = 1f;
+    private static final float MANA_LABEL_FONT_SCALE = 1f;
+    private static final float SCORE_LABEL_FONT_SCALE = 1f;
 
     private Stage gameStage;
     private TutorialHexMapActor hexMapActor;
@@ -40,21 +40,21 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
 
     private GameData gameData;
 
-    private int tutorialStage=0;
+    private int tutorialStage = 0;
 
     private ECFPreferences preferences;
 
-    public TutorialScreen(ECFGame game, Bundle bundle){
+    public TutorialScreen(ECFGame game, Bundle bundle) {
         super(game);
-        preferences= PreferencesProvider.getPreferences();
+        preferences = PreferencesProvider.getPreferences();
         preferences.setCompletedTutorial(true);
-        Camera camera=new OrthographicCamera(1440f,2560f);
-        camera.position.set(camera.viewportWidth/2f,camera.viewportHeight/2f,0f);
-        gameStage=new Stage(new ExtendViewport(1440f,2560f,camera));
+        Camera camera = new OrthographicCamera(1440f, 2560f);
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0f);
+        gameStage = new Stage(new ExtendViewport(1440f, 2560f, camera));
 
         Gdx.input.setInputProcessor(gameStage);
 
-        gameData=new GameData();
+        gameData = new GameData();
 
         initUi();
 
@@ -65,27 +65,28 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
     }
 
     @Override
-    public void render(float delta){
+    public void render(float delta) {
         gameStage.act();
         gameStage.draw();
     }
+
     @Override
-    public void resize(int width,int height){
-        gameStage.getViewport().update(width,height,true);
+    public void resize(int width, int height) {
+        gameStage.getViewport().update(width, height, true);
         gameStage.getViewport().getCamera().update();
     }
 
-    private void initUi(){
-        final Table pauseTable=new Table();
+    private void initUi() {
+        final Table pauseTable = new Table();
         pauseTable.setVisible(false);
 
-        Table mainTable=new Table();
-        Stack stack=new Stack();
+        Table mainTable = new Table();
+        Stack stack = new Stack();
         stack.setFillParent(true);
 
-        final Image background=new Image(getGame().getAssetManager().get("backgrounds/background.png", Texture.class));
+        final Image background = new Image(getGame().getAssetManager().get("backgrounds/background.png", Texture.class));
         background.setFillParent(true);
-        final Image backgroundPause=new Image(getGame().getAssetManager().get("backgrounds/background_pause.png", Texture.class));
+        final Image backgroundPause = new Image(getGame().getAssetManager().get("backgrounds/background_pause.png", Texture.class));
         backgroundPause.setFillParent(true);
         backgroundPause.setVisible(false);
 
@@ -106,7 +107,7 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
         Table midRowTable = new Table();
         Table bottomRowTable = new Table();
 
-        hexMapActor=new TutorialHexMapActor(getGame());
+        hexMapActor = new TutorialHexMapActor(getGame());
         hexMapActor.setCellActionListener(new TutorialHexMapActor.TutorialCellActionListener() {
             @Override
             public void cellMerged(int mergedElementsCount) {
@@ -132,11 +133,11 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
         mainTable.add(bottomRowTable).growX().prefHeight(600f);
 
         Stack tutStack = new Stack();
-        tutButton=new TextButton(getGame().getLocalisedString("tutorial0"), StyleFactory.generateStandardTutorialButtonSkin(getGame()));
+        tutButton = new TextButton(getGame().getLocalisedString("tutorial0"), SkinFactory.generateStandardTutorialButtonSkin(getGame()));
         tutButton.getLabel().setWrap(true);
         bottomRowTable.add(tutButton).pad(PAUSE_BUTTON_PAD).width(PAUSE_BUTTON_WIDTH).grow();
 
-        TextButton pauseButton=new TextButton(" ", StyleFactory.generatePauseButtonSkin(getGame()));
+        TextButton pauseButton = new TextButton(" ", SkinFactory.generatePauseButtonSkin(getGame()));
         pauseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -147,12 +148,12 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
         topRowLeftTable.left().top();
         topRowLeftTable.add(pauseButton).size(120f).pad(40f).center();
 
-        scoreLabel =new Label("",StyleFactory.generateStandardLabelSkin(getGame()));
+        scoreLabel = new Label("", SkinFactory.generateStandardLabelSkin(getGame()));
         scoreLabel.setFontScale(SCORE_LABEL_FONT_SCALE);
         topRowCenterTable.add(scoreLabel);
 
-        Stack topRowRightStack=new Stack();
-        manaLabel =new TextButton("",StyleFactory.generateManaButtonSkin(getGame()));
+        Stack topRowRightStack = new Stack();
+        manaLabel = new TextButton("", SkinFactory.generateManaButtonSkin(getGame()));
         topRowRightTable.add(manaLabel).size(150f).pad(40f);
 
         topRowTable.toFront();
@@ -162,12 +163,12 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
         gameData.setGameDataChangedListener(new GameData.GameDataChangedListener() {
             @Override
             public void manaChanged(int newValue) {
-                manaLabel.setText(newValue+"");
+                manaLabel.setText(newValue + "");
             }
 
             @Override
             public void scoreChanged(int newValue) {
-                scoreLabel.setText(newValue+"");
+                scoreLabel.setText(newValue + "");
             }
 
             @Override
@@ -188,8 +189,8 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
         //pause ui
         pauseTable.center();
 
-        TextButton pauseMenuButtonContinue=
-                new TextButton(getGame().getLocalisedString("continue"), StyleFactory.generateStandardMenuButtonSkin(getGame()));
+        TextButton pauseMenuButtonContinue =
+                new TextButton(getGame().getLocalisedString("continue"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
         pauseMenuButtonContinue.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -199,89 +200,82 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
         });
         pauseMenuButtonContinue.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
         pauseTable.add(pauseMenuButtonContinue)
-                .size(PAUSE_BUTTON_WIDTH,PAUSE_BUTTON_HEIGHT)
+                .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
                 .center().pad(PAUSE_BUTTON_PAD).row();
 
-        TextButton pauseMenuButtonQuit=
-                new TextButton(getGame().getLocalisedString("quit"), StyleFactory.generateStandardMenuButtonSkin(getGame()));
+        TextButton pauseMenuButtonQuit =
+                new TextButton(getGame().getLocalisedString("quit"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
         pauseMenuButtonQuit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 pauseTable.setVisible(!pauseTable.isVisible());
                 backgroundPause.setVisible(!backgroundPause.isVisible());
-               getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU,null);
+                getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU, null);
             }
         });
         pauseMenuButtonQuit.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
         pauseTable.add(pauseMenuButtonQuit)
-                .size(PAUSE_BUTTON_WIDTH,PAUSE_BUTTON_HEIGHT)
+                .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
                 .center().pad(PAUSE_BUTTON_PAD).row();
     }
-    public void advanceTutorial(){
+
+    public void advanceTutorial() {
         tutorialStage++;
-        if(tutorialStage==2){
-            hexMapActor.unlockedCells[2][1]=true;
-            hexMapActor.unlockedCells[3][0]=true;
-            hexMapActor.fromCell=new IntVector2(2,1);
-            hexMapActor.toCell=new IntVector2(3,0);
-            hexMapActor.acceptAnyClick=false;
-        }
-        else if(tutorialStage==3){
+        if (tutorialStage == 2) {
+            hexMapActor.unlockedCells[2][1] = true;
+            hexMapActor.unlockedCells[3][0] = true;
+            hexMapActor.fromCell = new IntVector2(2, 1);
+            hexMapActor.toCell = new IntVector2(3, 0);
+            hexMapActor.acceptAnyClick = false;
+        } else if (tutorialStage == 3) {
             hexMapActor.lockCells();
-            hexMapActor.unlockedCells[3][2]=true;
-            hexMapActor.unlockedCells[3][3]=true;
-            hexMapActor.fromCell=new IntVector2(3,3);
-            hexMapActor.toCell=new IntVector2(3,2);
-            hexMapActor.acceptAnyClick=false;
-        }
-        else if(tutorialStage==4){
+            hexMapActor.unlockedCells[3][2] = true;
+            hexMapActor.unlockedCells[3][3] = true;
+            hexMapActor.fromCell = new IntVector2(3, 3);
+            hexMapActor.toCell = new IntVector2(3, 2);
+            hexMapActor.acceptAnyClick = false;
+        } else if (tutorialStage == 4) {
             hexMapActor.lockCells();
-            hexMapActor.unlockedCells[3][1]=true;
-            hexMapActor.unlockedCells[2][2]=true;
-            hexMapActor.unlockedCells[2][3]=true;
-            hexMapActor.fromCell=new IntVector2(2,3);
-            hexMapActor.toCell=new IntVector2(2,2);
-            hexMapActor.acceptAnyClick=false;
-        }
-        else if(tutorialStage==5){
-            hexMapActor.unlockedCells[2][3]=false;
-            hexMapActor.fromCell=new IntVector2(2,2);
-            hexMapActor.toCell=new IntVector2(3,1);
-            hexMapActor.acceptAnyClick=false;
-        }
-        else if(tutorialStage==6){
+            hexMapActor.unlockedCells[3][1] = true;
+            hexMapActor.unlockedCells[2][2] = true;
+            hexMapActor.unlockedCells[2][3] = true;
+            hexMapActor.fromCell = new IntVector2(2, 3);
+            hexMapActor.toCell = new IntVector2(2, 2);
+            hexMapActor.acceptAnyClick = false;
+        } else if (tutorialStage == 5) {
+            hexMapActor.unlockedCells[2][3] = false;
+            hexMapActor.fromCell = new IntVector2(2, 2);
+            hexMapActor.toCell = new IntVector2(3, 1);
+            hexMapActor.acceptAnyClick = false;
+        } else if (tutorialStage == 6) {
             hexMapActor.lockCells();
-            hexMapActor.unlockedCells[1][2]=true;
-            hexMapActor.unlockedCells[1][1]=true;
-            hexMapActor.fromCell=new IntVector2(1,2);
-            hexMapActor.toCell=new IntVector2(1,1);
-            hexMapActor.acceptAnyClick=false;
-        }
-        else if(tutorialStage==7){
+            hexMapActor.unlockedCells[1][2] = true;
+            hexMapActor.unlockedCells[1][1] = true;
+            hexMapActor.fromCell = new IntVector2(1, 2);
+            hexMapActor.toCell = new IntVector2(1, 1);
+            hexMapActor.acceptAnyClick = false;
+        } else if (tutorialStage == 7) {
             hexMapActor.lockCells();
-            hexMapActor.unlockedCells[0][2]=true;
-            hexMapActor.unlockedCells[1][1]=true;
-            hexMapActor.fromCell=new IntVector2(0,2);
-            hexMapActor.toCell=new IntVector2(1,1);
-            hexMapActor.acceptAnyClick=false;
-        }
-        else if(tutorialStage==8){
+            hexMapActor.unlockedCells[0][2] = true;
+            hexMapActor.unlockedCells[1][1] = true;
+            hexMapActor.fromCell = new IntVector2(0, 2);
+            hexMapActor.toCell = new IntVector2(1, 1);
+            hexMapActor.acceptAnyClick = false;
+        } else if (tutorialStage == 8) {
             hexMapActor.unlockCells();
-            hexMapActor.fromCell=new IntVector2(1000,1000);
-            hexMapActor.toCell=new IntVector2(1000,1000);
-            hexMapActor.acceptAnyClick=true;
-        }
-        else if(tutorialStage==9){
+            hexMapActor.fromCell = new IntVector2(1000, 1000);
+            hexMapActor.toCell = new IntVector2(1000, 1000);
+            hexMapActor.acceptAnyClick = true;
+        } else if (tutorialStage == 9) {
             hexMapActor.unlockCells();
-            hexMapActor.fromCell=new IntVector2(1000,1000);
-            hexMapActor.toCell=new IntVector2(1000,1000);
-            hexMapActor.acceptAnyClick=true;
-        }
-        else if(tutorialStage==10){
+            hexMapActor.fromCell = new IntVector2(1000, 1000);
+            hexMapActor.toCell = new IntVector2(1000, 1000);
+            hexMapActor.acceptAnyClick = true;
+        } else if (tutorialStage == 10) {
             preferences.setCompletedTutorial(true);
-            getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT,null);
+            getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, null);
             return;
         }
-        tutButton.setText(getGame().getLocalisedString("tutorial"+tutorialStage));
+        tutButton.setText(getGame().getLocalisedString("tutorial" + tutorialStage));
     }
 }

@@ -25,12 +25,12 @@ import org.tetawex.ecf.util.PreferencesProvider;
  * Created by Tetawex on 03.06.2017.
  */
 public class SettingsScreen extends BaseScreen<ECFGame> {
-    private static final float BUTTON_WIDTH =1275f;
-    private static final float BUTTON_HEIGHT =255f;
-    private static final float BUTTON_HEIGHT_HALVED =120f;
-    private static final float BUTTON_PAD =40f;
-    private static final float BUTTON_FONT_SCALE =1f;
-    private static final float LABEL_FONT_SCALE=1f;
+    private static final float BUTTON_WIDTH = 1275f;
+    private static final float BUTTON_HEIGHT = 255f;
+    private static final float BUTTON_HEIGHT_HALVED = 120f;
+    private static final float BUTTON_PAD = 40f;
+    private static final float BUTTON_FONT_SCALE = 1f;
+    private static final float LABEL_FONT_SCALE = 1f;
 
     private ECFPreferences preferences;
 
@@ -41,43 +41,44 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
 
     public SettingsScreen(ECFGame game, Bundle bundle) {
         super(game);
-        Camera camera=new OrthographicCamera(1440f,2560f);
-        camera.position.set(camera.viewportWidth/2f,camera.viewportHeight/2f,0f);
-        stage=new Stage(new ExtendViewport(1440f,2560f,camera));
+        Camera camera = new OrthographicCamera(1440f, 2560f);
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0f);
+        stage = new Stage(new ExtendViewport(1440f, 2560f, camera));
         Gdx.input.setInputProcessor(stage);
-        preferences= PreferencesProvider.getPreferences();
+        preferences = PreferencesProvider.getPreferences();
         initUi();
     }
+
     private void initUi() {
-        Stack stack=new Stack();
+        Stack stack = new Stack();
         stack.setFillParent(true);
         stack.add(new Image(
                 getGame().getAssetManager()
                         .get("backgrounds/background.png",
                                 Texture.class)));
-        Table mainTable=new Table();
+        Table mainTable = new Table();
         mainTable.setFillParent(true);
         stack.add(mainTable);
         stage.addActor(stack);
 
         //Sound table
-        Table soundTable=new Table();
-        soundSlider=new Slider(
-                0f,1f,0.0001f,false,
-                StyleFactory.generateStandardSliderSkin(getGame()));
+        Table soundTable = new Table();
+        soundSlider = new Slider(
+                0f, 1f, 0.0001f, false,
+                SkinFactory.generateStandardSliderSkin(getGame()));
         soundSlider.setValue(preferences.getSoundVolume());
         soundTable.add(new Label(getGame().getLocalisedString("sound"),
-                StyleFactory.generateStandardLabelSkin(getGame()))).width(250f).padRight(40f);
-        soundTable.add(new Image(getGame().getTextureRegionFromAtlas("sound_off"))).size(86f,86f);
+                SkinFactory.generateStandardLabelSkin(getGame()))).width(250f).padRight(40f);
+        soundTable.add(new Image(getGame().getTextureRegionFromAtlas("sound_off"))).size(86f, 86f);
         soundTable.add(soundSlider).growX().pad(40f);
-        soundTable.add(new Image(getGame().getTextureRegionFromAtlas("sound_on"))).size(86f,86f);
+        soundTable.add(new Image(getGame().getTextureRegionFromAtlas("sound_on"))).size(86f, 86f);
         soundTable.padRight(80f);
         soundTable.padLeft(80f);
         //Music table
-        Table musicTable=new Table();
-        musicSlider=new Slider(
-                0f,1f,0.0001f,false,
-                StyleFactory.generateStandardSliderSkin(getGame()));
+        Table musicTable = new Table();
+        musicSlider = new Slider(
+                0f, 1f, 0.0001f, false,
+                SkinFactory.generateStandardSliderSkin(getGame()));
         musicSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -85,31 +86,31 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
             }
         });
         musicSlider.setValue(preferences.getMusicVolume());
-        musicTable.add(new Label(getGame().getLocalisedString("music"),StyleFactory.generateStandardLabelSkin(getGame()))).width(250f).padRight(40f);
-        musicTable.add(new Image(getGame().getTextureRegionFromAtlas("music_off"))).size(86f,86f);
+        musicTable.add(new Label(getGame().getLocalisedString("music"), SkinFactory.generateStandardLabelSkin(getGame()))).width(250f).padRight(40f);
+        musicTable.add(new Image(getGame().getTextureRegionFromAtlas("music_off"))).size(86f, 86f);
         musicTable.add(musicSlider).growX().pad(40f);
-        musicTable.add(new Image(getGame().getTextureRegionFromAtlas("music_on"))).size(86f,86f);
+        musicTable.add(new Image(getGame().getTextureRegionFromAtlas("music_on"))).size(86f, 86f);
         musicTable.padRight(80f);
         musicTable.padLeft(80f);
         //Language table
-        selectedLanguageLabel=new Label(FontCharacters.codeToLanguageMap.get(preferences.getSelectedLanguage()),
-                StyleFactory.generateDarkerLabelSkin(getGame()));
-        Table languageTable=new Table();
-        languageTable.add(new Label(getGame().getLocalisedString("language"),StyleFactory.generateStandardLabelSkin(getGame())));
-        Table secondaryLanguageTable=new Table();
+        selectedLanguageLabel = new Label(FontCharacters.codeToLanguageMap.get(preferences.getSelectedLanguage()),
+                SkinFactory.generateDarkerLabelSkin(getGame()));
+        Table languageTable = new Table();
+        languageTable.add(new Label(getGame().getLocalisedString("language"), SkinFactory.generateStandardLabelSkin(getGame())));
+        Table secondaryLanguageTable = new Table();
         secondaryLanguageTable.add(selectedLanguageLabel).pad(40f);
-        secondaryLanguageTable.add(new Image(getGame().getTextureRegionFromAtlas("arrow"))).size(35f,57f);
+        secondaryLanguageTable.add(new Image(getGame().getTextureRegionFromAtlas("arrow"))).size(35f, 57f);
         languageTable.add(secondaryLanguageTable).growX();
         secondaryLanguageTable.right();
         languageTable.padRight(80f);
         languageTable.padLeft(80f);
         //Back button
-        TextButton menuButtonBackToMainMenu=
-                new TextButton(getGame().getLocalisedString("back"), StyleFactory.generateStandardMenuButtonSkin(getGame()));
+        TextButton menuButtonBackToMainMenu =
+                new TextButton(getGame().getLocalisedString("back"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
         menuButtonBackToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU,null);
+                getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU, null);
             }
         });
         menuButtonBackToMainMenu.getLabel().setFontScale(BUTTON_FONT_SCALE);
@@ -121,21 +122,21 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
                 .size(BUTTON_WIDTH, BUTTON_HEIGHT)
                 .center().pad(BUTTON_PAD).row();
         //Initializing language list
-        final Stack langStack=new Stack();
+        final Stack langStack = new Stack();
         langStack.setFillParent(true);
         langStack.setVisible(false);
         langStack.add(new Image(
                 getGame().getAssetManager()
                         .get("backgrounds/background.png",
                                 Texture.class)));
-        Table languageSelectTable=new Table();
+        Table languageSelectTable = new Table();
         langStack.add(languageSelectTable);
         stack.add(langStack);
-        Table languageListTable=new Table();
+        Table languageListTable = new Table();
         languageSelectTable.add(languageListTable).pad(80f).row();
-        TextButton languageSelectBackButton=
+        TextButton languageSelectBackButton =
                 new TextButton(getGame().getLocalisedString("back"),
-                        StyleFactory.generateStandardMenuButtonSkin(getGame()));
+                        SkinFactory.generateStandardMenuButtonSkin(getGame()));
         languageSelectBackButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -146,7 +147,7 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
                 .size(BUTTON_WIDTH, BUTTON_HEIGHT)
                 .center().pad(BUTTON_PAD).row();
 
-        TextButton defaultButton=new TextButton(getGame().getLocalisedString("auto"),StyleFactory.generateLanguageMenuButtonSkin(getGame()));
+        TextButton defaultButton = new TextButton(getGame().getLocalisedString("auto"), SkinFactory.generateLanguageMenuButtonSkin(getGame()));
         defaultButton.left();
         languageListTable.add(defaultButton).size(BUTTON_WIDTH, BUTTON_HEIGHT_HALVED)
                 .center().pad(BUTTON_PAD).row();
@@ -158,11 +159,11 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
                 preferences.setSelectedCountryCode("");
                 PreferencesProvider.flushPreferences();
                 getGame().setupLocalisation();
-                getGame().getGameStateManager().setState(GameStateManager.GameState.SETTINGS,null);
+                getGame().getGameStateManager().setState(GameStateManager.GameState.SETTINGS, null);
             }
         });
-        for (final Language language: FontCharacters.getSupportedLanguages()) {
-            TextButton button=new TextButton(language.getName(),StyleFactory.generateLanguageMenuButtonSkin(getGame()));
+        for (final Language language : FontCharacters.getSupportedLanguages()) {
+            TextButton button = new TextButton(language.getName(), SkinFactory.generateLanguageMenuButtonSkin(getGame()));
             button.getLabel().setAlignment(Align.left);
             languageListTable.add(button)
                     .size(BUTTON_WIDTH, BUTTON_HEIGHT_HALVED)
@@ -173,18 +174,19 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
                     preferences.setSelectedLanguage(language.getCode());
                     PreferencesProvider.flushPreferences();
                     getGame().setupLocalisation();
-                    getGame().getGameStateManager().setState(GameStateManager.GameState.SETTINGS,null);
+                    getGame().getGameStateManager().setState(GameStateManager.GameState.SETTINGS, null);
                 }
             });
         }
         languageTable.setTouchable(Touchable.enabled);
-        languageTable.addListener(new ClickListener(){
+        languageTable.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 langStack.setVisible(true);
             }
         });
     }
+
     @Override
     public void show() {
 
@@ -198,7 +200,7 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width,height,true);
+        stage.getViewport().update(width, height, true);
         stage.getViewport().getCamera().update();
     }
 

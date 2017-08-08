@@ -1,12 +1,7 @@
 package org.tetawex.ecf.model;
 
-import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
 import org.tetawex.ecf.util.IntVector2;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by Tetawex on 02.05.17.
@@ -15,37 +10,44 @@ import java.util.Set;
 public class Cell {
     private IntVector2 position;
     private OrderedSet<Element> elements;
-    public Cell(IntVector2 position,Element... elements){
-        this.elements=new OrderedSet<Element>();
+
+    public Cell(IntVector2 position, Element... elements) {
+        this.elements = new OrderedSet<Element>();
         this.elements.addAll(elements);
-        this.position=position;
+        this.position = position;
     }
-    public Cell(IntVector2 position,OrderedSet<Element> elements){
-        this.position=position;
-        this.elements=elements;
+
+    public Cell(IntVector2 position, OrderedSet<Element> elements) {
+        this.position = position;
+        this.elements = elements;
     }
-    public Cell(IntVector2 position){
-        this(position,new OrderedSet<Element>());
+
+    public Cell(IntVector2 position) {
+        this(position, new OrderedSet<Element>());
     }
-    public OrderedSet<Element> getElements(){
+
+    public OrderedSet<Element> getElements() {
         return elements;
     }
 
     public void setElements(OrderedSet<Element> elements) {
         this.elements = elements;
     }
+
     public void setElements(Element... elementArray) {
         elements.addAll(elementArray);
     }
 
-    public void clear(){
+    public void clear() {
         elements.clear();
     }
-    public int interactWith(Cell cell){
+
+    public int interactWith(Cell cell) {
         elements.addAll(cell.getElements());
         cell.clear();
         return ElementFunctions.resolveElementSet(elements);
     }
+
     public IntVector2 getPosition() {
         return position;
     }

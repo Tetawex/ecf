@@ -4,13 +4,15 @@ package org.tetawex.ecf.model;
  * Created by Tetawex on 02.05.17.
  */
 public enum Element {
-    FIRE,WATER,LIGHT,SHADOW,EARTH, AIR,NEUTRAL;
-    public static int getElementsCount(){
+    FIRE, WATER, LIGHT, SHADOW, EARTH, AIR, TIME;
+
+    public static int getElementsCount() {
         //return values().length;
         return 6;
     }
-    public static Element getOpposite(Element element){
-        switch (element){
+
+    public static Element getOpposite(Element element) {
+        switch (element) {
             case WATER:
                 return FIRE;
             case FIRE:
@@ -24,10 +26,11 @@ public enum Element {
             case SHADOW:
                 return LIGHT;
         }
-        return NEUTRAL;
+        return TIME;
     }
-    public static Element getElementById(int id){
-        switch(id){
+
+    public static Element getElementById(int id) {
+        switch (id) {
             case 1:
                 return FIRE;
             case 2:
@@ -41,6 +44,6 @@ public enum Element {
             case 6:
                 return LIGHT;
         }
-        return NEUTRAL;
+        return TIME;
     }
 }

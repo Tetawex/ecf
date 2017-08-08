@@ -9,10 +9,11 @@ public class LevelData {
     private int maxScore;
     private int levelNumber;
     private String name;
-    public LevelData(){
+
+    public LevelData() {
     }
 
-    public LevelData(Cell[][] cellArray, int mana, int maxScore,int levelNumber,String name) {
+    public LevelData(Cell[][] cellArray, int mana, int maxScore, int levelNumber, String name) {
         this.cellArray = cellArray;
         this.mana = mana;
         this.maxScore = maxScore;

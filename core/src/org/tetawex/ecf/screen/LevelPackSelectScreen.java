@@ -14,18 +14,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.core.GameStateManager;
+import org.tetawex.ecf.model.BaseECFScreen;
 import org.tetawex.ecf.model.ECFPreferences;
-import org.tetawex.ecf.model.LevelData;
-import org.tetawex.ecf.model.RandomLevelFactory;
 import org.tetawex.ecf.util.Bundle;
 import org.tetawex.ecf.util.PreferencesProvider;
-
-import java.util.Random;
 
 /**
  * Created by Tetawex on 03.06.2017.
  */
-public class PlayModeSelectScreen extends BaseScreen<ECFGame> {
+public class LevelPackSelectScreen extends BaseECFScreen {
     private static final float BUTTON_WIDTH = 1275f;
     private static final float BUTTON_HEIGHT = 255f;
     private static final float BUTTON_PAD = 40f;
@@ -36,7 +33,7 @@ public class PlayModeSelectScreen extends BaseScreen<ECFGame> {
 
     private Stage stage;
 
-    public PlayModeSelectScreen(ECFGame game, Bundle bundle) {
+    public LevelPackSelectScreen(ECFGame game, Bundle bundle) {
         super(game);
         preferences = PreferencesProvider.getPreferences();
         if (!preferences.isCompletedTutorial())
@@ -60,45 +57,37 @@ public class PlayModeSelectScreen extends BaseScreen<ECFGame> {
         stack.add(mainTable);
         stage.addActor(stack);
         TextButton.TextButtonStyle tbStyle = SkinFactory.generateStandardMenuButtonSkin(getGame());
-        TextButton menuButtonLevels =
-                new TextButton(getGame().getLocalisedString("levels"), tbStyle);
-        menuButtonLevels.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_PACK_SELECT, null);
-            }
-        });
-        TextButton menuButtonRandom =
-                new TextButton(getGame().getLocalisedString("random"), tbStyle);
-        menuButtonRandom.addListener(new ChangeListener() {
+        TextButton menuButtonClassic =
+                new TextButton(getGame().getLocalisedString("lp_classic"), tbStyle);
+        menuButtonClassic.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Bundle bundle = new Bundle();
-                RandomLevelFactory factory = new RandomLevelFactory(new Random().nextInt(10000), new Random().nextInt(2) + 3, new Random().nextInt(3) + 3);
-                bundle.putItem("levelData", new LevelData(factory.getTheBoard(), factory.getMana(), 10000, -1, "Generated Level"));
-                getGame().getGameStateManager().setState(GameStateManager.GameState.GAME, bundle);
+                bundle.putItem("levelCode", "");
+                getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, bundle);
             }
         });
-        TextButton menuButtonTutorial =
-                new TextButton(getGame().getLocalisedString("how_to_play"), tbStyle);
-        menuButtonTutorial.addListener(new ChangeListener() {
+        TextButton menuButtonMot =
+                new TextButton(getGame().getLocalisedString("lp_mot"), tbStyle);
+        menuButtonMot.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                getGame().getGameStateManager().setState(GameStateManager.GameState.TUTORIAL, null);
+                Bundle bundle = new Bundle();
+                bundle.putItem("levelCode", "mot");
+                getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, bundle);
             }
         });
-        TextButton menuButtonBackToMainMenu =
+        TextButton menuButtonBackPlayModeSelectScreen =
                 new TextButton(getGame().getLocalisedString("back"), tbStyle);
-        menuButtonBackToMainMenu.addListener(new ChangeListener() {
+        menuButtonBackPlayModeSelectScreen.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU, null);
+                onBackPressed();
             }
         });
-        mainTable.add(menuButtonLevels).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
-        mainTable.add(menuButtonRandom).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
-        mainTable.add(menuButtonTutorial).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
-        mainTable.add(menuButtonBackToMainMenu).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
+        mainTable.add(menuButtonClassic).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
+        mainTable.add(menuButtonMot).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
+        mainTable.add(menuButtonBackPlayModeSelectScreen).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
     }
 
     @Override
@@ -111,5 +100,10 @@ public class PlayModeSelectScreen extends BaseScreen<ECFGame> {
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
         stage.getViewport().getCamera().update();
+    }
+
+    @Override
+    public void onBackPressed() {
+        getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT, null);
     }
 }
