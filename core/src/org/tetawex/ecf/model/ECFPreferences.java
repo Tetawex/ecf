@@ -1,5 +1,6 @@
 package org.tetawex.ecf.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -7,9 +8,9 @@ import java.util.List;
  * Created by Tetawex on 03.06.2017.
  */
 public class ECFPreferences {
-    private List<Score> scores = Collections.emptyList();
-    private List<LevelCompletionState> levelCompletionStateList = Collections.emptyList();
-    private List<LevelCompletionState> levelCompletionStateListMot = Collections.emptyList();
+    private List<Score> scores = new ArrayList<Score>();
+    private List<LevelCompletionState> levelCompletionStateList = new ArrayList<LevelCompletionState>();
+    private List<LevelCompletionState> levelCompletionStateListMot = new ArrayList<LevelCompletionState>();
 
     private boolean completedTutorial;
 
@@ -31,17 +32,19 @@ public class ECFPreferences {
         return selectedLanguageCode;
     }
 
-    public List<LevelCompletionState> getLevelCompletionStateList(String code) {
-        if (code == "mot")
+    public List<LevelCompletionState> getLevelCompletionStateList(String levelCode) {
+        if ("".equals(levelCode))
+            return levelCompletionStateList;
+        else if ("mot".equals(levelCode))
             return levelCompletionStateListMot;
-        return levelCompletionStateList;
+        return null;
     }
 
-    public void setLevelCompletionStateList(List<LevelCompletionState> levelCompletionStateList, String levelCode) {
-        if (levelCode == "")
-            this.levelCompletionStateList = levelCompletionStateList;
-        if(levelCode == "mot")
-            this.levelCompletionStateListMot=levelCompletionStateList;
+    public void setLevelCompletionStateList(List<LevelCompletionState> list, String levelCode) {
+        if ("".equals(levelCode))
+            this.levelCompletionStateList = list;
+        else if (("mot".equals(levelCode)))
+            this.levelCompletionStateListMot = list;
     }
 
     public String getSelectedCountryCode() {

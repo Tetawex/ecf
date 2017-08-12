@@ -43,6 +43,8 @@ public class ECFGame extends Game {
         assetManager = new AssetManager();
         assetManager.load("atlas.atlas", TextureAtlas.class);
         assetManager.load("backgrounds/background.png", Texture.class);
+        assetManager.load("backgrounds/randombackground.png", Texture.class);
+        assetManager.load("backgrounds/motbackground.png", Texture.class);
         assetManager.load("backgrounds/background_pause.png", Texture.class);
         assetManager.load("backgrounds/text_logo.png", Texture.class);
 

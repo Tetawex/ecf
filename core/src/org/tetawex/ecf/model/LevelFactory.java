@@ -12,7 +12,7 @@ import org.tetawex.ecf.util.IntVector2;
 public class LevelFactory {
     public static LevelData generateLevel(int number, String levelCode) {
         JsonReader jsonReader = new JsonReader();
-        JsonValue jsonData = jsonReader.parse(readFile("levels/level" + (number) + ".json"));
+        JsonValue jsonData = jsonReader.parse(readFile("levels/"+levelCode+"level" + (number) + ".json"));
         int height = jsonData.get("height").asInt();
         int width = jsonData.get("width").asInt();
         int mana = 1;
@@ -63,9 +63,7 @@ public class LevelFactory {
             }
         }
 
-        LevelData data = new LevelData(cellArray, mana, maxScore, number, name);
-
-        return data;
+        return new LevelData(cellArray, mana, maxScore, number, name, levelCode);
     }
 
     private static String readFile(String fileName) {

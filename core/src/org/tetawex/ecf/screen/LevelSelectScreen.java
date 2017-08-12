@@ -55,7 +55,7 @@ public class LevelSelectScreen extends BaseScreen<ECFGame> {
         stack.setFillParent(true);
         stack.add(new Image(
                 getGame().getAssetManager()
-                        .get(levelCode + "backgrounds/background.png",
+                        .get("backgrounds/" + levelCode + "background.png",
                                 Texture.class)));
         Table mainTable = new Table();
         mainTable.setFillParent(true);
@@ -67,6 +67,7 @@ public class LevelSelectScreen extends BaseScreen<ECFGame> {
         scroll.setPageSpacing(0);
         int pageCount = (int) Math.ceil(preferences.getLevelCompletionStateList(levelCode).size() / 9f);
         int i = 0;
+        outerLoop:
         for (int l = 0; l < pageCount; l++) {
             Table levelTable = new Table();
             if (l == 0)
@@ -76,9 +77,15 @@ public class LevelSelectScreen extends BaseScreen<ECFGame> {
             else
                 levelTable.padTop(40f).padBottom(40f).padLeft(25f).padRight(25f);
             levelTable.defaults().pad(0, 0, 0, 0);
+            scroll.addPage(levelTable);
             for (int y = 0; y < 3; y++) {
                 levelTable.row();
                 for (int x = 0; x < 3; x++) {
+                    if (i >= preferences.getLevelCompletionStateList(levelCode).size()){
+                        Gdx.app.log("hjjj", i+"");
+                        levelTable.row();
+                        break outerLoop;
+                    }
                     LevelIconActor actor = new LevelIconActor(getGame(),
                             preferences.getLevelCompletionStateList(levelCode).get(i),
                             getGame().getAssetManager().get("fonts/font_main_medium.ttf", BitmapFont.class),
@@ -92,7 +99,7 @@ public class LevelSelectScreen extends BaseScreen<ECFGame> {
                                 @Override
                                 public void touchUp(InputEvent event, float x, float y,
                                                     int pointer, int button) {
-                                    if ((x - touchX) * (x - touchX) + (y - touchY) * (y - touchY) < 40f &&
+                                    if ((x - touchX) * (x - touchX) + (y - touchY) * (y - touchY) < 2000f &&
                                             preferences.getLevelCompletionStateList(levelCode).get(finalI).isUnlocked()) {
                                         Bundle bundle = new Bundle();
                                         bundle.putItem("levelData", LevelFactory.generateLevel(finalI, levelCode));
@@ -102,7 +109,6 @@ public class LevelSelectScreen extends BaseScreen<ECFGame> {
 
                                 @Override
                                 public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                                    //dragged=true;
                                 }
 
                                 @Override
@@ -116,11 +122,8 @@ public class LevelSelectScreen extends BaseScreen<ECFGame> {
 
                             });
                     i++;
-                    if (preferences.getLevelCompletionStateList(levelCode).size() <= i)
-                        break;
                 }
             }
-            scroll.addPage(levelTable);
         }
         mainTable.add(scroll).expand().fill().row();
 

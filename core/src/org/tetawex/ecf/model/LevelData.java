@@ -8,17 +8,19 @@ public class LevelData {
     private int mana;
     private int maxScore;
     private int levelNumber;
+    private String levelCode;
     private String name;
 
     public LevelData() {
     }
 
-    public LevelData(Cell[][] cellArray, int mana, int maxScore, int levelNumber, String name) {
+    public LevelData(Cell[][] cellArray, int mana, int maxScore, int levelNumber, String name, String levelCode) {
         this.cellArray = cellArray;
         this.mana = mana;
         this.maxScore = maxScore;
         this.levelNumber = levelNumber;
         this.name = name;
+        this.levelCode=levelCode;
     }
 
     public Cell[][] getCellArray() {
@@ -59,5 +61,13 @@ public class LevelData {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLevelCode() {
+        return levelCode;
+    }
+
+    public void setLevelCode(String levelCode) {
+        this.levelCode = levelCode;
     }
 }

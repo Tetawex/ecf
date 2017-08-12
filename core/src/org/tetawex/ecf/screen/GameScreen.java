@@ -16,11 +16,10 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import org.tetawex.ecf.actor.HexMapActor;
 import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.core.GameStateManager;
-import org.tetawex.ecf.model.Cell;
 import org.tetawex.ecf.model.*;
+import org.tetawex.ecf.model.Cell;
 import org.tetawex.ecf.util.Bundle;
 import org.tetawex.ecf.util.PreferencesProvider;
-import org.tetawex.ecf.util.RandomProvider;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -89,19 +88,14 @@ public class GameScreen extends BaseECFScreen {
         Gdx.input.setInputProcessor(gameStage);
 
         gameData = new GameData();
-        levelCode=bundle.getItem("levelCode", String.class,"");
+        levelData = bundle.getItem("levelData", LevelData.class);
+        levelCode = levelData.getLevelCode();
 
         initUi();
-        if (bundle != null) {
-            levelData = bundle.getItem("levelData", LevelData.class);
-            gameData.setCellArray(levelData.getCellArray());
-            gameData.setMana(levelData.getMana());
-            gameData.setScore(0);
-        } else {
-            gameData.setCellArray(CellArrayFactory.generateBasicCellArray(4, 5));
-            gameData.setMana(2);
-            gameData.setScore(0);
-        }
+
+        gameData.setCellArray(levelData.getCellArray());
+        gameData.setMana(levelData.getMana());
+        gameData.setScore(0);
 
         preferences = PreferencesProvider.getPreferences();
 
@@ -138,9 +132,11 @@ public class GameScreen extends BaseECFScreen {
         Stack stack = new Stack();
         stack.setFillParent(true);
 
-        final Image background = new Image(getGame().getAssetManager().get("backgrounds/background.png", Texture.class));
+        final Image background = new Image(getGame().getAssetManager()
+                .get("backgrounds/" + levelCode + "background.png", Texture.class));
         background.setFillParent(true);
-        final Image backgroundPause = new Image(getGame().getAssetManager().get("backgrounds/background_pause.png", Texture.class));
+        final Image backgroundPause = new Image(getGame().getAssetManager()
+                .get("backgrounds/background_pause.png", Texture.class));
         backgroundPause.setFillParent(true);
         backgroundPause.setVisible(false);
 
@@ -397,7 +393,8 @@ public class GameScreen extends BaseECFScreen {
                     getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, null);
                 else {
                     Bundle bundle = new Bundle();
-                    bundle.putItem("levelData", LevelFactory.generateLevel(levelData.getLevelNumber() + 1,levelCode));
+                    bundle.putItem("levelCode", levelCode);
+                    bundle.putItem("levelData", LevelFactory.generateLevel(levelData.getLevelNumber() + 1, levelCode));
                     getGame().getGameStateManager().setState(GameStateManager.GameState.GAME, bundle);
                 }
             }
@@ -428,7 +425,9 @@ public class GameScreen extends BaseECFScreen {
         winLossMenuButtonQuit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, null);
+                Bundle bundle = new Bundle();
+                bundle.putItem("levelCode", levelCode);
+                getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, bundle);
             }
         });
         wlTable.add(winLossMenuButtonQuit)
@@ -477,9 +476,11 @@ public class GameScreen extends BaseECFScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 pauseTable.setVisible(!pauseTable.isVisible());
                 backgroundPause.setVisible(!backgroundPause.isVisible());
-                if (levelData.getLevelNumber() != -1)
-                    getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, null);
-                else
+                if (levelData.getLevelNumber() != -1) {
+                    Bundle bundle = new Bundle();
+                    bundle.putItem("levelCode", levelCode);
+                    getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, bundle);
+                } else
                     getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT, null);
             }
         });
@@ -493,9 +494,10 @@ public class GameScreen extends BaseECFScreen {
     public void dispose() {
 
     }
+
     @Override
-    public void onBackPressed(){
-        if(pauseTable.isVisible())
+    public void onBackPressed() {
+        if (pauseTable.isVisible())
             pauseTable.setVisible(false);
         else {
             if (levelData.getLevelNumber() != -1)

@@ -75,7 +75,7 @@ public class PlayModeSelectScreen extends BaseScreen<ECFGame> {
             public void changed(ChangeEvent event, Actor actor) {
                 Bundle bundle = new Bundle();
                 RandomLevelFactory factory = new RandomLevelFactory(new Random().nextInt(10000), new Random().nextInt(2) + 3, new Random().nextInt(3) + 3);
-                bundle.putItem("levelData", new LevelData(factory.getTheBoard(), factory.getMana(), 10000, -1, "Generated Level"));
+                bundle.putItem("levelData", new LevelData(factory.getTheBoard(), factory.getMana(), 10000, -1, "Generated Level","random"));
                 getGame().getGameStateManager().setState(GameStateManager.GameState.GAME, bundle);
             }
         });
