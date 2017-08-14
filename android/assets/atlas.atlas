@@ -175,9 +175,16 @@ element_shadow
   orig: 142, 141
   offset: 0, 0
   index: -1
-element_water
+element_time
   rotate: false
   xy: 348, 52
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1
+element_water
+  rotate: false
+  xy: 492, 126
   size: 142, 141
   orig: 142, 141
   offset: 0, 0

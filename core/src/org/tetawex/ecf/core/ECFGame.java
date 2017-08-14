@@ -45,6 +45,8 @@ public class ECFGame extends Game {
         assetManager.load("backgrounds/background.png", Texture.class);
         assetManager.load("backgrounds/randombackground.png", Texture.class);
         assetManager.load("backgrounds/motbackground.png", Texture.class);
+        assetManager.load("backgrounds/motbutton.png", Texture.class);
+        assetManager.load("backgrounds/motbutton_pressed.png", Texture.class);
         assetManager.load("backgrounds/background_pause.png", Texture.class);
         assetManager.load("backgrounds/text_logo.png", Texture.class);
 

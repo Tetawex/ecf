@@ -65,6 +65,12 @@ public class LevelFactory {
 
         return new LevelData(cellArray, mana, maxScore, number, name, levelCode);
     }
+    public static LevelData generateMotTestingGround(){
+        Cell[][] cells= CellArrayFactory.generateBasicCellArray(3,4);
+        cells[1][2].getElements().add(Element.TIME);
+        cells[0][1].getElements().add(Element.TIME);
+        return new LevelData(cells, 10, 10000, 0, "The World", "mot");
+    }
 
     private static String readFile(String fileName) {
         FileHandle handle = Gdx.files.internal(fileName);

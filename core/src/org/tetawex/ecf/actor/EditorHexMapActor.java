@@ -18,7 +18,7 @@ import org.tetawex.ecf.util.MathUtils;
 /**
  * Created by tetawex on 02.05.17.
  */
-public class HexMapActor extends BaseWidget<ECFGame> {
+public class EditorHexMapActor extends BaseWidget<ECFGame> {
     public interface CellActionListener {
         void cellMerged(int mergedElementsCount);
 
@@ -52,7 +52,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
 
     private OrderedMap<Element, TextureRegion> textureToElementMap;
 
-    public HexMapActor(ECFGame game) {
+    public EditorHexMapActor(ECFGame game) {
         super(game);
 
         cellRegion = getGame().getTextureRegionFromAtlas("hexagon");

@@ -7,8 +7,7 @@ public enum Element {
     FIRE, WATER, LIGHT, SHADOW, EARTH, AIR, TIME;
 
     public static int getElementsCount() {
-        //return values().length;
-        return 6;
+        return values().length;
     }
 
     public static Element getOpposite(Element element) {

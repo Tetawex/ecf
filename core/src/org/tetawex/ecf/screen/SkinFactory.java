@@ -113,7 +113,7 @@ public class SkinFactory {
         NinePatchDrawable ninePatch = new NinePatchDrawable(skin.getPatch("button_menu"));
         style.font = game.getAssetManager().get("fonts/font_main_medium.ttf", BitmapFont.class);
         style.fontColor = new Color(1f, 1f, 1f, 0.87f);
-        style.downFontColor = new Color(0.8f, 0.58f, 0.58f, 0.87f);
+        style.downFontColor = new Color(1, 1, 1, 0.35f);
         style.up = new Image(ninePatch).getDrawable();
         style.checked = new Image(ninePatch).getDrawable();
         ninePatch = new NinePatchDrawable(skin.getPatch("button_menu_pressed"));

@@ -5,6 +5,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
 import org.tetawex.ecf.util.RandomProvider;
 
+import java.util.List;
+
 /**
  * Created by Tetawex on 17.05.2017.
  */
@@ -61,5 +63,23 @@ public class ElementFunctions {
             elements.remove(e);
         }
         return reactions;
+    }
+
+    public static int advancedResolveElementSet(Array<Element> elements, OrderedSet<Element> targetSet) {
+
+        Array<Element> deletionList = new Array<Element>();
+        for (Element e : elements) {
+            if (e.equals(Element.TIME))
+                deletionList.add(e);
+        }
+        elements.removeAll(deletionList, true);
+        targetSet.clear();
+        targetSet.addAll(elements);
+        if (deletionList.size % 2 == 0) {
+            return resolveElementSet(targetSet);
+        } else {
+            targetSet.add(Element.TIME);
+            return 0;
+        }
     }
 }

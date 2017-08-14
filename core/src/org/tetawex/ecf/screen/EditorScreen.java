@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * ...
  */
-public class GameScreen extends BaseECFScreen {
+public class EditorScreen extends BaseECFScreen {
     private static final float PAUSE_BUTTON_WIDTH = 1275f;
     private static final float PAUSE_BUTTON_HEIGHT = 252f;
     private static final float PAUSE_BUTTON_PAD = 32f;
@@ -73,7 +73,7 @@ public class GameScreen extends BaseECFScreen {
     private Image[] stars;
     private String levelCode;
 
-    public GameScreen(ECFGame game, Bundle bundle) {
+    public EditorScreen(ECFGame game, Bundle bundle) {
         super(game);
         winSound = getGame().getAssetManager().get("sounds/win.ogg", Sound.class);
         lossSound = getGame().getAssetManager().get("sounds/loss.ogg", Sound.class);
@@ -111,6 +111,8 @@ public class GameScreen extends BaseECFScreen {
 
         lcToStringMap.put(GameData.LossCondition.NO_SHADOW, "lc_no_shadow");
         lcToStringMap.put(GameData.LossCondition.NO_LIGHT, "lc_no_light");
+
+        lcToStringMap.put(GameData.LossCondition.NO_TIME, "lc_no_light");
     }
 
     @Override
@@ -179,7 +181,6 @@ public class GameScreen extends BaseECFScreen {
         midRowTable.add(hexMapActor).center().expand();
 
         mainTable.setFillParent(true);
-        mainTable.add(topRowTable).growX().row();
         mainTable.add(new Label(levelData.getName(), SkinFactory.generateStandardLabelSkin(getGame()))).row();
         mainTable.add(midRowTable).growX().growY().row();
         mainTable.add(bottomRowTable).growX();

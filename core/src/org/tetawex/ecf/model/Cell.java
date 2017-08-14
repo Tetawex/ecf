@@ -1,5 +1,6 @@
 package org.tetawex.ecf.model;
 
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
 import org.tetawex.ecf.util.IntVector2;
 
@@ -43,9 +44,13 @@ public class Cell {
     }
 
     public int interactWith(Cell cell) {
-        elements.addAll(cell.getElements());
+        Array<Element> array = new Array<Element>();
+
+        array.addAll(elements.orderedItems());
+        array.addAll(cell.getElements().orderedItems());
         cell.clear();
-        return ElementFunctions.resolveElementSet(elements);
+
+        return ElementFunctions.advancedResolveElementSet(array, elements);
     }
 
     public IntVector2 getPosition() {

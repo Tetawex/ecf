@@ -177,7 +177,7 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
             }
 
             @Override
-            public void elementsCountChanged(int fire, int water, int air, int earth, int shadow, int light) {
+            public void elementsCountChanged(int fire, int water, int air, int earth, int shadow, int light, int time) {
 
             }
 

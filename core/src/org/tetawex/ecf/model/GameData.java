@@ -14,12 +14,12 @@ public class GameData {
 
         void cellMapChanged(Cell[][] newMap);
 
-        void elementsCountChanged(int fire, int water, int air, int earth, int shadow, int light);
+        void elementsCountChanged(int fire, int water, int air, int earth, int shadow, int light, int time);
 
         void gameLostOrWon(boolean won, LossCondition lossCondition);
     }
 
-    public enum LossCondition {NO_MANA, NO_FIRE, NO_WATER, NO_AIR, NO_EARTH, NO_SHADOW, NO_LIGHT}
+    public enum LossCondition {NO_MANA, NO_FIRE, NO_WATER, NO_AIR, NO_EARTH, NO_SHADOW, NO_LIGHT, NO_TIME}
 
     private GameDataChangedListener gameDataChangedListener;
 
@@ -33,6 +33,7 @@ public class GameData {
     private int earth;
     private int shadow;
     private int light;
+    private int time;
 
     private int mana;
     private int score;
@@ -143,6 +144,7 @@ public class GameData {
         air = 0;
         shadow = 0;
         light = 0;
+        time = 0;
         for (int i = 0; i < cellArray.length; i++) {
             for (int j = 0; j < cellArray[i].length; j++) {
                 if (cellArray[i][j] != null) {
@@ -158,6 +160,8 @@ public class GameData {
                         shadow++;
                     if (cellArray[i][j].getElements().contains(Element.LIGHT))
                         light++;
+                    if (cellArray[i][j].getElements().contains(Element.TIME))
+                        time++;
                 }
 
             }
@@ -186,12 +190,15 @@ public class GameData {
                 gameDataChangedListener.gameLostOrWon(false, LossCondition.NO_SHADOW);
             else if (light == 0 && shadow != 0)
                 gameDataChangedListener.gameLostOrWon(false, LossCondition.NO_LIGHT);
+
+            else if (time % 2 != 0)
+                gameDataChangedListener.gameLostOrWon(false, LossCondition.NO_TIME);
         }
 
     }
 
     private void triggerElementsCountChangedEvent() {
-        gameDataChangedListener.elementsCountChanged(fire, water, air, earth, shadow, light);
+        gameDataChangedListener.elementsCountChanged(fire, water, air, earth, shadow, light, time);
     }
 
     public int getFire() {
