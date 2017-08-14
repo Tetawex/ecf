@@ -11,7 +11,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedMap;
 import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.model.Cell;
+import org.tetawex.ecf.model.CellFactory;
 import org.tetawex.ecf.model.Element;
+import org.tetawex.ecf.model.ElementFunctions;
 import org.tetawex.ecf.util.IntVector2;
 import org.tetawex.ecf.util.MathUtils;
 
@@ -19,6 +21,15 @@ import org.tetawex.ecf.util.MathUtils;
  * Created by tetawex on 02.05.17.
  */
 public class EditorHexMapActor extends BaseWidget<ECFGame> {
+    public void removeOrCreateCell() {
+        if (selectedCell == null)
+            cellArray[selectedPosition.x][selectedPosition.y] = CellFactory.generateEmptyCell(selectedPosition);
+        else {
+            selectedCell = null;
+            cellArray[selectedPosition.x][selectedPosition.y] = null;
+        }
+    }
+
     public interface CellActionListener {
         void cellMerged(int mergedElementsCount);
 
@@ -41,14 +52,13 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
     private float elementHeight = 130f;
 
     private Cell selectedCell;
+    private IntVector2 selectedPosition = new IntVector2(0, 0);
 
     private TextureRegion cellRegion;
     private TextureRegion selectedRegion;
-    private TextureRegion adjacentRegion;
 
     private Sound clickSound;
     private Sound errorSound;
-    private Sound mergeSound;
 
     private OrderedMap<Element, TextureRegion> textureToElementMap;
 
@@ -57,11 +67,9 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
 
         cellRegion = getGame().getTextureRegionFromAtlas("hexagon");
         selectedRegion = getGame().getTextureRegionFromAtlas("hexagon_selected");
-        adjacentRegion = getGame().getTextureRegionFromAtlas("hexagon_adjacent");
 
         clickSound = getGame().getAssetManager().get("sounds/click.ogg", Sound.class);
         errorSound = getGame().getAssetManager().get("sounds/error.ogg", Sound.class);
-        mergeSound = getGame().getAssetManager().get("sounds/merge.ogg", Sound.class);
 
         textureToElementMap = new OrderedMap<Element, TextureRegion>();
         textureToElementMap.put(Element.FIRE, getGame()
@@ -119,25 +127,20 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
                 if (cellExistsAt(i, j)) {
                     IntVector2 vec = cellArray[i][j].getPosition();
                     Vector2 offset = findOffsetForIndex(vec);
-                    batch.draw(cellRegion, getX() + vec.x * (hexagonWidth + offset.x), getY() + vec.y * hexagonHeight + offset.y,
+                    batch.draw(cellRegion, getX() + vec.x * (hexagonWidth + offset.x),
+                            getY() + vec.y * hexagonHeight + offset.y,
                             hexagonWidth, hexagonHeight);
                 }
             }
         }
         //draw selected cells
-        if (selectedCell != null) {
-            IntVector2 vec = selectedCell.getPosition();
-            Vector2 offset = findOffsetForIndex(vec);
-            batch.draw(selectedRegion, getX() + vec.x * (hexagonWidth + offset.x), getY() + vec.y * hexagonHeight + offset.y,
+        {
+            Vector2 offset = findOffsetForIndex(selectedPosition);
+            batch.draw(selectedRegion, getX() + selectedPosition.x * (hexagonWidth + offset.x),
+                    getY() + selectedPosition.y * hexagonHeight + offset.y,
                     hexagonWidth, hexagonHeight);
-            for (Cell cell : getAdjacentCells(vec)) {
-                IntVector2 vec2 = cell.getPosition();
-                Vector2 offset2 = findOffsetForIndex(vec2);
-                batch.draw(adjacentRegion, getX() + vec2.x * (hexagonWidth + offset2.x), getY() + vec2.y * hexagonHeight + offset2.y,
-                        hexagonWidth, hexagonHeight);
-            }
-
         }
+
         //draw elements
         for (int i = 0; i < cellArray.length; i++) {
             for (int j = 0; j < cellArray[i].length; j++) {
@@ -185,8 +188,7 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
                                 getY() + j * hexagonHeight + offset.y + hexagonHeight * 0.33f
                                         + hexagonHeight * 0.050f - elementHeight / 2,
                                 elementWidth, elementHeight);
-                    }
-                    else if (size == 4) {
+                    } else if (size == 4) {
                         batch.draw(textureToElementMap.get(elements.get(0)), getX()
                                         + i * (hexagonWidth + offset.x) + hexagonWidth / 2
                                         - elementWidth / 2,
@@ -210,8 +212,7 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
                                         - elementWidth / 2,
                                 getY() + j * hexagonHeight + offset.y + hexagonHeight / 2 - elementHeight / 2,
                                 elementWidth, elementHeight);
-                    }
-                    else if (size == 5) {
+                    } else if (size == 5) {
                         batch.draw(textureToElementMap.get(elements.get(0)), getX()
                                         + i * (hexagonWidth + offset.x) + hexagonWidth * 0.33f
                                         - elementWidth / 2,
@@ -237,8 +238,7 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
                                         - elementWidth / 2,
                                 getY() + j * hexagonHeight + offset.y + hexagonHeight / 2 - elementHeight / 2,
                                 elementWidth, elementHeight);
-                    }
-                    else if (size == 6) {
+                    } else if (size == 6) {
                         batch.draw(textureToElementMap.get(elements.get(0)), getX()
                                         + i * (hexagonWidth + offset.x) + hexagonWidth * 0.33f
                                         - elementWidth / 2,
@@ -269,8 +269,7 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
                                         - elementWidth / 2,
                                 getY() + j * hexagonHeight + offset.y + hexagonHeight / 2 - elementHeight / 2,
                                 elementWidth, elementHeight);
-                    }
-                    else if (size == 7) {
+                    } else if (size == 7) {
                         batch.draw(textureToElementMap.get(elements.get(0)), getX()
                                         + i * (hexagonWidth + offset.x) + hexagonWidth * 0.33f
                                         - elementWidth / 2,
@@ -306,8 +305,7 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
                                         - elementWidth / 2,
                                 getY() + j * hexagonHeight + offset.y + hexagonHeight / 2 - elementHeight / 2,
                                 elementWidth, elementHeight);
-                    }
-                    else
+                    } else
                         batch.draw(textureToElementMap.get(Element.EARTH), getX()
                                         + i * (hexagonWidth + offset.x) + hexagonWidth / 2
                                         - elementWidth / 2,
@@ -354,49 +352,13 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
     }
 
     private void processIndexClick(IntVector2 position) {
-        if (!cellExistsAt(position))
-            return;
-        Cell cell = getCellByIndex(position);
-        if (selectedCell == null) {
-            selectedCell = cell;
-            if (selectedCell.getElements().size == 0) {
-                selectedCell = null;
-                errorSound.play(soundVolume);
-                return;
-            }
-            clickSound.play(soundVolume);
-        } else {
-            if (cell != null) {
-                if (cell != selectedCell) {
-                    if (isAdjacent(selectedCell.getPosition(), cell.getPosition())) {
-                        if (cellActionListener.canMove(selectedCell.getElements().size)) {
+        if (cellExistsAt(position))
+            selectedCell = getCellByIndex(position);
+        else
+            selectedCell = null;
+        selectedPosition = position;
+        clickSound.play(soundVolume);
 
-                            cellActionListener.cellMoved(selectedCell.getElements().size);
-                            cellActionListener.cellMerged(cell.interactWith(selectedCell));
-
-                            selectedCell = null;
-                            mergeSound.play(soundVolume);
-                        } else {
-                            errorSound.play(soundVolume);
-                            selectedCell = null;
-                        }
-                    } else {
-                        if (selectedCell != null && cell.getElements().size > 0) {
-                            selectedCell = cell;
-                            clickSound.play(soundVolume);
-                        } else {
-                            selectedCell = null;
-                            errorSound.play(soundVolume);
-                        }
-                    }
-
-
-                } else {
-                    selectedCell = null;
-                }
-
-            }
-        }
     }
 
     private Array<Cell> getAdjacentCells(IntVector2 position) {
@@ -499,5 +461,17 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
 
     public void setSoundVolume(float soundVolume) {
         this.soundVolume = soundVolume;
+    }
+
+    public Cell getSelectedCell() {
+        return selectedCell;
+    }
+
+    public void addElementToSelectedCell(Element element) {
+        if (selectedCell == null) {
+            errorSound.play(soundVolume);
+            return;
+        }
+        ElementFunctions.addElementToCell(selectedCell, element);
     }
 }

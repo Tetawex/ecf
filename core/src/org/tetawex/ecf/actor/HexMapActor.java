@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.OrderedMap;
 import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.model.Cell;
 import org.tetawex.ecf.model.Element;
+import org.tetawex.ecf.model.ElementFunctions;
 import org.tetawex.ecf.util.IntVector2;
 import org.tetawex.ecf.util.MathUtils;
 
@@ -19,6 +20,7 @@ import org.tetawex.ecf.util.MathUtils;
  * Created by tetawex on 02.05.17.
  */
 public class HexMapActor extends BaseWidget<ECFGame> {
+
     public interface CellActionListener {
         void cellMerged(int mergedElementsCount);
 
@@ -119,7 +121,8 @@ public class HexMapActor extends BaseWidget<ECFGame> {
                 if (cellExistsAt(i, j)) {
                     IntVector2 vec = cellArray[i][j].getPosition();
                     Vector2 offset = findOffsetForIndex(vec);
-                    batch.draw(cellRegion, getX() + vec.x * (hexagonWidth + offset.x), getY() + vec.y * hexagonHeight + offset.y,
+                    batch.draw(cellRegion, getX() + vec.x * (hexagonWidth + offset.x),
+                            getY() + vec.y * hexagonHeight + offset.y,
                             hexagonWidth, hexagonHeight);
                 }
             }
@@ -128,12 +131,14 @@ public class HexMapActor extends BaseWidget<ECFGame> {
         if (selectedCell != null) {
             IntVector2 vec = selectedCell.getPosition();
             Vector2 offset = findOffsetForIndex(vec);
-            batch.draw(selectedRegion, getX() + vec.x * (hexagonWidth + offset.x), getY() + vec.y * hexagonHeight + offset.y,
+            batch.draw(selectedRegion, getX() + vec.x * (hexagonWidth + offset.x),
+                    getY() + vec.y * hexagonHeight + offset.y,
                     hexagonWidth, hexagonHeight);
             for (Cell cell : getAdjacentCells(vec)) {
                 IntVector2 vec2 = cell.getPosition();
                 Vector2 offset2 = findOffsetForIndex(vec2);
-                batch.draw(adjacentRegion, getX() + vec2.x * (hexagonWidth + offset2.x), getY() + vec2.y * hexagonHeight + offset2.y,
+                batch.draw(adjacentRegion, getX() + vec2.x * (hexagonWidth + offset2.x),
+                        getY() + vec2.y * hexagonHeight + offset2.y,
                         hexagonWidth, hexagonHeight);
             }
 
@@ -185,8 +190,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
                                 getY() + j * hexagonHeight + offset.y + hexagonHeight * 0.33f
                                         + hexagonHeight * 0.050f - elementHeight / 2,
                                 elementWidth, elementHeight);
-                    }
-                    else if (size == 4) {
+                    } else if (size == 4) {
                         batch.draw(textureToElementMap.get(elements.get(0)), getX()
                                         + i * (hexagonWidth + offset.x) + hexagonWidth / 2
                                         - elementWidth / 2,
@@ -210,8 +214,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
                                         - elementWidth / 2,
                                 getY() + j * hexagonHeight + offset.y + hexagonHeight / 2 - elementHeight / 2,
                                 elementWidth, elementHeight);
-                    }
-                    else if (size == 5) {
+                    } else if (size == 5) {
                         batch.draw(textureToElementMap.get(elements.get(0)), getX()
                                         + i * (hexagonWidth + offset.x) + hexagonWidth * 0.33f
                                         - elementWidth / 2,
@@ -237,8 +240,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
                                         - elementWidth / 2,
                                 getY() + j * hexagonHeight + offset.y + hexagonHeight / 2 - elementHeight / 2,
                                 elementWidth, elementHeight);
-                    }
-                    else if (size == 6) {
+                    } else if (size == 6) {
                         batch.draw(textureToElementMap.get(elements.get(0)), getX()
                                         + i * (hexagonWidth + offset.x) + hexagonWidth * 0.33f
                                         - elementWidth / 2,
@@ -269,8 +271,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
                                         - elementWidth / 2,
                                 getY() + j * hexagonHeight + offset.y + hexagonHeight / 2 - elementHeight / 2,
                                 elementWidth, elementHeight);
-                    }
-                    else if (size == 7) {
+                    } else if (size == 7) {
                         batch.draw(textureToElementMap.get(elements.get(0)), getX()
                                         + i * (hexagonWidth + offset.x) + hexagonWidth * 0.33f
                                         - elementWidth / 2,
@@ -306,8 +307,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
                                         - elementWidth / 2,
                                 getY() + j * hexagonHeight + offset.y + hexagonHeight / 2 - elementHeight / 2,
                                 elementWidth, elementHeight);
-                    }
-                    else
+                    } else
                         batch.draw(textureToElementMap.get(Element.EARTH), getX()
                                         + i * (hexagonWidth + offset.x) + hexagonWidth / 2
                                         - elementWidth / 2,

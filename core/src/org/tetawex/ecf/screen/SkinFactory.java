@@ -151,4 +151,60 @@ public class SkinFactory {
 
         return style;
     }
+
+    public static TextButton.TextButtonStyle generateActionButtonSkin(ECFGame game, EditorScreen.ButtonAction action) {
+        Skin skin = new Skin();
+        skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = game.getAssetManager().get("fonts/font_main_medium.ttf", BitmapFont.class);
+        textButtonStyle.fontColor = new Color(1f, 1f, 1f, 0.87f);
+        switch (action) {
+            case ADD_FIRE:
+                textButtonStyle.up = skin.getDrawable("element_fire");
+                textButtonStyle.down = skin.getDrawable("element_fire");
+                break;
+            case ADD_WATER:
+                textButtonStyle.up = skin.getDrawable("element_water");
+                textButtonStyle.down = skin.getDrawable("element_water");
+                break;
+            case ADD_AIR:
+                textButtonStyle.up = skin.getDrawable("element_air");
+                textButtonStyle.down = skin.getDrawable("element_air");
+                break;
+            case ADD_EARTH:
+                textButtonStyle.up = skin.getDrawable("element_earth");
+                textButtonStyle.down = skin.getDrawable("element_earth");
+                break;
+            case ADD_SHADOW:
+                textButtonStyle.up = skin.getDrawable("element_shadow");
+                textButtonStyle.down = skin.getDrawable("element_shadow");
+                break;
+            case ADD_LIGHT:
+                textButtonStyle.up = skin.getDrawable("element_light");
+                textButtonStyle.down = skin.getDrawable("element_light");
+                break;
+            case ADD_TIME:
+                textButtonStyle.up = skin.getDrawable("element_time");
+                textButtonStyle.down = skin.getDrawable("element_time");
+                break;
+            case REMOVE_CELL:
+                textButtonStyle.up = skin.getDrawable("button_pause");
+                textButtonStyle.down = skin.getDrawable("button_pause");
+                break;
+            case SAVE_LEVEL:
+                textButtonStyle.up = skin.getDrawable("button_pause");
+                textButtonStyle.down = skin.getDrawable("button_pause");
+                break;
+            case LOAD_LEVEL:
+                textButtonStyle.up = skin.getDrawable("button_pause");
+                textButtonStyle.down = skin.getDrawable("button_pause");
+                break;
+            case PLAY_LEVEL:
+                textButtonStyle.up = skin.getDrawable("button_pause");
+                textButtonStyle.down = skin.getDrawable("button_pause");
+                break;
+
+        }
+        return textButtonStyle;
+    }
 }

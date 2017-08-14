@@ -82,4 +82,10 @@ public class ElementFunctions {
             return 0;
         }
     }
+    public static void addElementToCell(Cell cell, Element element) {
+        Array<Element> result = new Array<Element>();
+        result.addAll(cell.getElements().orderedItems());
+        result.add(element);
+        advancedResolveElementSet(result, cell.getElements());
+    }
 }

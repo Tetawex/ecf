@@ -87,6 +87,14 @@ public class PlayModeSelectScreen extends BaseScreen<ECFGame> {
                 getGame().getGameStateManager().setState(GameStateManager.GameState.TUTORIAL, null);
             }
         });
+        TextButton menuButtonEditor =
+                new TextButton(getGame().getLocalisedString("editor"), tbStyle);
+        menuButtonEditor.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                getGame().getGameStateManager().setState(GameStateManager.GameState.EDITOR, null);
+            }
+        });
         TextButton menuButtonBackToMainMenu =
                 new TextButton(getGame().getLocalisedString("back"), tbStyle);
         menuButtonBackToMainMenu.addListener(new ChangeListener() {
@@ -98,6 +106,7 @@ public class PlayModeSelectScreen extends BaseScreen<ECFGame> {
         mainTable.add(menuButtonLevels).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
         mainTable.add(menuButtonRandom).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
         mainTable.add(menuButtonTutorial).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
+        mainTable.add(menuButtonEditor).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
         mainTable.add(menuButtonBackToMainMenu).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
     }
 

@@ -12,7 +12,7 @@ public class GameStateManager {
         currentScreen.dispose();
     }
 
-    public enum GameState {MAIN_MENU, GAME, SETTINGS, HIGHSCORES, MODE_SELECT, LEVEL_SELECT, TUTORIAL, LEVEL_PACK_SELECT}
+    public enum GameState {MAIN_MENU, GAME, SETTINGS, HIGHSCORES, MODE_SELECT, LEVEL_SELECT, TUTORIAL, EDITOR, LEVEL_PACK_SELECT}
 
     private Screen currentScreen;
     private GameState currentState;
@@ -65,6 +65,9 @@ public class GameStateManager {
                 break;
             case LEVEL_PACK_SELECT:
                 currentScreen = new LevelPackSelectScreen(game, bundle);
+                break;
+            case EDITOR:
+                currentScreen = new EditorScreen(game, bundle);
                 break;
         }
     }
