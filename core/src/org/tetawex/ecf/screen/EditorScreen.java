@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import org.tetawex.ecf.actor.EditorHexMapActor;
@@ -15,6 +16,7 @@ import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.core.GameStateManager;
 import org.tetawex.ecf.model.*;
 import org.tetawex.ecf.util.Bundle;
+import org.tetawex.ecf.util.IntVector2;
 import org.tetawex.ecf.util.PreferencesProvider;
 
 import java.util.HashMap;
@@ -61,7 +63,14 @@ public class EditorScreen extends BaseECFScreen {
     private Stage gameStage;
     private EditorHexMapActor hexMapActor;
 
+    private TextField nameField;
+    private TextField dimXField;
+    private TextField dimYField;
+    private TextField maxScoreField;
+    private TextField manaField;
+
     Table pauseTable;
+    Table midRowTable;
 
     private ECFPreferences preferences;
 
@@ -143,21 +152,21 @@ public class EditorScreen extends BaseECFScreen {
         topRowTable.add(topRowLeftTable).width(300f);
         topRowTable.add(topRowCenterTable).growX();
         topRowTable.add(topRowRightTable).width(300f);
-        Table midRowTable = new Table();
+        midRowTable = new Table();
         Table bottomRowTable = new Table();
+        mainTable.add(topRowTable).growX().row();
 
         hexMapActor = new EditorHexMapActor(getGame());
         hexMapActor.setSoundVolume(PreferencesProvider.getPreferences().getSoundVolume());
-        hexMapActor.setCellArray(CellArrayFactory.generateEmptyCellArray(2,2));
+        hexMapActor.setCellArray(CellArrayFactory.generateEmptyCellArray(2, 2));
 
         midRowTable.add(hexMapActor).center().expand();
 
         mainTable.setFillParent(true);
-        mainTable.add(new Label(levelData.getName(), SkinFactory.generateStandardLabelSkin(getGame()))).row();
         mainTable.add(midRowTable).growX().growY().row();
         mainTable.add(bottomRowTable).growX();
 
-        TextButton pauseButton = new TextButton(" ", SkinFactory.generatePauseButtonSkin(getGame()));
+        TextButton pauseButton = new TextButton(" ", StyleFactory.generatePauseButtonStyle(getGame()));
         pauseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -168,19 +177,22 @@ public class EditorScreen extends BaseECFScreen {
         topRowLeftTable.left().top();
         topRowLeftTable.add(pauseButton).size(120f).pad(40f).center();
 
+
         //element + null buttons
         Table elementTable = new Table();
         for (ButtonAction action : ButtonAction.getTopRowActions()) {
-            elementTable.add(generateButtonForAction(action)).pad(PAUSE_BUTTON_PAD/4);
+            elementTable.add(generateButtonForAction(action)).size(142).pad(PAUSE_BUTTON_PAD / 4);
         }
-        elementTable.row();
-        bottomRowTable.add(elementTable);
+        bottomRowTable.add(elementTable).pad(16f).growX().row();
+
+        bottomRowTable.add(createLevelSpecsTable()).pad(PAUSE_BUTTON_PAD).grow().row();
+        bottomRowTable.add(createLevelResizeTable()).pad(PAUSE_BUTTON_PAD).padBottom(32f).grow();
 
         //pause ui
         pauseTable.center();
 
         TextButton pauseMenuButtonContinue =
-                new TextButton(getGame().getLocalisedString("continue"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("continue"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         pauseMenuButtonContinue.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -194,7 +206,7 @@ public class EditorScreen extends BaseECFScreen {
                 .center().pad(PAUSE_BUTTON_PAD).row();
 
         TextButton pauseMenuButtonRetry =
-                new TextButton(getGame().getLocalisedString("retry"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("retry"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         pauseMenuButtonRetry.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -209,7 +221,7 @@ public class EditorScreen extends BaseECFScreen {
 
 
         TextButton pauseMenuButtonQuit =
-                new TextButton(getGame().getLocalisedString("quit"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("quit"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         pauseMenuButtonQuit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -247,7 +259,7 @@ public class EditorScreen extends BaseECFScreen {
     }
 
     public TextButton generateButtonForAction(ButtonAction action) {
-        TextButton button = new TextButton("", SkinFactory.generateActionButtonSkin(getGame(), action));
+        TextButton button = new TextButton("", StyleFactory.generateActionButtonStyle(getGame(), action));
 
         switch (action) {
             case ADD_FIRE:
@@ -324,5 +336,62 @@ public class EditorScreen extends BaseECFScreen {
         }
 
         return button;
+    }
+
+    private Table createLevelSpecsTable() {
+        Table placeholder = new Table();
+        nameField = new TextField("", StyleFactory.generateEditorTextFieldStyle(getGame()));
+        nameField.setAlignment(Align.center);
+        nameField.setMessageText(getGame().getLocalisedString("hint_name"));
+
+        maxScoreField = new TextField("", StyleFactory.generateEditorTextFieldStyle(getGame()));
+        maxScoreField.setAlignment(Align.center);
+        maxScoreField.setMessageText(getGame().getLocalisedString("hint_max_score"));
+
+        manaField = new TextField("", StyleFactory.generateEditorTextFieldStyle(getGame()));
+        manaField.setAlignment(Align.center);
+        manaField.setMessageText(getGame().getLocalisedString("hint_mana"));
+
+        placeholder.add(nameField).growX().padRight(16f);
+        placeholder.add(maxScoreField).width(512).padRight(16f);
+        placeholder.add(manaField).width(256).row();
+        return placeholder;
+
+    }
+    private Table createLevelResizeTable() {
+        Table placeholder = new Table();
+
+        dimXField = new TextField("", StyleFactory.generateEditorTextFieldStyle(getGame()));
+        dimXField.setAlignment(Align.center);
+        dimXField.setMessageText(getGame().getLocalisedString("hint_width"));
+
+        dimYField = new TextField("", StyleFactory.generateEditorTextFieldStyle(getGame()));
+        dimYField.setAlignment(Align.center);
+        dimYField.setMessageText(getGame().getLocalisedString("hint_height"));
+
+        TextButton applyButton = new TextButton(getGame().getLocalisedString("apply"),
+                StyleFactory.generateStandardMenuButtonStyle(getGame()));
+        applyButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                try {
+                    hexMapActor.setHexSize(new IntVector2(
+                            Integer.valueOf(dimXField.getText()),
+                            Integer.valueOf(dimYField.getText())));
+                    midRowTable.reset();
+                    midRowTable.add(hexMapActor).center().expand();
+
+                } catch (Exception e) {
+                    dimXField.setText(String.valueOf(hexMapActor.getCellArray().length));
+                    dimYField.setText(String.valueOf(hexMapActor.getCellArray()[0].length));
+                }
+            }
+        });
+
+        placeholder.add(dimXField).width(400).padRight(16f);
+        placeholder.add(dimYField).width(400).padRight(16f);
+        placeholder.add(applyButton).growX();
+        return placeholder;
+
     }
 }

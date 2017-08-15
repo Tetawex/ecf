@@ -129,7 +129,7 @@ public class LevelSelectScreen extends BaseScreen<ECFGame> {
 
 
         TextButton menuButtonBackToMainMenu =
-                new TextButton(getGame().getLocalisedString("back"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("back"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         menuButtonBackToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

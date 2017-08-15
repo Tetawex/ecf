@@ -59,7 +59,7 @@ public class MainMenuScreen extends BaseScreen<ECFGame> {
         stack.add(titleTable);
         stage.addActor(stack);
         TextButton menuButtonPlay =
-                new TextButton(getGame().getLocalisedString("play"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("play"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         menuButtonPlay.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -75,7 +75,7 @@ public class MainMenuScreen extends BaseScreen<ECFGame> {
                 .center().pad(BUTTON_PAD).row();
 
         TextButton menuButtonHighscores =
-                new TextButton(getGame().getLocalisedString("highscores"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("highscores"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         menuButtonHighscores.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -88,7 +88,7 @@ public class MainMenuScreen extends BaseScreen<ECFGame> {
                 .center().pad(BUTTON_PAD).row();
 
         TextButton menuButtonSettings =
-                new TextButton(getGame().getLocalisedString("settings"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("settings"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         menuButtonSettings.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -101,7 +101,7 @@ public class MainMenuScreen extends BaseScreen<ECFGame> {
                 .center().pad(BUTTON_PAD).row();
 
         TextButton menuButtonQuit =
-                new TextButton(getGame().getLocalisedString("quit"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("quit"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         menuButtonQuit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

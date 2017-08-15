@@ -133,11 +133,11 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
         mainTable.add(bottomRowTable).growX().prefHeight(600f);
 
         Stack tutStack = new Stack();
-        tutButton = new TextButton(getGame().getLocalisedString("tutorial0"), SkinFactory.generateStandardTutorialButtonSkin(getGame()));
+        tutButton = new TextButton(getGame().getLocalisedString("tutorial0"), StyleFactory.generateStandardTutorialButtonStyle(getGame()));
         tutButton.getLabel().setWrap(true);
         bottomRowTable.add(tutButton).pad(PAUSE_BUTTON_PAD).width(PAUSE_BUTTON_WIDTH).grow();
 
-        TextButton pauseButton = new TextButton(" ", SkinFactory.generatePauseButtonSkin(getGame()));
+        TextButton pauseButton = new TextButton(" ", StyleFactory.generatePauseButtonStyle(getGame()));
         pauseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -148,12 +148,12 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
         topRowLeftTable.left().top();
         topRowLeftTable.add(pauseButton).size(120f).pad(40f).center();
 
-        scoreLabel = new Label("", SkinFactory.generateStandardLabelSkin(getGame()));
+        scoreLabel = new Label("", StyleFactory.generateStandardLabelStyle(getGame()));
         scoreLabel.setFontScale(SCORE_LABEL_FONT_SCALE);
         topRowCenterTable.add(scoreLabel);
 
         Stack topRowRightStack = new Stack();
-        manaLabel = new TextButton("", SkinFactory.generateManaButtonSkin(getGame()));
+        manaLabel = new TextButton("", StyleFactory.generateManaButtonStyle(getGame()));
         topRowRightTable.add(manaLabel).size(150f).pad(40f);
 
         topRowTable.toFront();
@@ -190,7 +190,7 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
         pauseTable.center();
 
         TextButton pauseMenuButtonContinue =
-                new TextButton(getGame().getLocalisedString("continue"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("continue"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         pauseMenuButtonContinue.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -204,7 +204,7 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
                 .center().pad(PAUSE_BUTTON_PAD).row();
 
         TextButton pauseMenuButtonQuit =
-                new TextButton(getGame().getLocalisedString("quit"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("quit"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         pauseMenuButtonQuit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

@@ -180,11 +180,11 @@ public class GameScreen extends BaseECFScreen {
 
         mainTable.setFillParent(true);
         mainTable.add(topRowTable).growX().row();
-        mainTable.add(new Label(levelData.getName(), SkinFactory.generateStandardLabelSkin(getGame()))).row();
+        mainTable.add(new Label(levelData.getName(), StyleFactory.generateStandardLabelStyle(getGame()))).row();
         mainTable.add(midRowTable).growX().growY().row();
         mainTable.add(bottomRowTable).growX();
 
-        TextButton pauseButton = new TextButton(" ", SkinFactory.generatePauseButtonSkin(getGame()));
+        TextButton pauseButton = new TextButton(" ", StyleFactory.generatePauseButtonStyle(getGame()));
         pauseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -195,12 +195,12 @@ public class GameScreen extends BaseECFScreen {
         topRowLeftTable.left().top();
         topRowLeftTable.add(pauseButton).size(120f).pad(40f).center();
 
-        scoreLabel = new Label("", SkinFactory.generateStandardLabelSkin(getGame()));
+        scoreLabel = new Label("", StyleFactory.generateStandardLabelStyle(getGame()));
         scoreLabel.setFontScale(SCORE_LABEL_FONT_SCALE);
         topRowCenterTable.add(scoreLabel);
 
-        Stack topRowRightStack = new Stack();
-        manaLabel = new TextButton("", SkinFactory.generateManaButtonSkin(getGame()));
+        //Stack topRowRightStack = new Stack();
+        manaLabel = new TextButton("", StyleFactory.generateManaButtonStyle(getGame()));
         topRowRightTable.add(manaLabel).size(150f).pad(40f);
 
         topRowTable.toFront();
@@ -287,7 +287,7 @@ public class GameScreen extends BaseECFScreen {
             }
         });
         //Element counter
-        Label.LabelStyle elementLabelStyle = SkinFactory.generateDarkestLabelSkin(getGame());
+        Label.LabelStyle elementLabelStyle = StyleFactory.generateDarkestLabelStyle(getGame());
         fireCounterLabel = new Label("0", elementLabelStyle);
         waterCounterLabel = new Label("0", elementLabelStyle);
         airCounterLabel = new Label("0", elementLabelStyle);
@@ -347,8 +347,8 @@ public class GameScreen extends BaseECFScreen {
 
         //win/loss ui
         wlTable.setVisible(false);
-        wlLabel = new Label("", SkinFactory.generateLargeStandardLabelSkin(getGame()));
-        wlReasonLabel = new Label("", SkinFactory.generateStandardLabelSkin(getGame()));
+        wlLabel = new Label("", StyleFactory.generateLargeStandardLabelStyle(getGame()));
+        wlReasonLabel = new Label("", StyleFactory.generateStandardLabelStyle(getGame()));
         wlReasonLabel.setWrap(true);
         wlReasonLabel.setAlignment(Align.center);
         wlTable.add(wlLabel).pad(20f).row();
@@ -364,20 +364,20 @@ public class GameScreen extends BaseECFScreen {
         }
 
         Table scoreTable = new Table();
-        scoreTable.add(new Label(getGame().getLocalisedString("score"), SkinFactory.generateStandardLabelSkin(getGame())));
-        wlScore = new Label("", SkinFactory.generateStandardLabelSkin(getGame()));
+        scoreTable.add(new Label(getGame().getLocalisedString("score"), StyleFactory.generateStandardLabelStyle(getGame())));
+        wlScore = new Label("", StyleFactory.generateStandardLabelStyle(getGame()));
         scoreTable.add(wlScore).padRight(40f);
         wlTable.add(scoreTable).pad(20f).row();
 
         Table spareTable = new Table();
-        spareTable.add(new Label(getGame().getLocalisedString("spare_mana"), SkinFactory.generateStandardLabelSkin(getGame())));
-        wlSpareMana = new Label("", SkinFactory.generateStandardLabelSkin(getGame()));
+        spareTable.add(new Label(getGame().getLocalisedString("spare_mana"), StyleFactory.generateStandardLabelStyle(getGame())));
+        wlSpareMana = new Label("", StyleFactory.generateStandardLabelStyle(getGame()));
         spareTable.add(wlSpareMana);
         wlTable.add(spareTable).pad(20f).row();
 
         Table totalTable = new Table();
-        totalTable.add(new Label(getGame().getLocalisedString("total"), SkinFactory.generateStandardLabelSkin(getGame())));
-        wlTotal = new Label("", SkinFactory.generateStandardLabelSkin(getGame()));
+        totalTable.add(new Label(getGame().getLocalisedString("total"), StyleFactory.generateStandardLabelStyle(getGame())));
+        wlTotal = new Label("", StyleFactory.generateStandardLabelStyle(getGame()));
         totalTable.add(wlTotal);
         wlTable.add(totalTable).pad(20f).row();
         wlTable.add(starsTable).pad(20f).row();
@@ -385,7 +385,7 @@ public class GameScreen extends BaseECFScreen {
         stack.add(wlTable);
 
         winLossMenuButtonNext =
-                new TextButton(getGame().getLocalisedString("next"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("next"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         winLossMenuButtonNext.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -406,7 +406,7 @@ public class GameScreen extends BaseECFScreen {
                 .center().pad(PAUSE_BUTTON_PAD).row();
 
         TextButton winLossMenuButtonRetry =
-                new TextButton(getGame().getLocalisedString("retry"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("retry"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         winLossMenuButtonRetry.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -423,7 +423,7 @@ public class GameScreen extends BaseECFScreen {
 
 
         TextButton winLossMenuButtonQuit =
-                new TextButton(getGame().getLocalisedString("quit"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("quit"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         winLossMenuButtonQuit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -440,7 +440,7 @@ public class GameScreen extends BaseECFScreen {
         pauseTable.center();
 
         TextButton pauseMenuButtonContinue =
-                new TextButton(getGame().getLocalisedString("continue"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("continue"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         pauseMenuButtonContinue.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -454,7 +454,7 @@ public class GameScreen extends BaseECFScreen {
                 .center().pad(PAUSE_BUTTON_PAD).row();
 
         TextButton pauseMenuButtonRetry =
-                new TextButton(getGame().getLocalisedString("retry"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("retry"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         pauseMenuButtonRetry.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -472,7 +472,7 @@ public class GameScreen extends BaseECFScreen {
 
 
         TextButton pauseMenuButtonQuit =
-                new TextButton(getGame().getLocalisedString("quit"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("quit"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         pauseMenuButtonQuit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

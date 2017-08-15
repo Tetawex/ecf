@@ -480,7 +480,19 @@ public class HexMapActor extends BaseWidget<ECFGame> {
         if (cellArray.length > 4) {
             elementHeight = 90;
             elementWidth = 90;
-            hexagonHeight = 242f;
+            hexagonHeight = 242;
+            hexagonWidth = hexagonHeight * MathUtils.getHexagonWidthToHeightRatio();
+        }
+        if (cellArray.length > 6) {
+            elementHeight = 70;
+            elementWidth = 70;
+            hexagonHeight = 188f;
+            hexagonWidth = hexagonHeight * MathUtils.getHexagonWidthToHeightRatio();
+        }
+        else {
+            elementHeight = 130;
+            elementWidth = 130;
+            hexagonHeight = 350;
             hexagonWidth = hexagonHeight * MathUtils.getHexagonWidthToHeightRatio();
         }
     }

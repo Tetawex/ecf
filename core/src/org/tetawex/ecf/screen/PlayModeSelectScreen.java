@@ -59,7 +59,7 @@ public class PlayModeSelectScreen extends BaseScreen<ECFGame> {
         mainTable.setFillParent(true);
         stack.add(mainTable);
         stage.addActor(stack);
-        TextButton.TextButtonStyle tbStyle = SkinFactory.generateStandardMenuButtonSkin(getGame());
+        TextButton.TextButtonStyle tbStyle = StyleFactory.generateStandardMenuButtonStyle(getGame());
         TextButton menuButtonLevels =
                 new TextButton(getGame().getLocalisedString("levels"), tbStyle);
         menuButtonLevels.addListener(new ChangeListener() {

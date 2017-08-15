@@ -10,8 +10,8 @@ import org.tetawex.ecf.core.ECFGame;
 /**
  * Created by Tetawex on 23.05.2017.
  */
-public class SkinFactory {
-    public static TextButton.TextButtonStyle generatePauseButtonSkin(ECFGame game) {
+public class StyleFactory {
+    public static TextButton.TextButtonStyle generatePauseButtonStyle(ECFGame game) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
@@ -21,7 +21,7 @@ public class SkinFactory {
         return textButtonStyle;
     }
 
-    public static TextButton.TextButtonStyle generateManaButtonSkin(ECFGame game) {
+    public static TextButton.TextButtonStyle generateManaButtonStyle(ECFGame game) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
@@ -32,7 +32,7 @@ public class SkinFactory {
         return textButtonStyle;
     }
 
-    public static Label.LabelStyle generateStandardLabelSkin(ECFGame game) {
+    public static Label.LabelStyle generateStandardLabelStyle(ECFGame game) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         Label.LabelStyle style = new Label.LabelStyle();
@@ -41,7 +41,7 @@ public class SkinFactory {
         return style;
     }
 
-    public static Label.LabelStyle generateLargeStandardLabelSkin(ECFGame game) {
+    public static Label.LabelStyle generateLargeStandardLabelStyle(ECFGame game) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         Label.LabelStyle style = new Label.LabelStyle();
@@ -50,7 +50,7 @@ public class SkinFactory {
         return style;
     }
 
-    public static Label.LabelStyle generateSmallStandardLabelSkin(ECFGame game) {
+    public static Label.LabelStyle generateSmallStandardLabelStyle(ECFGame game) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         Label.LabelStyle style = new Label.LabelStyle();
@@ -59,7 +59,7 @@ public class SkinFactory {
         return style;
     }
 
-    public static Label.LabelStyle generateDarkLabelSkin(ECFGame game) {
+    public static Label.LabelStyle generateDarkLabelStyle(ECFGame game) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         Label.LabelStyle style = new Label.LabelStyle();
@@ -68,7 +68,7 @@ public class SkinFactory {
         return style;
     }
 
-    public static Label.LabelStyle generateDarkerLabelSkin(ECFGame game) {
+    public static Label.LabelStyle generateDarkerLabelStyle(ECFGame game) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         Label.LabelStyle style = new Label.LabelStyle();
@@ -77,7 +77,7 @@ public class SkinFactory {
         return style;
     }
 
-    public static Label.LabelStyle generateDarkestLabelSkin(ECFGame game) {
+    public static Label.LabelStyle generateDarkestLabelStyle(ECFGame game) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         Label.LabelStyle style = new Label.LabelStyle();
@@ -86,7 +86,7 @@ public class SkinFactory {
         return style;
     }
 
-    public static Slider.SliderStyle generateStandardSliderSkin(ECFGame game) {
+    public static Slider.SliderStyle generateStandardSliderStyle(ECFGame game) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         Slider.SliderStyle style = new Slider.SliderStyle();
@@ -96,7 +96,7 @@ public class SkinFactory {
         return style;
     }
 
-    public static ScrollPane.ScrollPaneStyle generateStandardScrollPaneSkin(ECFGame game) {
+    public static ScrollPane.ScrollPaneStyle generateStandardScrollPaneStyle(ECFGame game) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         ScrollPane.ScrollPaneStyle style = new ScrollPane.ScrollPaneStyle();
@@ -106,7 +106,7 @@ public class SkinFactory {
         return style;
     }
 
-    public static TextButton.TextButtonStyle generateStandardMenuButtonSkin(ECFGame game) {
+    public static TextButton.TextButtonStyle generateStandardMenuButtonStyle(ECFGame game) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
@@ -122,7 +122,7 @@ public class SkinFactory {
         return style;
     }
 
-    public static TextButton.TextButtonStyle generateStandardTutorialButtonSkin(ECFGame game) {
+    public static TextButton.TextButtonStyle generateStandardTutorialButtonStyle(ECFGame game) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
@@ -136,7 +136,7 @@ public class SkinFactory {
         return style;
     }
 
-    public static TextButton.TextButtonStyle generateLanguageMenuButtonSkin(ECFGame game) {
+    public static TextButton.TextButtonStyle generateLanguageMenuButtonStyle(ECFGame game) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
@@ -152,7 +152,7 @@ public class SkinFactory {
         return style;
     }
 
-    public static TextButton.TextButtonStyle generateActionButtonSkin(ECFGame game, EditorScreen.ButtonAction action) {
+    public static TextButton.TextButtonStyle generateActionButtonStyle(ECFGame game, EditorScreen.ButtonAction action) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
@@ -188,8 +188,8 @@ public class SkinFactory {
                 textButtonStyle.down = skin.getDrawable("element_time");
                 break;
             case REMOVE_CELL:
-                textButtonStyle.up = skin.getDrawable("button_pause");
-                textButtonStyle.down = skin.getDrawable("button_pause");
+                textButtonStyle.up = skin.getDrawable("hexagon");
+                textButtonStyle.down = skin.getDrawable("hexagon");
                 break;
             case SAVE_LEVEL:
                 textButtonStyle.up = skin.getDrawable("button_pause");
@@ -206,5 +206,22 @@ public class SkinFactory {
 
         }
         return textButtonStyle;
+    }
+
+    public static TextField.TextFieldStyle generateEditorTextFieldStyle(ECFGame game) {
+        Skin skin = new Skin();
+        skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
+        TextField.TextFieldStyle style = new TextField.TextFieldStyle();
+        NinePatchDrawable ninePatch = new NinePatchDrawable(skin.getPatch("button_menu_bottom"));
+        style.font = game.getAssetManager().get("fonts/font_main_medium.ttf", BitmapFont.class);
+        style.fontColor = new Color(1f, 1f, 1f, 0.87f);
+        style.background = new Image(ninePatch).getDrawable();
+        //style.downFontColor = new Color(0.8f, 0.58f, 0.58f, 0.87f);
+        //style.up = new Image(ninePatch).getDrawable();
+        //style.checked = new Image(ninePatch).getDrawable();
+        ninePatch = new NinePatchDrawable(skin.getPatch("button_menu_bottom"));
+        //style.down = new Image(ninePatch).getDrawable();
+
+        return style;
     }
 }

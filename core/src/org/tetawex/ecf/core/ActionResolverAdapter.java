@@ -1,5 +1,6 @@
 package org.tetawex.ecf.core;
 
+import org.tetawex.ecf.model.LevelData;
 import org.tetawex.ecf.util.BasicListener;
 
 /**
@@ -10,5 +11,15 @@ public class ActionResolverAdapter implements ActionResolver {
     @Override
     public void setBackPressedListener(BasicListener listener) {
 
+    }
+
+    @Override
+    public void saveLevelData(LevelData levelData) {
+
+    }
+
+    @Override
+    public LevelData loadLevelData() {
+        return null;
     }
 }

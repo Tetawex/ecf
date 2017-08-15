@@ -21,14 +21,6 @@ import org.tetawex.ecf.util.MathUtils;
  * Created by tetawex on 02.05.17.
  */
 public class EditorHexMapActor extends BaseWidget<ECFGame> {
-    public void removeOrCreateCell() {
-        if (selectedCell == null)
-            cellArray[selectedPosition.x][selectedPosition.y] = CellFactory.generateEmptyCell(selectedPosition);
-        else {
-            selectedCell = null;
-            cellArray[selectedPosition.x][selectedPosition.y] = null;
-        }
-    }
 
     public interface CellActionListener {
         void cellMerged(int mergedElementsCount);
@@ -55,6 +47,7 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
     private IntVector2 selectedPosition = new IntVector2(0, 0);
 
     private TextureRegion cellRegion;
+    private TextureRegion nullRegion;
     private TextureRegion selectedRegion;
 
     private Sound clickSound;
@@ -67,6 +60,7 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
 
         cellRegion = getGame().getTextureRegionFromAtlas("hexagon");
         selectedRegion = getGame().getTextureRegionFromAtlas("hexagon_selected");
+        nullRegion = getGame().getTextureRegionFromAtlas("hexagon_disabled");
 
         clickSound = getGame().getAssetManager().get("sounds/click.ogg", Sound.class);
         errorSound = getGame().getAssetManager().get("sounds/error.ogg", Sound.class);
@@ -121,6 +115,7 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        IntVector2 nullVector = new IntVector2(0,0);
         //draw hexagons
         for (int i = 0; i < cellArray.length; i++) {
             for (int j = 0; j < cellArray[i].length; j++) {
@@ -129,6 +124,13 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
                     Vector2 offset = findOffsetForIndex(vec);
                     batch.draw(cellRegion, getX() + vec.x * (hexagonWidth + offset.x),
                             getY() + vec.y * hexagonHeight + offset.y,
+                            hexagonWidth, hexagonHeight);
+                }
+                else {
+                    nullVector.x=i; nullVector.y=j;
+                    Vector2 offset = findOffsetForIndex(nullVector);
+                    batch.draw(nullRegion, getX() + nullVector.x * (hexagonWidth + offset.x),
+                            getY() + nullVector.y * hexagonHeight + offset.y,
                             hexagonWidth, hexagonHeight);
                 }
             }
@@ -359,6 +361,15 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
         selectedPosition = position;
         clickSound.play(soundVolume);
 
+        if (selectedPosition.x >= cellArray.length)
+            selectedPosition.x = cellArray.length - 1;
+        if (selectedPosition.y >= cellArray[0].length)
+            selectedPosition.y = cellArray[0].length - 1;
+        if (selectedPosition.x < 0)
+            selectedPosition.x = 0;
+        if (selectedPosition.y < 0)
+            selectedPosition.y = 0;
+
     }
 
     private Array<Cell> getAdjacentCells(IntVector2 position) {
@@ -439,10 +450,20 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
 
     public void setCellArray(Cell[][] cellArray) {
         this.cellArray = cellArray;
-        if (cellArray.length > 4) {
+        if (cellArray.length > 6) {
+            elementHeight = 70;
+            elementWidth = 70;
+            hexagonHeight = 188f;
+            hexagonWidth = hexagonHeight * MathUtils.getHexagonWidthToHeightRatio();
+        } else if (cellArray.length > 4) {
             elementHeight = 90;
             elementWidth = 90;
-            hexagonHeight = 242f;
+            hexagonHeight = 242;
+            hexagonWidth = hexagonHeight * MathUtils.getHexagonWidthToHeightRatio();
+        } else {
+            elementHeight = 130;
+            elementWidth = 130;
+            hexagonHeight = 350;
             hexagonWidth = hexagonHeight * MathUtils.getHexagonWidthToHeightRatio();
         }
     }
@@ -473,5 +494,30 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
             return;
         }
         ElementFunctions.addElementToCell(selectedCell, element);
+    }
+    public void removeOrCreateCell() {
+        if (selectedCell == null) {
+            //if(selectedPosition.x>cellArray.length||selectedPosition.x>cellArray.lengthselectedPosition.y>cellArray[0].length)
+            cellArray[selectedPosition.x][selectedPosition.y] = CellFactory.generateEmptyCell(selectedPosition);
+        } else {
+            selectedCell = null;
+            cellArray[selectedPosition.x][selectedPosition.y] = null;
+        }
+    }
+
+    public void setHexSize(IntVector2 size) {
+        if (size.x < 1)
+            size.x = 1;
+        if (size.y < 1)
+            size.y = 1;
+        Cell[][] newCellArray = new Cell[size.x][size.y];
+        int width = size.x > cellArray.length ? cellArray.length : size.x;
+        int height = size.y > cellArray[0].length ? cellArray[0].length : size.y;
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                newCellArray[i][j]=cellArray[i][j];
+            }
+        }
+        setCellArray(newCellArray);
     }
 }

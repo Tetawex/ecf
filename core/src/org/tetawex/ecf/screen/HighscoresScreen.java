@@ -51,7 +51,7 @@ public class HighscoresScreen extends BaseScreen<ECFGame> {
         mainTable.setFillParent(true);
         stack.add(mainTable);
         stage.addActor(stack);
-        Label.LabelStyle labelStyle = SkinFactory.generateStandardLabelSkin(getGame());
+        Label.LabelStyle labelStyle = StyleFactory.generateStandardLabelStyle(getGame());
         int i = 1;
         for (Score score : preferences.getScores()) {
             Table table = new Table();
@@ -67,7 +67,7 @@ public class HighscoresScreen extends BaseScreen<ECFGame> {
                 break;
         }
         TextButton menuButtonBackToMainMenu =
-                new TextButton(getGame().getLocalisedString("back"), SkinFactory.generateStandardMenuButtonSkin(getGame()));
+                new TextButton(getGame().getLocalisedString("back"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
         menuButtonBackToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

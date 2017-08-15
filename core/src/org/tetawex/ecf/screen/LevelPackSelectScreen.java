@@ -56,7 +56,7 @@ public class LevelPackSelectScreen extends BaseECFScreen {
         mainTable.setFillParent(true);
         stack.add(mainTable);
         stage.addActor(stack);
-        TextButton.TextButtonStyle tbStyle = SkinFactory.generateStandardMenuButtonSkin(getGame());
+        TextButton.TextButtonStyle tbStyle = StyleFactory.generateStandardMenuButtonStyle(getGame());
         TextButton menuButtonClassic =
                 new TextButton(getGame().getLocalisedString("lp_classic"), tbStyle);
         menuButtonClassic.addListener(new ChangeListener() {
