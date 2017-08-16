@@ -1,6 +1,7 @@
 package org.tetawex.ecf.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,9 +16,7 @@ import org.tetawex.ecf.actor.EditorHexMapActor;
 import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.core.GameStateManager;
 import org.tetawex.ecf.model.*;
-import org.tetawex.ecf.util.Bundle;
-import org.tetawex.ecf.util.IntVector2;
-import org.tetawex.ecf.util.PreferencesProvider;
+import org.tetawex.ecf.util.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +25,8 @@ import java.util.Map;
  * ...
  */
 public class EditorScreen extends BaseECFScreen {
+    public static String EDITOR_LEVEL_STORAGE = "Elementality/Levels/";
+
     public enum ButtonAction {
         ADD_FIRE, ADD_WATER, ADD_AIR, ADD_EARTH, ADD_SHADOW, ADD_LIGHT, ADD_TIME,
         REMOVE_CELL, PLAY_LEVEL, SAVE_LEVEL, LOAD_LEVEL;
@@ -58,8 +59,6 @@ public class EditorScreen extends BaseECFScreen {
     private static final float SCORE_LABEL_FONT_SCALE = 1f;
     private static final float ELEMENT_COUNTER_IMAGE_SIZE = 130f;
 
-    private LevelData levelData;
-
     private Stage gameStage;
     private EditorHexMapActor hexMapActor;
 
@@ -88,7 +87,7 @@ public class EditorScreen extends BaseECFScreen {
         Gdx.input.setInputProcessor(gameStage);
 
         //levelData = bundle.getItem("levelData", LevelData.class);
-        levelData = LevelFactory.generateMotTestingGround();
+        LevelData levelData = LevelFactory.generateMotTestingGround();
         levelCode = levelData.getLevelCode();
 
         initUi();
@@ -204,18 +203,75 @@ public class EditorScreen extends BaseECFScreen {
         pauseTable.add(pauseMenuButtonContinue)
                 .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
                 .center().pad(PAUSE_BUTTON_PAD).row();
+        //save
+        TextButton pauseMenuButtonSaveLevel =
+                new TextButton(getGame().getLocalisedString("save"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
+        pauseMenuButtonSaveLevel.addListener(new ChangeListener() {
+            volatile boolean busy;
 
-        TextButton pauseMenuButtonRetry =
-                new TextButton(getGame().getLocalisedString("retry"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
-        pauseMenuButtonRetry.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                pauseTable.setVisible(!pauseTable.isVisible());
-                backgroundPause.setVisible(!backgroundPause.isVisible());
+                if(!getGame().getActionResolver().externalStorageAccessible())
+                    return;
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (busy)
+                            return;
+                        busy = true;
+                        try {
+                            LevelData levelData;
+                            levelData = createLevelData();
+
+                            FileHandle handle = Gdx.files.external(EDITOR_LEVEL_STORAGE +
+                                    levelData.getName() + ".json");
+                            handle.writeString(LevelDataUtils.toJson(levelData), false);
+                        } catch (Exception e) {
+                        }
+                        busy = false;
+                    }
+                });
+                thread.setDaemon(false);
+                thread.run();
+
             }
         });
-        pauseMenuButtonRetry.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
-        pauseTable.add(pauseMenuButtonRetry)
+        pauseMenuButtonSaveLevel.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
+        pauseTable.add(pauseMenuButtonSaveLevel)
+                .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
+                .center().pad(PAUSE_BUTTON_PAD).row();
+        //load
+        TextButton pauseMenuButtonLoadLevel =
+                new TextButton(getGame().getLocalisedString("load"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
+        pauseMenuButtonLoadLevel.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if(!getGame().getActionResolver().externalStorageAccessible())
+                    return;
+                FileChooser files = new FileChooser(
+                        "",
+                        StyleFactory.generateFileChooserStyle(getGame()),
+                        getGame()) {
+                    @Override
+                    protected void result(Object object) {
+                        if (object instanceof FileHandle) {
+                            try {
+                                FileHandle file = getFile();
+
+                                LevelData levelData = LevelDataUtils.fromJson(file.readString());
+                                resolveLoadedLevelData(levelData);
+                            } catch (Exception e) {
+                            }
+                        }
+
+                    }
+                };
+                files.setDirectory(Gdx.files.external(EDITOR_LEVEL_STORAGE));
+                files.show(gameStage);
+            }
+        });
+        pauseMenuButtonLoadLevel.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
+        pauseTable.add(pauseMenuButtonLoadLevel)
                 .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
                 .center().pad(PAUSE_BUTTON_PAD).row();
 
@@ -227,12 +283,7 @@ public class EditorScreen extends BaseECFScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 pauseTable.setVisible(!pauseTable.isVisible());
                 backgroundPause.setVisible(!backgroundPause.isVisible());
-                if (levelData.getLevelNumber() != -1) {
-                    Bundle bundle = new Bundle();
-                    bundle.putItem("levelCode", levelCode);
-                    getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, bundle);
-                } else
-                    getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT, null);
+                getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT, null);
             }
         });
         pauseMenuButtonQuit.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
@@ -251,10 +302,7 @@ public class EditorScreen extends BaseECFScreen {
         if (pauseTable.isVisible())
             pauseTable.setVisible(false);
         else {
-            if (levelData.getLevelNumber() != -1)
-                getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, null);
-            else
-                getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT, null);
+            getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT, null);
         }
     }
 
@@ -344,11 +392,11 @@ public class EditorScreen extends BaseECFScreen {
         nameField.setAlignment(Align.center);
         nameField.setMessageText(getGame().getLocalisedString("hint_name"));
 
-        maxScoreField = new TextField("", StyleFactory.generateEditorTextFieldStyle(getGame()));
+        maxScoreField = new TextField("1000", StyleFactory.generateEditorTextFieldStyle(getGame()));
         maxScoreField.setAlignment(Align.center);
         maxScoreField.setMessageText(getGame().getLocalisedString("hint_max_score"));
 
-        manaField = new TextField("", StyleFactory.generateEditorTextFieldStyle(getGame()));
+        manaField = new TextField("1", StyleFactory.generateEditorTextFieldStyle(getGame()));
         manaField.setAlignment(Align.center);
         manaField.setMessageText(getGame().getLocalisedString("hint_mana"));
 
@@ -358,15 +406,18 @@ public class EditorScreen extends BaseECFScreen {
         return placeholder;
 
     }
+
     private Table createLevelResizeTable() {
         Table placeholder = new Table();
 
         dimXField = new TextField("", StyleFactory.generateEditorTextFieldStyle(getGame()));
         dimXField.setAlignment(Align.center);
+        dimXField.setText("2");
         dimXField.setMessageText(getGame().getLocalisedString("hint_width"));
 
         dimYField = new TextField("", StyleFactory.generateEditorTextFieldStyle(getGame()));
         dimYField.setAlignment(Align.center);
+        dimYField.setText("2");
         dimYField.setMessageText(getGame().getLocalisedString("hint_height"));
 
         TextButton applyButton = new TextButton(getGame().getLocalisedString("apply"),
@@ -393,5 +444,34 @@ public class EditorScreen extends BaseECFScreen {
         placeholder.add(applyButton).growX();
         return placeholder;
 
+    }
+
+    private LevelData createLevelData() {
+        LevelData levelData = new LevelData();
+
+        levelData.setCellArray(hexMapActor.getCellArray());
+
+        levelData.setLevelCode("editor");
+        levelData.setLevelNumber(0);
+
+        levelData.setMaxScore(Integer.valueOf(maxScoreField.getText()));
+        levelData.setMana(Integer.valueOf(manaField.getText()));
+
+        levelData.setName(nameField.getText());
+
+        return levelData;
+    }
+
+    private void resolveLoadedLevelData(LevelData data) {
+        hexMapActor.setCellArray(data.getCellArray());
+        midRowTable.reset();
+        midRowTable.add(hexMapActor).center().expand();
+
+        dimXField.setText(String.valueOf(hexMapActor.getCellArray().length));
+        dimYField.setText(String.valueOf(hexMapActor.getCellArray()[0].length));
+
+        manaField.setText(String.valueOf(data.getMana()));
+        maxScoreField.setText(String.valueOf(data.getMaxScore()));
+        nameField.setText(String.valueOf(data.getName()));
     }
 }

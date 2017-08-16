@@ -115,7 +115,7 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        IntVector2 nullVector = new IntVector2(0,0);
+        IntVector2 nullVector = new IntVector2(0, 0);
         //draw hexagons
         for (int i = 0; i < cellArray.length; i++) {
             for (int j = 0; j < cellArray[i].length; j++) {
@@ -125,9 +125,9 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
                     batch.draw(cellRegion, getX() + vec.x * (hexagonWidth + offset.x),
                             getY() + vec.y * hexagonHeight + offset.y,
                             hexagonWidth, hexagonHeight);
-                }
-                else {
-                    nullVector.x=i; nullVector.y=j;
+                } else {
+                    nullVector.x = i;
+                    nullVector.y = j;
                     Vector2 offset = findOffsetForIndex(nullVector);
                     batch.draw(nullRegion, getX() + nullVector.x * (hexagonWidth + offset.x),
                             getY() + nullVector.y * hexagonHeight + offset.y,
@@ -495,13 +495,15 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
         }
         ElementFunctions.addElementToCell(selectedCell, element);
     }
+
     public void removeOrCreateCell() {
         if (selectedCell == null) {
-            //if(selectedPosition.x>cellArray.length||selectedPosition.x>cellArray.lengthselectedPosition.y>cellArray[0].length)
             cellArray[selectedPosition.x][selectedPosition.y] = CellFactory.generateEmptyCell(selectedPosition);
+            selectedCell=cellArray[selectedPosition.x][selectedPosition.y];
         } else {
             selectedCell = null;
             cellArray[selectedPosition.x][selectedPosition.y] = null;
+            selectedPosition=new IntVector2(0,0);
         }
     }
 
@@ -515,9 +517,11 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
         int height = size.y > cellArray[0].length ? cellArray[0].length : size.y;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                newCellArray[i][j]=cellArray[i][j];
+                newCellArray[i][j] = cellArray[i][j];
             }
         }
         setCellArray(newCellArray);
+        selectedPosition = new IntVector2(0, 0);
+        selectedCell = cellArray[0][0];
     }
 }

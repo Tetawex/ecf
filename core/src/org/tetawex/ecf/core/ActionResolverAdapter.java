@@ -14,12 +14,7 @@ public class ActionResolverAdapter implements ActionResolver {
     }
 
     @Override
-    public void saveLevelData(LevelData levelData) {
-
-    }
-
-    @Override
-    public LevelData loadLevelData() {
-        return null;
+    public boolean externalStorageAccessible() {
+        return true;
     }
 }

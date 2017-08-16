@@ -1,8 +1,10 @@
 package org.tetawex.ecf.screen;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import org.tetawex.ecf.core.ECFGame;
@@ -216,12 +218,14 @@ public class StyleFactory {
         style.font = game.getAssetManager().get("fonts/font_main_medium.ttf", BitmapFont.class);
         style.fontColor = new Color(1f, 1f, 1f, 0.87f);
         style.background = new Image(ninePatch).getDrawable();
-        //style.downFontColor = new Color(0.8f, 0.58f, 0.58f, 0.87f);
-        //style.up = new Image(ninePatch).getDrawable();
-        //style.checked = new Image(ninePatch).getDrawable();
-        ninePatch = new NinePatchDrawable(skin.getPatch("button_menu_bottom"));
-        //style.down = new Image(ninePatch).getDrawable();
-
+        return style;
+    }
+    public static Window.WindowStyle generateFileChooserStyle(ECFGame game) {
+        Window.WindowStyle style = new Window.WindowStyle();
+        style.titleFont = game.getAssetManager().get("fonts/font_main_medium.ttf", BitmapFont.class);
+        style.titleFontColor = new Color(1f, 1f, 1f, 0.87f);
+        style.background = new Image(game.getAssetManager()
+                .get("backgrounds/background.png", Texture.class)).getDrawable();
         return style;
     }
 }
