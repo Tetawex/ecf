@@ -68,7 +68,7 @@ public class LevelPackSelectScreen extends BaseECFScreen {
             }
         });
         TextButton menuButtonMot =
-                new TextButton(getGame().getLocalisedString("lp_mot"), tbStyle);
+                new TextButton(getGame().getLocalisedString("lp_mot"), StyleFactory.generateMotMenuButtonStyle(getGame()));
         menuButtonMot.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

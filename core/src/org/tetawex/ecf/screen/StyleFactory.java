@@ -102,9 +102,6 @@ public class StyleFactory {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
         ScrollPane.ScrollPaneStyle style = new ScrollPane.ScrollPaneStyle();
-        style.vScrollKnob = skin.getDrawable("slider");
-        style.vScroll = skin.getDrawable("dark_line");
-
         return style;
     }
 
@@ -120,6 +117,19 @@ public class StyleFactory {
         style.checked = new Image(ninePatch).getDrawable();
         ninePatch = new NinePatchDrawable(skin.getPatch("button_menu_pressed"));
         style.down = new Image(ninePatch).getDrawable();
+
+        return style;
+    }
+    public static TextButton.TextButtonStyle generateMotMenuButtonStyle(ECFGame game) {
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = game.getAssetManager().get("fonts/font_main_medium.ttf", BitmapFont.class);
+        style.fontColor = new Color(1f, 1f, 1f, 0.87f);
+        style.downFontColor = new Color(1, 1, 1, 0.35f);
+        style.up = new Image(game.getAssetManager()
+                .get("backgrounds/motbutton.png", Texture.class)).getDrawable();
+        style.checked = style.up;
+        style.down = new Image(game.getAssetManager()
+                .get("backgrounds/motbutton.png", Texture.class)).getDrawable();
 
         return style;
     }
@@ -225,7 +235,7 @@ public class StyleFactory {
         style.titleFont = game.getAssetManager().get("fonts/font_main_medium.ttf", BitmapFont.class);
         style.titleFontColor = new Color(1f, 1f, 1f, 0.87f);
         style.background = new Image(game.getAssetManager()
-                .get("backgrounds/background.png", Texture.class)).getDrawable();
+                .get("backgrounds/background_dialog.png", Texture.class)).getDrawable();
         return style;
     }
 }
