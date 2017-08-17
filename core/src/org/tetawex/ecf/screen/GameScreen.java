@@ -88,8 +88,7 @@ public class GameScreen extends BaseECFScreen {
         Gdx.input.setInputProcessor(gameStage);
 
         gameData = new GameData();
-        //levelData = bundle.getItem("levelData", LevelData.class);
-        levelData = LevelFactory.generateMotTestingGround();
+        levelData = bundle.getItem("levelData", LevelData.class);
         levelCode = levelData.getLevelCode();
 
         initUi();
@@ -268,7 +267,7 @@ public class GameScreen extends BaseECFScreen {
                     for (int i = 0; i < starsCount; i++) {
                         stars[i].setDrawable(new TextureRegionDrawable(starRegion));
                     }
-                    if (levelData.getLevelNumber() != -1) {
+                    if (!"editor".equals(levelData.getLevelCode())&&!"random".equals(levelData.getLevelCode())) {
                         preferences.getLevelCompletionStateList(levelCode).get(levelData.getLevelNumber()).setCompleted(true);
                         if (preferences.getLevelCompletionStateList(levelCode).get(levelData.getLevelNumber()).getStars() < starsCount)
                             preferences.getLevelCompletionStateList(levelCode).get(levelData.getLevelNumber()).setStars(starsCount);
@@ -389,7 +388,11 @@ public class GameScreen extends BaseECFScreen {
         winLossMenuButtonNext.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (levelData.getLevelNumber() == -1)
+                if(levelCode=="editor") {
+                    goBackToEditor();
+                    return;
+                }
+                if (levelCode=="random")
                     getGame().getGameStateManager().setState(GameStateManager.GameState.HIGHSCORES, null);
                 else if (levelData.getLevelNumber() + 1 >= PreferencesProvider.LEVELS_COUNT)
                     getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, null);
@@ -427,6 +430,10 @@ public class GameScreen extends BaseECFScreen {
         winLossMenuButtonQuit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                if("editor".equals(levelCode)) {
+                    goBackToEditor();
+                    return;
+                }
                 Bundle bundle = new Bundle();
                 bundle.putItem("levelCode", levelCode);
                 getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, bundle);
@@ -444,6 +451,7 @@ public class GameScreen extends BaseECFScreen {
         pauseMenuButtonContinue.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+
                 pauseTable.setVisible(!pauseTable.isVisible());
                 backgroundPause.setVisible(!backgroundPause.isVisible());
             }
@@ -476,6 +484,10 @@ public class GameScreen extends BaseECFScreen {
         pauseMenuButtonQuit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                if("editor".equals(levelCode)) {
+                    goBackToEditor();
+                    return;
+                }
                 pauseTable.setVisible(!pauseTable.isVisible());
                 backgroundPause.setVisible(!backgroundPause.isVisible());
                 if (levelData.getLevelNumber() != -1) {
@@ -507,5 +519,10 @@ public class GameScreen extends BaseECFScreen {
             else
                 getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT, null);
         }
+    }
+    private void goBackToEditor(){
+        Bundle bundle = new Bundle();
+        bundle.putItem("levelData", levelData);
+        getGame().getGameStateManager().setState(GameStateManager.GameState.EDITOR, bundle);
     }
 }

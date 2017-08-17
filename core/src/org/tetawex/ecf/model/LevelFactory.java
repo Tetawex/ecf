@@ -5,12 +5,38 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import org.tetawex.ecf.util.IntVector2;
+import org.tetawex.ecf.util.LevelDataUtils;
 
 /**
  * Created by Tetawex on 06.06.2017.
  */
 public class LevelFactory {
     public static LevelData generateLevel(int number, String levelCode) {
+        LevelData levelData = LevelDataUtils
+                .fromJson(readFile("levels/" + levelCode + "level" + (number) + ".json"));
+        levelData.setLevelNumber(number);
+        levelData.setLevelCode(levelCode);
+        return levelData;
+    }
+    public static void convertLevels(){
+        for (int i = 0; i < 18; i++) {
+            Gdx.files.external("ConvertedLevels/level"+i+".json")
+                    .writeString(LevelDataUtils.toJson(generateLevel(i, "")),false);
+        }
+    }
+    public static LevelData generateMotTestingGround() {
+        Cell[][] cells = CellArrayFactory.generateBasicCellArray(3, 4);
+        cells[1][2].getElements().add(Element.TIME);
+        cells[0][1].getElements().add(Element.TIME);
+        return new LevelData(cells, 10, 10000, 0, "The World", "mot");
+    }
+
+    private static String readFile(String fileName) {
+        FileHandle handle = Gdx.files.internal(fileName);
+        return handle.readString();
+    }
+    @Deprecated
+    public static LevelData generateLevelOld(int number, String levelCode) {
         JsonReader jsonReader = new JsonReader();
         JsonValue jsonData = jsonReader.parse(readFile("levels/"+levelCode+"level" + (number) + ".json"));
         int height = jsonData.get("height").asInt();
@@ -64,16 +90,5 @@ public class LevelFactory {
         }
 
         return new LevelData(cellArray, mana, maxScore, number, name, levelCode);
-    }
-    public static LevelData generateMotTestingGround(){
-        Cell[][] cells= CellArrayFactory.generateBasicCellArray(3,4);
-        cells[1][2].getElements().add(Element.TIME);
-        cells[0][1].getElements().add(Element.TIME);
-        return new LevelData(cells, 10, 10000, 0, "The World", "mot");
-    }
-
-    private static String readFile(String fileName) {
-        FileHandle handle = Gdx.files.internal(fileName);
-        return handle.readString();
     }
 }

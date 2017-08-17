@@ -111,7 +111,7 @@ public class FileChooser extends Dialog {
         }
         pane.setWidget(table);
         this.getContentTable().reset();
-        this.getContentTable().add(pane).expand().fill();
+        this.getContentTable().add(pane).size(1200,1200);
     }
 
 }

@@ -30,8 +30,8 @@ public class AndroidLauncher extends AndroidApplication implements ActionResolve
 
     @Override
     public void onBackPressed() {
-        if (backPressedListener != null)
-            backPressedListener.call();
+        /*if (backPressedListener != null)
+            backPressedListener.call();*/
     }
 
     @Override

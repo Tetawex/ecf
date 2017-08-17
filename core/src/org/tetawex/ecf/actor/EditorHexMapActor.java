@@ -450,6 +450,8 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
 
     public void setCellArray(Cell[][] cellArray) {
         this.cellArray = cellArray;
+        selectedPosition=new IntVector2(0,0);
+        selectedCell=cellArray[0][0];
         if (cellArray.length > 6) {
             elementHeight = 70;
             elementWidth = 70;

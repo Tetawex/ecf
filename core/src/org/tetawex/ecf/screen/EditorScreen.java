@@ -19,9 +19,6 @@ import org.tetawex.ecf.core.GameStateManager;
 import org.tetawex.ecf.model.*;
 import org.tetawex.ecf.util.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * ...
  */
@@ -74,10 +71,6 @@ public class EditorScreen extends BaseECFScreen {
 
     private ECFPreferences preferences;
 
-    private Map<GameData.LossCondition, String> lcToStringMap;
-    private Image[] stars;
-    private String levelCode;
-
     public EditorScreen(ECFGame game, Bundle bundle) {
         super(game);
 
@@ -87,27 +80,12 @@ public class EditorScreen extends BaseECFScreen {
 
         Gdx.input.setInputProcessor(gameStage);
 
-        //levelData = bundle.getItem("levelData", LevelData.class);
-        LevelData levelData = LevelFactory.generateMotTestingGround();
-        levelCode = levelData.getLevelCode();
-
         initUi();
 
+        if (bundle != null && bundle.getItem("levelData", LevelData.class) != null)
+            resolveLoadedLevelData(bundle.getItem("levelData", LevelData.class));
+
         preferences = PreferencesProvider.getPreferences();
-
-        lcToStringMap = new HashMap<GameData.LossCondition, String>();
-        lcToStringMap.put(GameData.LossCondition.NO_MANA, "lc_no_mana");
-
-        lcToStringMap.put(GameData.LossCondition.NO_FIRE, "lc_no_fire");
-        lcToStringMap.put(GameData.LossCondition.NO_WATER, "lc_no_water");
-
-        lcToStringMap.put(GameData.LossCondition.NO_AIR, "lc_no_air");
-        lcToStringMap.put(GameData.LossCondition.NO_EARTH, "lc_no_earth");
-
-        lcToStringMap.put(GameData.LossCondition.NO_SHADOW, "lc_no_shadow");
-        lcToStringMap.put(GameData.LossCondition.NO_LIGHT, "lc_no_light");
-
-        lcToStringMap.put(GameData.LossCondition.NO_TIME, "lc_no_light");
     }
 
     @Override
@@ -131,7 +109,7 @@ public class EditorScreen extends BaseECFScreen {
         stack.setFillParent(true);
 
         final Image background = new Image(getGame().getAssetManager()
-                .get("backgrounds/" + levelCode + "background.png", Texture.class));
+                .get("backgrounds/background.png", Texture.class));
         background.setFillParent(true);
         final Image backgroundPause = new Image(getGame().getAssetManager()
                 .get("backgrounds/background_pause.png", Texture.class));
@@ -159,7 +137,6 @@ public class EditorScreen extends BaseECFScreen {
         hexMapActor = new EditorHexMapActor(getGame());
         hexMapActor.setSoundVolume(PreferencesProvider.getPreferences().getSoundVolume());
         hexMapActor.setCellArray(CellArrayFactory.generateEmptyCellArray(2, 2));
-
         midRowTable.add(hexMapActor).center().expand();
 
         mainTable.setFillParent(true);
@@ -200,6 +177,22 @@ public class EditorScreen extends BaseECFScreen {
                 backgroundPause.setVisible(!backgroundPause.isVisible());
             }
         });
+
+        TextButton pauseMenuButtonPlay =
+                new TextButton(getGame().getLocalisedString("play"), StyleFactory.generateStandardMenuButtonStyle(getGame()));
+        pauseMenuButtonPlay.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Bundle bundle = new Bundle();
+                bundle.putItem("levelData", createLevelData());
+                getGame().getGameStateManager().setState(GameStateManager.GameState.GAME, bundle);
+            }
+        });
+        pauseMenuButtonPlay.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
+        pauseTable.add(pauseMenuButtonPlay)
+                .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
+                .center().pad(PAUSE_BUTTON_PAD).row();
+
         pauseMenuButtonContinue.getLabel().setFontScale(PAUSE_BUTTON_FONT_SCALE);
         pauseTable.add(pauseMenuButtonContinue)
                 .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
@@ -212,7 +205,7 @@ public class EditorScreen extends BaseECFScreen {
 
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(!getGame().getActionResolver().externalStorageAccessible())
+                if (!getGame().getActionResolver().externalStorageAccessible())
                     return;
                 Thread thread = new Thread(new Runnable() {
                     @Override
@@ -247,7 +240,7 @@ public class EditorScreen extends BaseECFScreen {
         pauseMenuButtonLoadLevel.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(!getGame().getActionResolver().externalStorageAccessible())
+                if (!getGame().getActionResolver().externalStorageAccessible())
                     return;
                 pauseTable.setVisible(false);
                 backgroundPause.setVisible(false);

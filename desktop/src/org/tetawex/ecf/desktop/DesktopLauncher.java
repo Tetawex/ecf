@@ -4,6 +4,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import org.tetawex.ecf.core.ActionResolverAdapter;
 import org.tetawex.ecf.core.ECFGame;
+import org.tetawex.ecf.model.LevelFactory;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -12,5 +13,6 @@ public class DesktopLauncher {
 		config.width=432;
 		config.height=768;
 		new LwjglApplication(new ECFGame(new ActionResolverAdapter()), config);
+        LevelFactory.convertLevels();
 	}
 }
