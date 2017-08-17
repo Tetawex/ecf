@@ -125,9 +125,16 @@ size: 1024,1024
 format: RGBA8888
 filter: Nearest,MipMapLinearNearest
 repeat: none
+button_hexagon
+  rotate: false
+  xy: 204, 71
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1
 button_menu_pressed
   rotate: false
-  xy: 445, 412
+  xy: 445, 431
   size: 150, 150
   split: 37, 37, 37, 37
   orig: 150, 150
@@ -135,84 +142,84 @@ button_menu_pressed
   index: -1
 button_pause
   rotate: false
-  xy: 840, 809
+  xy: 840, 828
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: -1
 element_air
   rotate: false
-  xy: 204, 52
+  xy: 445, 288
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 element_earth
   rotate: false
-  xy: 445, 269
+  xy: 597, 440
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 element_fire
   rotate: false
-  xy: 597, 421
+  xy: 840, 685
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 element_light
   rotate: false
-  xy: 840, 666
+  xy: 840, 542
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 element_shadow
   rotate: false
-  xy: 840, 523
+  xy: 348, 71
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 element_time
   rotate: false
-  xy: 348, 52
+  xy: 492, 145
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 element_water
   rotate: false
-  xy: 492, 126
+  xy: 492, 2
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 hexagon_disabled
   rotate: false
-  xy: 2, 578
+  xy: 2, 597
   size: 441, 381
   orig: 441, 381
   offset: 0, 0
   index: -1
 hexagon_selected
   rotate: false
-  xy: 2, 195
+  xy: 2, 214
   size: 441, 381
   orig: 441, 381
   offset: 0, 0
   index: -1
 level_active
   rotate: false
-  xy: 445, 564
+  xy: 445, 583
   size: 393, 395
   orig: 393, 395
   offset: 0, 0
   index: -1
 star_ungained
   rotate: false
-  xy: 2, 2
+  xy: 2, 21
   size: 200, 191
   orig: 200, 191
   offset: 0, 0

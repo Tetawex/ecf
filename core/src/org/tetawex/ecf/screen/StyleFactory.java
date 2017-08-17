@@ -200,8 +200,8 @@ public class StyleFactory {
                 textButtonStyle.down = skin.getDrawable("element_time");
                 break;
             case REMOVE_CELL:
-                textButtonStyle.up = skin.getDrawable("hexagon");
-                textButtonStyle.down = skin.getDrawable("hexagon");
+                textButtonStyle.up = skin.getDrawable("button_hexagon");
+                textButtonStyle.down = skin.getDrawable("button_hexagon");
                 break;
             case SAVE_LEVEL:
                 textButtonStyle.up = skin.getDrawable("button_pause");
