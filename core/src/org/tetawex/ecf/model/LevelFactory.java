@@ -18,12 +18,14 @@ public class LevelFactory {
         levelData.setLevelCode(levelCode);
         return levelData;
     }
-    public static void convertLevels(){
+
+    public static void convertLevels() {
         for (int i = 0; i < 18; i++) {
-            Gdx.files.external("ConvertedLevels/level"+i+".json")
-                    .writeString(LevelDataUtils.toJson(generateLevel(i, "")),false);
+            Gdx.files.external("ConvertedLevels/level" + i + ".json")
+                    .writeString(LevelDataUtils.toJson(generateLevel(i, "")), false);
         }
     }
+
     public static LevelData generateMotTestingGround() {
         Cell[][] cells = CellArrayFactory.generateBasicCellArray(3, 4);
         cells[1][2].getElements().add(Element.TIME);
@@ -35,10 +37,11 @@ public class LevelFactory {
         FileHandle handle = Gdx.files.internal(fileName);
         return handle.readString();
     }
+
     @Deprecated
     public static LevelData generateLevelOld(int number, String levelCode) {
         JsonReader jsonReader = new JsonReader();
-        JsonValue jsonData = jsonReader.parse(readFile("levels/"+levelCode+"level" + (number) + ".json"));
+        JsonValue jsonData = jsonReader.parse(readFile("levels/" + levelCode + "level" + (number) + ".json"));
         int height = jsonData.get("height").asInt();
         int width = jsonData.get("width").asInt();
         int mana = 1;

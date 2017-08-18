@@ -452,10 +452,15 @@ public class EditorHexMapActor extends BaseWidget<ECFGame> {
         this.cellArray = cellArray;
         selectedPosition=new IntVector2(0,0);
         selectedCell=cellArray[0][0];
-        if (cellArray.length > 6) {
+        if (cellArray.length > 9) {
+            elementHeight = 45;
+            elementWidth = 54;
+            hexagonHeight = 121;
+            hexagonWidth = hexagonHeight * MathUtils.getHexagonWidthToHeightRatio();
+        } else if (cellArray.length > 6) {
             elementHeight = 70;
             elementWidth = 70;
-            hexagonHeight = 188f;
+            hexagonHeight = 188;
             hexagonWidth = hexagonHeight * MathUtils.getHexagonWidthToHeightRatio();
         } else if (cellArray.length > 4) {
             elementHeight = 90;

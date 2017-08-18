@@ -17,7 +17,7 @@ public class PreferencesProvider {
     private static final String PREFERENCES_NAME = "ECF Preferences";
     private static final String PREFERENCES_CODE = "serialized";
     public static final int LEVELS_COUNT = 18;
-    public static final int MOT_LEVELS_COUNT = 2;
+    public static final int MOT_LEVELS_COUNT = 5;
     private static ECFPreferences preferences;
 
     public static ECFPreferences getPreferences() {
@@ -32,14 +32,14 @@ public class PreferencesProvider {
             }
             int size = preferences.getLevelCompletionStateList("").size();
             if (size < LEVELS_COUNT) {
-                for (int i = LEVELS_COUNT - size - 1; i <= LEVELS_COUNT; i++) {
+                for (int i = 0; i < MOT_LEVELS_COUNT - size; i++) {
                     preferences.getLevelCompletionStateList("").add(new LevelCompletionState(0, false, false));
                 }
                 preferences.getLevelCompletionStateList(("")).get(0).setUnlocked(true);
             }
             size = preferences.getLevelCompletionStateList("mot").size();
             if (size < MOT_LEVELS_COUNT) {
-                for (int i = MOT_LEVELS_COUNT - size - 1; i <= MOT_LEVELS_COUNT; i++) {
+                for (int i = 0; i < MOT_LEVELS_COUNT - size; i++) {
                     preferences.getLevelCompletionStateList("mot").add(new LevelCompletionState(0, false, false));
                 }
                 preferences.getLevelCompletionStateList(("mot")).get(0).setUnlocked(true);
@@ -86,5 +86,11 @@ public class PreferencesProvider {
             levelList2.add(new LevelCompletionState(0, false, false));
         }
         preferences.setLevelCompletionStateList(levelList2, "mot");
+    }
+    public static int getLevelCountForCode(String code){
+        if("mot".equals(code))
+            return MOT_LEVELS_COUNT;
+        else
+            return LEVELS_COUNT;
     }
 }

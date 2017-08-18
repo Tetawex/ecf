@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.OrderedMap;
 import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.model.Cell;
 import org.tetawex.ecf.model.Element;
-import org.tetawex.ecf.model.ElementFunctions;
 import org.tetawex.ecf.util.IntVector2;
 import org.tetawex.ecf.util.MathUtils;
 
@@ -477,24 +476,30 @@ public class HexMapActor extends BaseWidget<ECFGame> {
 
     public void setCellArray(Cell[][] cellArray) {
         this.cellArray = cellArray;
-        if (cellArray.length > 4) {
+        if (cellArray.length > 9) {
+            elementHeight = 45;
+            elementWidth = 54;
+            hexagonHeight = 121;
+            hexagonWidth = hexagonHeight * MathUtils.getHexagonWidthToHeightRatio();
+        } else if (cellArray.length > 6) {
+            elementHeight = 70;
+            elementWidth = 70;
+            hexagonHeight = 188;
+            hexagonWidth = hexagonHeight * MathUtils.getHexagonWidthToHeightRatio();
+        } else if (cellArray.length > 4) {
             elementHeight = 90;
             elementWidth = 90;
             hexagonHeight = 242;
             hexagonWidth = hexagonHeight * MathUtils.getHexagonWidthToHeightRatio();
-        }
-        if (cellArray.length > 6) {
-            elementHeight = 70;
-            elementWidth = 70;
-            hexagonHeight = 188f;
-            hexagonWidth = hexagonHeight * MathUtils.getHexagonWidthToHeightRatio();
-        }
-        else {
+        } else {
             elementHeight = 130;
             elementWidth = 130;
             hexagonHeight = 350;
             hexagonWidth = hexagonHeight * MathUtils.getHexagonWidthToHeightRatio();
         }
+        if (selectedCell != null && cellExistsAt(selectedCell.getPosition()))
+            selectedCell = cellArray[selectedCell.getPosition().x][selectedCell.getPosition().y];
+        else selectedCell = null;
     }
 
     public CellActionListener getCellActionListener() {

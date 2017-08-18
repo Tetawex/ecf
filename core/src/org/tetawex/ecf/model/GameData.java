@@ -38,7 +38,6 @@ public class GameData {
     private int mana;
     private int score;
     private Cell[][] cellArray;
-    private Cell[][] originalCellArray;
 
     public float getMana() {
         return mana;
@@ -66,25 +65,22 @@ public class GameData {
         return cellArray;
     }
 
-    public void setCellArray(Cell[][] cellArray) {
-        this.cellArray = cellArray;
-
-        int width = cellArray.length;
+    public void setCellArray(Cell[][] inputArray) {
+        int width = inputArray.length;
         int height = 0;
         if (width > 0)
-            height = cellArray[0].length;
+            height = inputArray[0].length;
 
-        Cell[][] arr = new Cell[width][height];
+        Cell[][] copiedArray = new Cell[width][height];
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (cellArray[i][j] != null)
-                    arr[i][j] = new Cell(new IntVector2(i, j)
-                            , copyElementSet(cellArray[i][j].getElements()));
-                else originalCellArray = null;
+                if (inputArray[i][j] != null)
+                    copiedArray[i][j] = new Cell(new IntVector2(i, j)
+                            , copyElementSet(inputArray[i][j].getElements()));
             }
         }
-        originalCellArray = arr;
+        cellArray = copiedArray;
         gameDataChangedListener.cellMapChanged(cellArray);
 
         calculateElementsLeft();
@@ -125,9 +121,6 @@ public class GameData {
         return mana >= SINGLE_MOVE_MANACOST;
     }
 
-    public Cell[][] getOriginalCellArray() {
-        return originalCellArray;
-    }
 
     public GameDataChangedListener getGameDataChangedListener() {
         return gameDataChangedListener;

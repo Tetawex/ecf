@@ -261,17 +261,21 @@ public class GameScreen extends BaseECFScreen {
                     winLossMenuButtonNext.setHeight(PAUSE_BUTTON_HEIGHT);
                     wlReasonLabel.setVisible(false);
                     wlLabel.setText(getGame().getLocalisedString("level_success"));
-                    int starsCount = Math.round(1 + 2 * (totalScore / levelData.getMaxScore()));
-                    if (starsCount > 3)
+
+                    int starsCount = 1;
+                    if (totalScore > levelData.getMaxScore() / 2)
+                        starsCount = 2;
+                    if (totalScore >= levelData.getMaxScore())
                         starsCount = 3;
+
                     for (int i = 0; i < starsCount; i++) {
                         stars[i].setDrawable(new TextureRegionDrawable(starRegion));
                     }
-                    if (!"editor".equals(levelData.getLevelCode())&&!"random".equals(levelData.getLevelCode())) {
+                    if (!"editor".equals(levelData.getLevelCode()) && !"random".equals(levelData.getLevelCode())) {
                         preferences.getLevelCompletionStateList(levelCode).get(levelData.getLevelNumber()).setCompleted(true);
                         if (preferences.getLevelCompletionStateList(levelCode).get(levelData.getLevelNumber()).getStars() < starsCount)
                             preferences.getLevelCompletionStateList(levelCode).get(levelData.getLevelNumber()).setStars(starsCount);
-                        if (levelData.getLevelNumber() + 1 < PreferencesProvider.LEVELS_COUNT)
+                        if (levelData.getLevelNumber() + 1 < PreferencesProvider.getLevelCountForCode(levelCode))
                             preferences.getLevelCompletionStateList(levelCode).get(levelData.getLevelNumber() + 1).setUnlocked(true);
                     }
                     PreferencesProvider.flushPreferences();
@@ -327,7 +331,7 @@ public class GameScreen extends BaseECFScreen {
         //shadow-light
         Table slTable = new Table();
         Table shadowTable = new Table();
-        Table lightTable = new Table();
+        final Table lightTable = new Table();
 
         shadowTable.add(new Image(
                 getGame().getTextureRegionFromAtlas("element_shadow"))).size(ELEMENT_COUNTER_IMAGE_SIZE).row();
@@ -388,18 +392,21 @@ public class GameScreen extends BaseECFScreen {
         winLossMenuButtonNext.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(levelCode=="editor") {
+                if (levelCode == "editor") {
                     goBackToEditor();
                     return;
                 }
-                if (levelCode=="random")
+                if (levelCode == "random")
                     getGame().getGameStateManager().setState(GameStateManager.GameState.HIGHSCORES, null);
-                else if (levelData.getLevelNumber() + 1 >= PreferencesProvider.LEVELS_COUNT)
-                    getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, null);
-                else {
+                else if (levelData.getLevelNumber() + 1 >= PreferencesProvider.getLevelCountForCode(levelCode)) {
                     Bundle bundle = new Bundle();
                     bundle.putItem("levelCode", levelCode);
-                    bundle.putItem("levelData", LevelFactory.generateLevel(levelData.getLevelNumber() + 1, levelCode));
+                    getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, bundle);
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putItem("levelCode", levelCode);
+                    bundle.putItem("levelData",
+                            LevelFactory.generateLevel(levelData.getLevelNumber() + 1, levelCode));
                     getGame().getGameStateManager().setState(GameStateManager.GameState.GAME, bundle);
                 }
             }
@@ -415,7 +422,7 @@ public class GameScreen extends BaseECFScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 wlTable.setVisible(false);
                 backgroundPause.setVisible(false);
-                gameData.setCellArray(gameData.getOriginalCellArray());
+                gameData.setCellArray(levelData.getCellArray());
                 gameData.setScore(0);
                 gameData.setMana(levelData.getMana());
             }
@@ -430,7 +437,7 @@ public class GameScreen extends BaseECFScreen {
         winLossMenuButtonQuit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if("editor".equals(levelCode)) {
+                if ("editor".equals(levelCode)) {
                     goBackToEditor();
                     return;
                 }
@@ -468,7 +475,7 @@ public class GameScreen extends BaseECFScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 pauseTable.setVisible(!pauseTable.isVisible());
                 backgroundPause.setVisible(!backgroundPause.isVisible());
-                gameData.setCellArray(gameData.getOriginalCellArray());
+                gameData.setCellArray(levelData.getCellArray());
                 gameData.setScore(0);
                 gameData.setMana(levelData.getMana());
             }
@@ -484,7 +491,7 @@ public class GameScreen extends BaseECFScreen {
         pauseMenuButtonQuit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if("editor".equals(levelCode)) {
+                if ("editor".equals(levelCode)) {
                     goBackToEditor();
                     return;
                 }
@@ -520,7 +527,8 @@ public class GameScreen extends BaseECFScreen {
                 getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT, null);
         }
     }
-    private void goBackToEditor(){
+
+    private void goBackToEditor() {
         Bundle bundle = new Bundle();
         bundle.putItem("levelData", levelData);
         getGame().getGameStateManager().setState(GameStateManager.GameState.EDITOR, bundle);
