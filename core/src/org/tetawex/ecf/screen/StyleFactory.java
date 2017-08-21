@@ -129,7 +129,7 @@ public class StyleFactory {
                 .get("backgrounds/motbutton.png", Texture.class)).getDrawable();
         style.checked = style.up;
         style.down = new Image(game.getAssetManager()
-                .get("backgrounds/motbutton.png", Texture.class)).getDrawable();
+                .get("backgrounds/motbutton_pressed.png", Texture.class)).getDrawable();
 
         return style;
     }

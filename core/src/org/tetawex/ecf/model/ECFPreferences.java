@@ -13,6 +13,7 @@ public class ECFPreferences {
     private List<LevelCompletionState> levelCompletionStateListMot = new ArrayList<LevelCompletionState>();
 
     private boolean completedTutorial;
+    private boolean completedMotTutorial;
 
     private float soundVolume = 0.5f;
     private float musicVolume = 0.5f;
@@ -94,5 +95,13 @@ public class ECFPreferences {
 
     public void setCompletedTutorial(boolean completedTutorial) {
         this.completedTutorial = completedTutorial;
+    }
+
+    public boolean isCompletedMotTutorial() {
+        return completedMotTutorial;
+    }
+
+    public void setCompletedMotTutorial(boolean completedMotTutorial) {
+        this.completedMotTutorial = completedMotTutorial;
     }
 }

@@ -12,7 +12,7 @@ public class GameStateManager {
         currentScreen.dispose();
     }
 
-    public enum GameState {MAIN_MENU, GAME, SETTINGS, HIGHSCORES, MODE_SELECT, LEVEL_SELECT, TUTORIAL, EDITOR, LEVEL_PACK_SELECT}
+    public enum GameState {MAIN_MENU, GAME, SETTINGS, HIGHSCORES, MODE_SELECT, LEVEL_SELECT, TUTORIAL, EDITOR, MOT_TUTORIAL, LEVEL_PACK_SELECT}
 
     private Screen currentScreen;
     private GameState currentState;
@@ -44,6 +44,9 @@ public class GameStateManager {
         switch (currentState) {
             case TUTORIAL:
                 currentScreen = new TutorialScreen(game, bundle);
+                break;
+            case MOT_TUTORIAL:
+                currentScreen = new MotTutorialScreen(game, bundle);
                 break;
             case MODE_SELECT:
                 currentScreen = new PlayModeSelectScreen(game, bundle);

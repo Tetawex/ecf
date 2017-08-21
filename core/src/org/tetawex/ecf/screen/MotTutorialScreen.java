@@ -23,7 +23,7 @@ import org.tetawex.ecf.util.PreferencesProvider;
 /**
  * ...
  */
-public class TutorialScreen extends BaseScreen<ECFGame> {
+public class MotTutorialScreen extends BaseScreen<ECFGame> {
     private static final float PAUSE_BUTTON_WIDTH = 1275f;
     private static final float PAUSE_BUTTON_HEIGHT = 252f;
     private static final float PAUSE_BUTTON_PAD = 40f;
@@ -44,7 +44,7 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
 
     private ECFPreferences preferences;
 
-    public TutorialScreen(ECFGame game, Bundle bundle) {
+    public MotTutorialScreen(ECFGame game, Bundle bundle) {
         super(game);
         preferences = PreferencesProvider.getPreferences();
         preferences.setCompletedTutorial(true);
@@ -178,7 +178,7 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
 
             @Override
             public void elementsCountChanged(int fire, int water, int air, int earth, int shadow, int light, int time) {
-     
+
             }
 
             @Override
@@ -211,7 +211,7 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
                 pauseTable.setVisible(!pauseTable.isVisible());
                 backgroundPause.setVisible(!backgroundPause.isVisible());
                 Bundle bundle=new Bundle();
-                bundle.putItem("levelCode", "");
+                bundle.putItem("levelCode", "mot");
                 getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU, bundle);
             }
         });

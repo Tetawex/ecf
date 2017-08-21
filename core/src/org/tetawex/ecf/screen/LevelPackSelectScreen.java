@@ -72,9 +72,13 @@ public class LevelPackSelectScreen extends BaseECFScreen {
         menuButtonMot.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Bundle bundle = new Bundle();
-                bundle.putItem("levelCode", "mot");
-                getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, bundle);
+                if(preferences.isCompletedMotTutorial()) {
+                    Bundle bundle = new Bundle();
+                    bundle.putItem("levelCode", "mot");
+                    getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, bundle);
+                }
+                else
+                    getGame().getGameStateManager().setState(GameStateManager.GameState.MOT_TUTORIAL, null);
             }
         });
         TextButton menuButtonBackPlayModeSelectScreen =

@@ -246,7 +246,7 @@ public class GameScreen extends BaseECFScreen {
                 if (won) {
                     winSound.play(preferences.getSoundVolume());
 
-                    if (levelData.getLevelNumber() == -1) {
+                    if ("random".equals(levelData.getLevelCode())) {
                         int i = 0;
                         java.util.List<Score> list = preferences.getScores();
                         for (Score s : list) {
