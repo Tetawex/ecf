@@ -25,7 +25,7 @@ public class LevelFactory {
                     .writeString(LevelDataUtils.toJson(generateLevel(i, "")), false);
         }
     }
-
+    @Deprecated
     public static LevelData generateMotTestingGround() {
         Cell[][] cells = CellArrayFactory.generateBasicCellArray(3, 4);
         cells[1][2].getElements().add(Element.TIME);
@@ -36,6 +36,11 @@ public class LevelFactory {
     private static String readFile(String fileName) {
         FileHandle handle = Gdx.files.internal(fileName);
         return handle.readString();
+    }
+
+    public static LevelData generateMotTutorial(){
+        return LevelDataUtils
+                .fromJson(readFile("levels/mottutorial.json"));
     }
 
     @Deprecated

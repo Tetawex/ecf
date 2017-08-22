@@ -2,6 +2,7 @@ package org.tetawex.ecf.core;
 
 import com.badlogic.gdx.Screen;
 import org.tetawex.ecf.screen.*;
+import org.tetawex.ecf.tutorial.*;
 import org.tetawex.ecf.util.Bundle;
 
 /**
@@ -43,7 +44,7 @@ public class GameStateManager {
 
         switch (currentState) {
             case TUTORIAL:
-                currentScreen = new TutorialScreen(game, bundle);
+                currentScreen = new org.tetawex.ecf.tutorial.TutorialScreen(game, bundle);
                 break;
             case MOT_TUTORIAL:
                 currentScreen = new MotTutorialScreen(game, bundle);

@@ -28,30 +28,30 @@ public class HexMapActor extends BaseWidget<ECFGame> {
         boolean canMove(int cellElementCount);
     }
 
-    private Cell[][] cellArray;
+    protected Cell[][] cellArray;
 
-    private CellActionListener cellActionListener;
+    protected CellActionListener cellActionListener;
 
-    private float soundVolume = 1f;
-    private float scalingFactor = 1f;
+    protected float soundVolume = 1f;
+    protected float scalingFactor = 1f;
 
-    private float hexagonWidth;
-    private float hexagonHeight;
+    protected float hexagonWidth;
+    protected float hexagonHeight;
 
-    private float elementWidth = 130f;
-    private float elementHeight = 130f;
+    protected float elementWidth = 130f;
+    protected float elementHeight = 130f;
 
-    private Cell selectedCell;
+    protected Cell selectedCell;
 
-    private TextureRegion cellRegion;
-    private TextureRegion selectedRegion;
-    private TextureRegion adjacentRegion;
+    protected TextureRegion cellRegion;
+    protected TextureRegion selectedRegion;
+    protected TextureRegion adjacentRegion;
 
-    private Sound clickSound;
-    private Sound errorSound;
-    private Sound mergeSound;
+    protected Sound clickSound;
+    protected Sound errorSound;
+    protected Sound mergeSound;
 
-    private OrderedMap<Element, TextureRegion> textureToElementMap;
+    protected OrderedMap<Element, TextureRegion> textureToElementMap;
 
     public HexMapActor(ECFGame game) {
         super(game);
@@ -317,7 +317,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
         }
     }
 
-    private IntVector2 getCellIndexByVector(Vector2 vector) {
+    protected IntVector2 getCellIndexByVector(Vector2 vector) {
         int i = (int) ((vector.x - hexagonWidth * 0.125f) / (hexagonWidth * 0.75f));
         int j = (i % 2 == 0) ?
                 (int) (vector.y / hexagonHeight) :
@@ -325,7 +325,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
         return new IntVector2(i, j);
     }
 
-    private Cell getCellByIndex(IntVector2 vector) {
+    protected Cell getCellByIndex(IntVector2 vector) {
         return cellArray[vector.x][vector.y];
     }
 
@@ -352,7 +352,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
         return false;
     }
 
-    private void processIndexClick(IntVector2 position) {
+    protected void processIndexClick(IntVector2 position) {
         if (!cellExistsAt(position))
             return;
         Cell cell = getCellByIndex(position);
@@ -398,7 +398,7 @@ public class HexMapActor extends BaseWidget<ECFGame> {
         }
     }
 
-    private Array<Cell> getAdjacentCells(IntVector2 position) {
+    protected Array<Cell> getAdjacentCells(IntVector2 position) {
         Array<Cell> adjCells = new Array<Cell>();
         int i = position.x;
         int j = position.y;
@@ -426,16 +426,16 @@ public class HexMapActor extends BaseWidget<ECFGame> {
         return adjCells;
     }
 
-    private Vector2 findOffsetForIndex(IntVector2 idx) {
+    protected Vector2 findOffsetForIndex(IntVector2 idx) {
         return new Vector2(-hexagonWidth / 4,
                 idx.x % 2 == 0 ? 0 : hexagonHeight / 2);
     }
 
-    private boolean cellExistsAt(int i, int j) {
+    protected boolean cellExistsAt(int i, int j) {
         return cellExistsAt(new IntVector2(i, j));
     }
 
-    private boolean cellExistsAt(IntVector2 position) {
+    protected boolean cellExistsAt(IntVector2 position) {
 
         if (position.x < 0 || position.y < 0 || position.x >= cellArray.length || position.y >= cellArray[0].length)
             return false;

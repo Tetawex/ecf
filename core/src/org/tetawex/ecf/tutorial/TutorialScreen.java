@@ -1,4 +1,4 @@
-package org.tetawex.ecf.screen;
+package org.tetawex.ecf.tutorial;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -9,13 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import org.tetawex.ecf.actor.TutorialHexMapActor;
 import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.core.GameStateManager;
 import org.tetawex.ecf.model.Cell;
 import org.tetawex.ecf.model.CellArrayFactory;
 import org.tetawex.ecf.model.ECFPreferences;
 import org.tetawex.ecf.model.GameData;
+import org.tetawex.ecf.screen.BaseScreen;
+import org.tetawex.ecf.screen.StyleFactory;
 import org.tetawex.ecf.util.Bundle;
 import org.tetawex.ecf.util.IntVector2;
 import org.tetawex.ecf.util.PreferencesProvider;
@@ -32,7 +33,7 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
     private static final float SCORE_LABEL_FONT_SCALE = 1f;
 
     private Stage gameStage;
-    private TutorialHexMapActor hexMapActor;
+    private OldTutorialHexMapActor hexMapActor;
     private Label scoreLabel;
     private TextButton manaLabel;
 
@@ -107,8 +108,8 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
         Table midRowTable = new Table();
         Table bottomRowTable = new Table();
 
-        hexMapActor = new TutorialHexMapActor(getGame());
-        hexMapActor.setCellActionListener(new TutorialHexMapActor.TutorialCellActionListener() {
+        hexMapActor = new OldTutorialHexMapActor(getGame());
+        hexMapActor.setCellActionListener(new OldTutorialHexMapActor.TutorialCellActionListener() {
             @Override
             public void cellMerged(int mergedElementsCount) {
                 gameData.processElementsMerge(mergedElementsCount);
@@ -274,8 +275,9 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
             hexMapActor.toCell = new IntVector2(1000, 1000);
             hexMapActor.acceptAnyClick = true;
         } else if (tutorialStage == 10) {
-            preferences.setCompletedTutorial(true);
-            getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, null);
+            Bundle bundle=new Bundle();
+            bundle.putItem("levelCode", "");
+            getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, bundle);
             return;
         }
         tutButton.setText(getGame().getLocalisedString("tutorial" + tutorialStage));

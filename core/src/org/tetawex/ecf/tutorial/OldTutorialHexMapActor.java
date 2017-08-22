@@ -1,4 +1,4 @@
-package org.tetawex.ecf.actor;
+package org.tetawex.ecf.tutorial;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedMap;
+import org.tetawex.ecf.actor.BaseWidget;
 import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.model.Cell;
 import org.tetawex.ecf.model.Element;
@@ -19,7 +20,8 @@ import org.tetawex.ecf.util.PreferencesProvider;
 /**
  * Created by tetawex on 02.05.17.
  */
-public class TutorialHexMapActor extends BaseWidget<ECFGame> {
+@Deprecated
+public class OldTutorialHexMapActor extends BaseWidget<ECFGame> {
     public interface TutorialCellActionListener {
         void cellMerged(int mergedElementsCount);
 
@@ -59,7 +61,7 @@ public class TutorialHexMapActor extends BaseWidget<ECFGame> {
 
     private OrderedMap<Element, TextureRegion> textureToElementMap;
 
-    public TutorialHexMapActor(ECFGame game) {
+    public OldTutorialHexMapActor(ECFGame game) {
         super(game);
 
         soundVolume = PreferencesProvider.getPreferences().getSoundVolume();

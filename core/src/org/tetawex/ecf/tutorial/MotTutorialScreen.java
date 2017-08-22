@@ -1,4 +1,4 @@
-package org.tetawex.ecf.screen;
+package org.tetawex.ecf.tutorial;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -9,13 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import org.tetawex.ecf.actor.TutorialHexMapActor;
+import org.tetawex.ecf.actor.HexMapActor;
 import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.core.GameStateManager;
 import org.tetawex.ecf.model.Cell;
-import org.tetawex.ecf.model.CellArrayFactory;
-import org.tetawex.ecf.model.ECFPreferences;
-import org.tetawex.ecf.model.GameData;
+import org.tetawex.ecf.model.*;
+import org.tetawex.ecf.screen.BaseScreen;
+import org.tetawex.ecf.screen.StyleFactory;
 import org.tetawex.ecf.util.Bundle;
 import org.tetawex.ecf.util.IntVector2;
 import org.tetawex.ecf.util.PreferencesProvider;
@@ -47,7 +47,7 @@ public class MotTutorialScreen extends BaseScreen<ECFGame> {
     public MotTutorialScreen(ECFGame game, Bundle bundle) {
         super(game);
         preferences = PreferencesProvider.getPreferences();
-        preferences.setCompletedTutorial(true);
+        preferences.setCompletedMotTutorial(true);
         Camera camera = new OrthographicCamera(1440f, 2560f);
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0f);
         gameStage = new Stage(new ExtendViewport(1440f, 2560f, camera));
@@ -58,9 +58,10 @@ public class MotTutorialScreen extends BaseScreen<ECFGame> {
 
         initUi();
 
-        gameData.setCellArray(CellArrayFactory.generateTutorialCellArray());
-        gameData.setMana(2);
-        gameData.setScore(0);
+        LevelData levelData = LevelFactory.generateMotTutorial();
+
+        gameData.setCellArray(levelData.getCellArray());
+        gameData.setMana(levelData.getMana());
 
     }
 
@@ -84,7 +85,7 @@ public class MotTutorialScreen extends BaseScreen<ECFGame> {
         Stack stack = new Stack();
         stack.setFillParent(true);
 
-        final Image background = new Image(getGame().getAssetManager().get("backgrounds/background.png", Texture.class));
+        final Image background = new Image(getGame().getAssetManager().get("backgrounds/motbackground.png", Texture.class));
         background.setFillParent(true);
         final Image backgroundPause = new Image(getGame().getAssetManager().get("backgrounds/background_pause.png", Texture.class));
         backgroundPause.setFillParent(true);
@@ -108,7 +109,7 @@ public class MotTutorialScreen extends BaseScreen<ECFGame> {
         Table bottomRowTable = new Table();
 
         hexMapActor = new TutorialHexMapActor(getGame());
-        hexMapActor.setCellActionListener(new TutorialHexMapActor.TutorialCellActionListener() {
+        hexMapActor.setCellActionListener(new HexMapActor.CellActionListener() {
             @Override
             public void cellMerged(int mergedElementsCount) {
                 gameData.processElementsMerge(mergedElementsCount);
@@ -133,7 +134,7 @@ public class MotTutorialScreen extends BaseScreen<ECFGame> {
         mainTable.add(bottomRowTable).growX().prefHeight(600f);
 
         Stack tutStack = new Stack();
-        tutButton = new TextButton(getGame().getLocalisedString("tutorial0"), StyleFactory.generateStandardTutorialButtonStyle(getGame()));
+        tutButton = new TextButton(getGame().getLocalisedString("mottutorial0"), StyleFactory.generateStandardTutorialButtonStyle(getGame()));
         tutButton.getLabel().setWrap(true);
         bottomRowTable.add(tutButton).pad(PAUSE_BUTTON_PAD).width(PAUSE_BUTTON_WIDTH).grow();
 
@@ -210,7 +211,7 @@ public class MotTutorialScreen extends BaseScreen<ECFGame> {
             public void changed(ChangeEvent event, Actor actor) {
                 pauseTable.setVisible(!pauseTable.isVisible());
                 backgroundPause.setVisible(!backgroundPause.isVisible());
-                Bundle bundle=new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putItem("levelCode", "mot");
                 getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU, bundle);
             }
@@ -223,61 +224,49 @@ public class MotTutorialScreen extends BaseScreen<ECFGame> {
 
     public void advanceTutorial() {
         tutorialStage++;
-        if (tutorialStage == 2) {
+        if (tutorialStage == 1) {
+            hexMapActor.lockCells();
+            hexMapActor.unlockedCells[2][0] = true;
             hexMapActor.unlockedCells[2][1] = true;
-            hexMapActor.unlockedCells[3][0] = true;
-            hexMapActor.fromCell = new IntVector2(2, 1);
-            hexMapActor.toCell = new IntVector2(3, 0);
+            hexMapActor.fromCell = new IntVector2(2, 0);
+            hexMapActor.toCell = new IntVector2(2, 1);
+            hexMapActor.acceptAnyClick = false;
+        } else if (tutorialStage == 2) {
+            hexMapActor.lockCells();
+            hexMapActor.unlockedCells[1][1] = true;
+            hexMapActor.unlockedCells[1][0] = true;
+            hexMapActor.fromCell = new IntVector2(1, 1);
+            hexMapActor.toCell = new IntVector2(1, 0);
             hexMapActor.acceptAnyClick = false;
         } else if (tutorialStage == 3) {
             hexMapActor.lockCells();
-            hexMapActor.unlockedCells[3][2] = true;
-            hexMapActor.unlockedCells[3][3] = true;
-            hexMapActor.fromCell = new IntVector2(3, 3);
-            hexMapActor.toCell = new IntVector2(3, 2);
+            hexMapActor.unlockedCells[1][0] = true;
+            hexMapActor.unlockedCells[2][1] = true;
+            hexMapActor.fromCell = new IntVector2(2, 1);
+            hexMapActor.toCell = new IntVector2(1, 0);
             hexMapActor.acceptAnyClick = false;
         } else if (tutorialStage == 4) {
-            hexMapActor.lockCells();
-            hexMapActor.unlockedCells[3][1] = true;
-            hexMapActor.unlockedCells[2][2] = true;
-            hexMapActor.unlockedCells[2][3] = true;
-            hexMapActor.fromCell = new IntVector2(2, 3);
-            hexMapActor.toCell = new IntVector2(2, 2);
-            hexMapActor.acceptAnyClick = false;
+            hexMapActor.unlockedCells[2][1] = false;
+            hexMapActor.acceptAnyClick = true;
         } else if (tutorialStage == 5) {
-            hexMapActor.unlockedCells[2][3] = false;
-            hexMapActor.fromCell = new IntVector2(2, 2);
-            hexMapActor.toCell = new IntVector2(3, 1);
+            hexMapActor.lockCells();
+            hexMapActor.unlockedCells[1][0] = true;
+            hexMapActor.unlockedCells[0][1] = true;
+            hexMapActor.fromCell = new IntVector2(1, 0);
+            hexMapActor.toCell = new IntVector2(0, 1);
             hexMapActor.acceptAnyClick = false;
+
         } else if (tutorialStage == 6) {
             hexMapActor.lockCells();
-            hexMapActor.unlockedCells[1][2] = true;
-            hexMapActor.unlockedCells[1][1] = true;
-            hexMapActor.fromCell = new IntVector2(1, 2);
-            hexMapActor.toCell = new IntVector2(1, 1);
-            hexMapActor.acceptAnyClick = false;
-        } else if (tutorialStage == 7) {
-            hexMapActor.lockCells();
-            hexMapActor.unlockedCells[0][2] = true;
-            hexMapActor.unlockedCells[1][1] = true;
-            hexMapActor.fromCell = new IntVector2(0, 2);
-            hexMapActor.toCell = new IntVector2(1, 1);
-            hexMapActor.acceptAnyClick = false;
-        } else if (tutorialStage == 8) {
-            hexMapActor.unlockCells();
-            hexMapActor.fromCell = new IntVector2(1000, 1000);
-            hexMapActor.toCell = new IntVector2(1000, 1000);
+            hexMapActor.fromCell = new IntVector2(100, 100);
+            hexMapActor.toCell = new IntVector2(100, 100);
             hexMapActor.acceptAnyClick = true;
-        } else if (tutorialStage == 9) {
-            hexMapActor.unlockCells();
-            hexMapActor.fromCell = new IntVector2(1000, 1000);
-            hexMapActor.toCell = new IntVector2(1000, 1000);
-            hexMapActor.acceptAnyClick = true;
-        } else if (tutorialStage == 10) {
-            preferences.setCompletedTutorial(true);
-            getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, null);
+        } else if (tutorialStage >= 8) {
+            Bundle bundle = new Bundle();
+            bundle.putItem("levelCode", "mot");
+            getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, bundle);
             return;
         }
-        tutButton.setText(getGame().getLocalisedString("tutorial" + tutorialStage));
+        tutButton.setText(getGame().getLocalisedString("mottutorial" + tutorialStage));
     }
 }

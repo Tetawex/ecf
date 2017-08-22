@@ -163,7 +163,7 @@ public class GameData {
     }
 
     private void checkIfLostOrWon() {
-        if (fire == 0 && water == 0 && earth == 0 && air == 0 && shadow == 0 && light == 0)
+        if (fire == 0 && water == 0 && earth == 0 && air == 0 && shadow == 0 && light == 0 && time == 0)
             gameDataChangedListener.gameLostOrWon(true, null);
         else {
             if (mana <= 0)

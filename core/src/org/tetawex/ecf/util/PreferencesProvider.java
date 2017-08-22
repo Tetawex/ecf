@@ -17,7 +17,7 @@ public class PreferencesProvider {
     private static final String PREFERENCES_NAME = "ECF Preferences";
     private static final String PREFERENCES_CODE = "serialized";
     public static final int LEVELS_COUNT = 18;
-    public static final int MOT_LEVELS_COUNT = 12;
+    public static final int MOT_LEVELS_COUNT = 13;
     private static ECFPreferences preferences;
 
     public static ECFPreferences getPreferences() {
@@ -33,14 +33,14 @@ public class PreferencesProvider {
             int size = preferences.getLevelCompletionStateList("").size();
             if (size < LEVELS_COUNT) {
                 for (int i = 0; i < MOT_LEVELS_COUNT - size; i++) {
-                    preferences.getLevelCompletionStateList("").add(new LevelCompletionState(0, false, true));
+                    preferences.getLevelCompletionStateList("").add(new LevelCompletionState(0, false, false));
                 }
                 preferences.getLevelCompletionStateList(("")).get(0).setUnlocked(true);
             }
             size = preferences.getLevelCompletionStateList("mot").size();
             if (size < MOT_LEVELS_COUNT) {
                 for (int i = 0; i < MOT_LEVELS_COUNT - size; i++) {
-                    preferences.getLevelCompletionStateList("mot").add(new LevelCompletionState(0, false, true));
+                    preferences.getLevelCompletionStateList("mot").add(new LevelCompletionState(0, false, false));
                 }
                 preferences.getLevelCompletionStateList(("mot")).get(0).setUnlocked(true);
             }
@@ -74,7 +74,7 @@ public class PreferencesProvider {
         List<LevelCompletionState> levelList = new ArrayList<LevelCompletionState>();
         levelList.add(new LevelCompletionState(0, false, true));
         for (int i = 1; i < LEVELS_COUNT; i++) {
-            levelList.add(new LevelCompletionState(0, false, true));
+            levelList.add(new LevelCompletionState(3, false, false));
         }
         preferences.setLevelCompletionStateList(levelList, "");
         preferences.setScores(list);
@@ -83,7 +83,7 @@ public class PreferencesProvider {
         List<LevelCompletionState> levelList2 = new ArrayList<LevelCompletionState>();
         levelList2.add(new LevelCompletionState(0, false, true));
         for (int i = 1; i < MOT_LEVELS_COUNT; i++) {
-            levelList2.add(new LevelCompletionState(0, false, true));
+            levelList2.add(new LevelCompletionState(0, false, false));
         }
         preferences.setLevelCompletionStateList(levelList2, "mot");
     }

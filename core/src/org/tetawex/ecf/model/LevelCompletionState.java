@@ -7,7 +7,6 @@ public class LevelCompletionState {
     private int stars = 0;
     private boolean completed = false;
     private boolean unlocked = false;
-    private boolean gemLocked = false;
 
     public LevelCompletionState() {
     }
