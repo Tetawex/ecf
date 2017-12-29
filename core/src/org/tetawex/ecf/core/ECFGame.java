@@ -67,6 +67,10 @@ public class ECFGame extends Game {
         setupLocalisation();
 
         textureAtlas = assetManager.get("atlas.atlas", TextureAtlas.class);
+        for (Texture texture : textureAtlas.getTextures()) {
+            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        }
+
 
         gameStateManager = new GameStateManager(this, GameStateManager.GameState.MAIN_MENU);
 
@@ -149,18 +153,24 @@ public class ECFGame extends Game {
         paramsS.fontParameters.characters = FontCharacters.en + FontCharacters.ru;
         paramsS.fontFileName = "fonts/font_main.ttf";
         paramsS.fontParameters.size = 48;
+        paramsS.fontParameters.minFilter = Texture.TextureFilter.Linear;
+        paramsS.fontParameters.magFilter = Texture.TextureFilter.Linear;
         assetManager.load("fonts/font_main_small.ttf", BitmapFont.class, paramsS);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter paramsM = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         paramsM.fontParameters.characters = FontCharacters.en + FontCharacters.ru;
         paramsM.fontFileName = "fonts/font_main.ttf";
         paramsM.fontParameters.size = 75;
+        paramsM.fontParameters.minFilter = Texture.TextureFilter.Linear;
+        paramsM.fontParameters.magFilter = Texture.TextureFilter.Linear;
         assetManager.load("fonts/font_main_medium.ttf", BitmapFont.class, paramsM);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter paramsL = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         paramsL.fontParameters.characters = FontCharacters.en + FontCharacters.ru;
         paramsL.fontFileName = "fonts/font_main.ttf";
         paramsL.fontParameters.size = 96;
+        paramsL.fontParameters.minFilter = Texture.TextureFilter.Linear;
+        paramsL.fontParameters.magFilter = Texture.TextureFilter.Linear;
         assetManager.load("fonts/font_main_large.ttf", BitmapFont.class, paramsL);
     }
 

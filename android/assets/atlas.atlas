@@ -2,7 +2,7 @@
 atlas.png
 size: 1024,1024
 format: RGBA8888
-filter: Nearest,MipMapLinearNearest
+filter: Linear,Linear
 repeat: none
 arrow
   rotate: false
@@ -123,7 +123,7 @@ tutorial_note
 atlas2.png
 size: 1024,1024
 format: RGBA8888
-filter: Nearest,MipMapLinearNearest
+filter: Linear,Linear
 repeat: none
 button_hexagon
   rotate: false

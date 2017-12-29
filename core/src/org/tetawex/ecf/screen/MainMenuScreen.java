@@ -48,11 +48,14 @@ public class MainMenuScreen extends BaseScreen<ECFGame> {
                         .get("backgrounds/background.png",
                                 Texture.class)));
         Table titleTable = new Table();
-        titleTable.add(new Image(
-                getGame().getAssetManager()
-                        .get("backgrounds/text_logo.png",
-                                Texture.class))).size(1270, 134).padTop(300);
+
+        Texture titleTexture = getGame().getAssetManager()
+                .get("backgrounds/text_logo.png",
+                        Texture.class);
+        titleTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        titleTable.add(new Image(titleTexture)).size(1270, 134).padTop(300);
         titleTable.top();
+
         Table mainTable = new Table();
         mainTable.setFillParent(true);
         stack.add(mainTable);
