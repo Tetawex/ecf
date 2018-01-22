@@ -82,7 +82,6 @@ public class LevelSelectScreen extends BaseScreen<ECFGame> {
                 levelTable.row();
                 for (int x = 0; x < 3; x++) {
                     if (i >= preferences.getLevelCompletionStateList(levelCode).size()){
-                        Gdx.app.log("hjjj", i+"");
                         levelTable.row();
                         break outerLoop;
                     }
