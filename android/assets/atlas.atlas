@@ -41,7 +41,7 @@ hexagon
   orig: 441, 381
   offset: 0, 0
   index: -1
-hexagon_adjacent
+hexagon_activated
   rotate: false
   xy: 2, 101
   size: 441, 381
@@ -127,14 +127,14 @@ filter: Linear,Linear
 repeat: none
 button_hexagon
   rotate: false
-  xy: 204, 71
+  xy: 840, 449
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 button_menu_pressed
   rotate: false
-  xy: 445, 431
+  xy: 204, 43
   size: 150, 150
   split: 37, 37, 37, 37
   orig: 150, 150
@@ -142,85 +142,112 @@ button_menu_pressed
   index: -1
 button_pause
   rotate: false
-  xy: 840, 828
+  xy: 356, 43
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: -1
 element_air
   rotate: false
-  xy: 445, 288
+  xy: 840, 306
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 element_earth
   rotate: false
-  xy: 597, 440
+  xy: 840, 163
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 element_fire
   rotate: false
-  xy: 840, 685
+  xy: 508, 20
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
 element_light
   rotate: false
-  xy: 840, 542
+  xy: 652, 66
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
-element_shadow
+element_light_activated
   rotate: false
-  xy: 348, 71
+  xy: 796, 20
   size: 142, 141
   orig: 142, 141
   offset: 0, 0
   index: -1
-element_time
+hexagon_adjacent
   rotate: false
-  xy: 492, 145
-  size: 142, 141
-  orig: 142, 141
-  offset: 0, 0
-  index: -1
-element_water
-  rotate: false
-  xy: 492, 2
-  size: 142, 141
-  orig: 142, 141
-  offset: 0, 0
-  index: -1
-hexagon_disabled
-  rotate: false
-  xy: 2, 597
+  xy: 2, 592
   size: 441, 381
   orig: 441, 381
   offset: 0, 0
   index: -1
-hexagon_selected
+hexagon_disabled
   rotate: false
-  xy: 2, 214
+  xy: 445, 592
+  size: 441, 381
+  orig: 441, 381
+  offset: 0, 0
+  index: -1
+hexagon_rubberized
+  rotate: false
+  xy: 397, 209
   size: 441, 381
   orig: 441, 381
   offset: 0, 0
   index: -1
 level_active
   rotate: false
-  xy: 445, 583
+  xy: 2, 195
   size: 393, 395
   orig: 393, 395
   offset: 0, 0
   index: -1
 star_ungained
   rotate: false
-  xy: 2, 21
+  xy: 2, 2
   size: 200, 191
   orig: 200, 191
+  offset: 0, 0
+  index: -1
+
+atlas3.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+element_shadow
+  rotate: false
+  xy: 445, 242
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1
+element_time
+  rotate: false
+  xy: 445, 99
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1
+element_water
+  rotate: false
+  xy: 589, 242
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1
+hexagon_selected
+  rotate: false
+  xy: 2, 2
+  size: 441, 381
+  orig: 441, 381
   offset: 0, 0
   index: -1

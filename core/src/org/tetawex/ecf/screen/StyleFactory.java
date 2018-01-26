@@ -134,6 +134,20 @@ public class StyleFactory {
         return style;
     }
 
+    public static TextButton.TextButtonStyle generateSpcMenuButtonStyle(ECFGame game) {
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = game.getAssetManager().get("fonts/font_main_medium.ttf", BitmapFont.class);
+        style.fontColor = new Color(1f, 1f, 1f, 0.87f);
+        style.downFontColor = new Color(1, 1, 1, 0.35f);
+        style.up = new Image(game.getAssetManager()
+                .get("backgrounds/scbutton.png", Texture.class)).getDrawable();
+        style.checked = style.up;
+        style.down = new Image(game.getAssetManager()
+                .get("backgrounds/scbutton_pressed.png", Texture.class)).getDrawable();
+
+        return style;
+    }
+
     public static TextButton.TextButtonStyle generateStandardTutorialButtonStyle(ECFGame game) {
         Skin skin = new Skin();
         skin.addRegions(game.getAssetManager().get("atlas.atlas", TextureAtlas.class));
