@@ -110,7 +110,7 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
         menuButtonBackToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU, null);
+                onBackPressed();
             }
         });
         menuButtonBackToMainMenu.getLabel().setFontScale(BUTTON_FONT_SCALE);
@@ -217,6 +217,11 @@ public class SettingsScreen extends BaseScreen<ECFGame> {
     @Override
     public void hide() {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU, null);
     }
 
     @Override

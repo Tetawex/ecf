@@ -71,11 +71,16 @@ public class HighscoresScreen extends BaseScreen<ECFGame> {
         menuButtonBackToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU, null);
+                onBackPressed();
             }
         });
         menuButtonBackToMainMenu.getLabel().setFontScale(BUTTON_FONT_SCALE);
         mainTable.add(menuButtonBackToMainMenu).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD);
+    }
+
+    @Override
+    public void onBackPressed() {
+        getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU, null);
     }
 
     @Override

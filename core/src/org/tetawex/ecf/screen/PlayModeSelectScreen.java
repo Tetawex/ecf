@@ -100,7 +100,7 @@ public class PlayModeSelectScreen extends BaseScreen<ECFGame> {
         menuButtonBackToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU, null);
+                onBackPressed();
             }
         });
         mainTable.add(menuButtonLevels).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
@@ -120,5 +120,9 @@ public class PlayModeSelectScreen extends BaseScreen<ECFGame> {
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
         stage.getViewport().getCamera().update();
+    }
+    @Override
+    public void onBackPressed() {
+        getGame().getGameStateManager().setState(GameStateManager.GameState.MAIN_MENU, null);
     }
 }

@@ -69,6 +69,8 @@ public class EditorScreen extends BaseECFScreen {
     Table pauseTable;
     Table midRowTable;
 
+    Image backgroundPause;
+
     private ECFPreferences preferences;
 
     public EditorScreen(ECFGame game, Bundle bundle) {
@@ -111,7 +113,7 @@ public class EditorScreen extends BaseECFScreen {
         final Image background = new Image(getGame().getAssetManager()
                 .get("backgrounds/background.png", Texture.class));
         background.setFillParent(true);
-        final Image backgroundPause = new Image(getGame().getAssetManager()
+        backgroundPause = new Image(getGame().getAssetManager()
                 .get("backgrounds/background_pause.png", Texture.class));
         backgroundPause.setFillParent(true);
         backgroundPause.setVisible(false);
@@ -147,8 +149,7 @@ public class EditorScreen extends BaseECFScreen {
         pauseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                pauseTable.setVisible(!pauseTable.isVisible());
-                backgroundPause.setVisible(!backgroundPause.isVisible());
+                onBackPressed();
             }
         });
         topRowLeftTable.left().top();
@@ -295,10 +296,13 @@ public class EditorScreen extends BaseECFScreen {
 
     @Override
     public void onBackPressed() {
-        if (pauseTable.isVisible())
+        if (pauseTable.isVisible()) {
             pauseTable.setVisible(false);
+            backgroundPause.setVisible(false);
+        }
         else {
-            getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT, null);
+            pauseTable.setVisible(true);
+            backgroundPause.setVisible(true);
         }
     }
 

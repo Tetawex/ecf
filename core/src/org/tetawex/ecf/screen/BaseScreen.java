@@ -7,10 +7,11 @@ import org.tetawex.ecf.core.ECFGame;
 /**
  * Created by Tetawex on 17.05.2017.
  */
-public class BaseScreen<T extends Game> extends ScreenAdapter{
+public class BaseScreen<T extends Game> extends ScreenAdapter {
     private T game;
-    public BaseScreen(T game){
-        this.game=game;
+
+    public BaseScreen(T game) {
+        this.game = game;
     }
 
     public T getGame() {
@@ -19,5 +20,8 @@ public class BaseScreen<T extends Game> extends ScreenAdapter{
 
     public void setGame(T game) {
         this.game = game;
+    }
+
+    public void onBackPressed() {
     }
 }

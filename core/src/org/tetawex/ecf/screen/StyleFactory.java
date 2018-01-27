@@ -134,7 +134,7 @@ public class StyleFactory {
         return style;
     }
 
-    public static TextButton.TextButtonStyle generateSpcMenuButtonStyle(ECFGame game) {
+    public static TextButton.TextButtonStyle generateScMenuButtonStyle(ECFGame game) {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = game.getAssetManager().get("fonts/font_main_medium.ttf", BitmapFont.class);
         style.fontColor = new Color(1f, 1f, 1f, 0.87f);

@@ -45,6 +45,9 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
 
     private ECFPreferences preferences;
 
+    private Image backgroundPause;
+    private Table pauseTable;
+
     public TutorialScreen(ECFGame game, Bundle bundle) {
         super(game);
         preferences = PreferencesProvider.getPreferences();
@@ -78,7 +81,7 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
     }
 
     private void initUi() {
-        final Table pauseTable = new Table();
+        pauseTable = new Table();
         pauseTable.setVisible(false);
 
         Table mainTable = new Table();
@@ -87,7 +90,7 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
 
         final Image background = new Image(getGame().getAssetManager().get("backgrounds/background.png", Texture.class));
         background.setFillParent(true);
-        final Image backgroundPause = new Image(getGame().getAssetManager().get("backgrounds/background_pause.png", Texture.class));
+        backgroundPause = new Image(getGame().getAssetManager().get("backgrounds/background_pause.png", Texture.class));
         backgroundPause.setFillParent(true);
         backgroundPause.setVisible(false);
 
@@ -281,5 +284,16 @@ public class TutorialScreen extends BaseScreen<ECFGame> {
             return;
         }
         tutButton.setText(getGame().getLocalisedString("tutorial" + tutorialStage));
+    }
+    @Override
+    public void onBackPressed() {
+        if (pauseTable.isVisible()) {
+            pauseTable.setVisible(false);
+            backgroundPause.setVisible(false);
+        }
+        else {
+            pauseTable.setVisible(true);
+            backgroundPause.setVisible(true);
+        }
     }
 }

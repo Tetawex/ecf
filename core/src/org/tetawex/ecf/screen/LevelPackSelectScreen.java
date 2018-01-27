@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.core.GameStateManager;
-import org.tetawex.ecf.model.BaseECFScreen;
 import org.tetawex.ecf.model.ECFPreferences;
 import org.tetawex.ecf.util.Bundle;
 import org.tetawex.ecf.util.PreferencesProvider;
@@ -84,6 +83,10 @@ public class LevelPackSelectScreen extends BaseECFScreen {
                     getGame().getGameStateManager().setState(GameStateManager.GameState.MOT_TUTORIAL, null);
             }
         });
+
+        TextButton menuButtonSc =
+                new TextButton(getGame().getLocalisedString("lp_sc"), StyleFactory.generateScMenuButtonStyle(getGame()));
+
         TextButton menuButtonBackPlayModeSelectScreen =
                 new TextButton(getGame().getLocalisedString("back"), tbStyle);
         menuButtonBackPlayModeSelectScreen.addListener(new ChangeListener() {
@@ -94,6 +97,7 @@ public class LevelPackSelectScreen extends BaseECFScreen {
         });
         mainTable.add(menuButtonClassic).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
         mainTable.add(menuButtonMot).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
+        mainTable.add(menuButtonSc).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
         mainTable.add(menuButtonBackPlayModeSelectScreen).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row();
     }
 

@@ -17,7 +17,7 @@ public class PreferencesProvider {
     private static final String PREFERENCES_NAME = "ECF Preferences";
     private static final String PREFERENCES_CODE = "serialized";
     public static final int LEVELS_COUNT = 18;
-    public static final int MOT_LEVELS_COUNT = 13;
+    public static final int MOT_LEVELS_COUNT = 15;
     private static ECFPreferences preferences;
 
     public static ECFPreferences getPreferences() {
@@ -60,7 +60,7 @@ public class PreferencesProvider {
         preferences.setSelectedLanguageCode("default");
         preferences.setSelectedCountryCode("");
         List<Score> list = new ArrayList<Score>();
-        list.add(new Score(9000, "Cirno", "1-9, Icicles"));
+        list.add(new Score(9000, "Another Player", "1-9, Icicles"));
         list.add(new Score(8000, "Blazing Borkus", "1-8, Elementalism"));
         list.add(new Score(6000, "Vivid Turtle", "1-4, The Grand Tortoise"));
         list.add(new Score(4000, "Pro WOTE Player", "1-10, Elemental Rampage"));
@@ -69,7 +69,7 @@ public class PreferencesProvider {
         list.add(new Score(1000, "Rumia", "1-5, Decimal System"));
         list.add(new Score(900, "Cirno", "1-15, The Reckoning of Ice"));
         list.add(new Score(300, "Newbie", "1-0, Eh? Is that a level?"));
-        list.add(new Score(100, "Bitter Butter", "1-64, Decimal Fail"));
+        list.add(new Score(100, "Invisible Entry", "1-64, Decimal Fail"));
 
         List<LevelCompletionState> levelList = new ArrayList<LevelCompletionState>();
         levelList.add(new LevelCompletionState(0, false, true));

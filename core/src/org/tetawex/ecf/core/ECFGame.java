@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.I18NBundle;
 import org.tetawex.ecf.model.ECFPreferences;
 import org.tetawex.ecf.model.Language;
+import org.tetawex.ecf.util.BasicListener;
 import org.tetawex.ecf.util.FontCharacters;
 import org.tetawex.ecf.util.PreferencesProvider;
 
@@ -42,14 +43,22 @@ public class ECFGame extends Game {
         PreferencesProvider.getPreferences();
         assetManager = new AssetManager();
         assetManager.load("atlas.atlas", TextureAtlas.class);
+
         assetManager.load("backgrounds/background.png", Texture.class);
         assetManager.load("backgrounds/randombackground.png", Texture.class);
         assetManager.load("backgrounds/editorbackground.png", Texture.class);
         assetManager.load("backgrounds/motbackground.png", Texture.class);
+        assetManager.load("backgrounds/scbackground.png", Texture.class);
+
         assetManager.load("backgrounds/motbutton.png", Texture.class);
         assetManager.load("backgrounds/motbutton_pressed.png", Texture.class);
+
+        assetManager.load("backgrounds/scbutton.png", Texture.class);
+        assetManager.load("backgrounds/scbutton_pressed.png", Texture.class);
+
         assetManager.load("backgrounds/background_pause.png", Texture.class);
         assetManager.load("backgrounds/background_dialog.png", Texture.class);
+
         assetManager.load("backgrounds/text_logo.png", Texture.class);
 
         assetManager.load("sounds/click.ogg", Sound.class);
@@ -78,6 +87,13 @@ public class ECFGame extends Game {
         music.setLooping(true);
         music.setVolume(PreferencesProvider.getPreferences().getMusicVolume());
         music.play();
+
+        actionResolver.setBackPressedListener(new BasicListener() {
+            @Override
+            public void call() {
+                gameStateManager.getCurrentScreen().onBackPressed();
+            }
+        });
     }
 
     public void setMusicVolume(float volume) {

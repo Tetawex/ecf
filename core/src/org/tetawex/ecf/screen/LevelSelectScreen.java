@@ -150,4 +150,8 @@ public class LevelSelectScreen extends BaseScreen<ECFGame> {
         stage.getViewport().update(width, height, true);
         stage.getViewport().getCamera().update();
     }
+    @Override
+    public void onBackPressed() {
+        getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT, null);
+    }
 }

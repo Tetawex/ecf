@@ -15,7 +15,7 @@ public class GameStateManager {
 
     public enum GameState {MAIN_MENU, GAME, SETTINGS, HIGHSCORES, MODE_SELECT, LEVEL_SELECT, TUTORIAL, EDITOR, MOT_TUTORIAL, LEVEL_PACK_SELECT}
 
-    private Screen currentScreen;
+    private BaseScreen<ECFGame> currentScreen;
     private GameState currentState;
     private ECFGame game;
 
@@ -29,7 +29,7 @@ public class GameStateManager {
         setState(state, null);
     }
 
-    public Screen getCurrentScreen() {
+    public BaseScreen<ECFGame> getCurrentScreen() {
         return currentScreen;
     }
 

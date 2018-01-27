@@ -66,6 +66,7 @@ public class GameScreen extends BaseECFScreen {
     private TextButton winLossMenuButtonNext;
 
     Table pauseTable;
+    Image backgroundPause;
 
     private ECFPreferences preferences;
 
@@ -135,7 +136,7 @@ public class GameScreen extends BaseECFScreen {
         final Image background = new Image(getGame().getAssetManager()
                 .get("backgrounds/" + levelCode + "background.png", Texture.class));
         background.setFillParent(true);
-        final Image backgroundPause = new Image(getGame().getAssetManager()
+        backgroundPause = new Image(getGame().getAssetManager()
                 .get("backgrounds/background_pause.png", Texture.class));
         backgroundPause.setFillParent(true);
         backgroundPause.setVisible(false);
@@ -518,13 +519,13 @@ public class GameScreen extends BaseECFScreen {
 
     @Override
     public void onBackPressed() {
-        if (pauseTable.isVisible())
+        if (pauseTable.isVisible()) {
             pauseTable.setVisible(false);
+            backgroundPause.setVisible(false);
+        }
         else {
-            if (levelData.getLevelNumber() != -1)
-                getGame().getGameStateManager().setState(GameStateManager.GameState.LEVEL_SELECT, null);
-            else
-                getGame().getGameStateManager().setState(GameStateManager.GameState.MODE_SELECT, null);
+            pauseTable.setVisible(true);
+            backgroundPause.setVisible(true);
         }
     }
 

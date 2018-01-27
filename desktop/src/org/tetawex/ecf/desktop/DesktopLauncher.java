@@ -7,12 +7,13 @@ import org.tetawex.ecf.core.ECFGame;
 import org.tetawex.ecf.model.LevelFactory;
 
 public class DesktopLauncher {
-	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.foregroundFPS=0;
-		config.width=432;
-		config.height=768;
-		new LwjglApplication(new ECFGame(new ActionResolverAdapter()), config);
+    public static void main(String[] arg) {
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.foregroundFPS = 0;
+        config.width = 432;
+        config.height = 768;
+        config.useHDPI = true;
+        new LwjglApplication(new ECFGame(new DesktopActionResolver()), config);
         LevelFactory.convertLevels();
-	}
+    }
 }

@@ -9,5 +9,8 @@ import org.tetawex.ecf.util.ConsumerListener;
  */
 public interface ActionResolver {
     void setBackPressedListener(BasicListener listener);
+
     boolean externalStorageAccessible();
+
+    void openUrl(String url);
 }

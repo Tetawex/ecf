@@ -17,4 +17,9 @@ public class ActionResolverAdapter implements ActionResolver {
     public boolean externalStorageAccessible() {
         return true;
     }
+
+    @Override
+    public void openUrl(String url) {
+
+    }
 }
