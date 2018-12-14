@@ -1,5 +1,8 @@
 package org.tetawex.ecf.desktop;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
+import org.jetbrains.annotations.NotNull;
 import org.tetawex.ecf.core.ActionResolver;
 import org.tetawex.ecf.util.BasicListener;
 
@@ -9,11 +12,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class DesktopActionResolver implements ActionResolver {
-
-    @Override
-    public void setBackPressedListener(BasicListener listener) {
-
-    }
 
     @Override
     public boolean externalStorageAccessible() {
@@ -31,5 +29,10 @@ public class DesktopActionResolver implements ActionResolver {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void setBackPressedListener(@NotNull Function0<Unit> listener) {
+
     }
 }

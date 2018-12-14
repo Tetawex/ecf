@@ -7,22 +7,19 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.Toast;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
+import org.jetbrains.annotations.NotNull;
 import org.tetawex.ecf.core.ActionResolver;
-import org.tetawex.ecf.core.ActionResolverAdapter;
 import org.tetawex.ecf.core.ECFGame;
-import org.tetawex.ecf.model.LevelData;
-import org.tetawex.ecf.util.BasicListener;
-
-import java.io.File;
 
 public class AndroidLauncher extends AndroidApplication implements ActionResolver {
     private static final int REQUEST_CHOOSER = 1;
-    private BasicListener backPressedListener;
+    private Function0<Unit> backPressedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +36,12 @@ public class AndroidLauncher extends AndroidApplication implements ActionResolve
             @Override
             public void run() {
                 if (backPressedListener != null)
-                    backPressedListener.call();
+                    backPressedListener.invoke();
             }
         });
 
     }
 
-    @Override
-    public void setBackPressedListener(BasicListener listener) {
-        backPressedListener = listener;
-    }
 
     @Override
     public boolean externalStorageAccessible() {
@@ -68,7 +61,7 @@ public class AndroidLauncher extends AndroidApplication implements ActionResolve
     }
 
     @Override
-    public void openUrl(String url) {
+    public void openUrl(@NotNull String url) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(intent);
@@ -78,4 +71,8 @@ public class AndroidLauncher extends AndroidApplication implements ActionResolve
         }
     }
 
+    @Override
+    public void setBackPressedListener(@NotNull Function0<Unit> listener) {
+        backPressedListener = listener;
+    }
 }
