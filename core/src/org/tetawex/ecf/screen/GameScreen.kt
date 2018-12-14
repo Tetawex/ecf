@@ -338,7 +338,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         wlTable.add<Label>(wlReasonLabel).pad(20f).width(PAUSE_BUTTON_WIDTH).row()
 
         val starsTable = Table()
-        stars = Array(3){null}
+        stars = Array(3) { null }
 
         for (i in stars.indices) {
             val image = Image(starDisabledRegion)
@@ -461,6 +461,10 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
                 if ("editor" == levelCode) {
                     goBackToEditor()
+                    return
+                }
+                if ("random" == levelCode) {
+                    game.gameStateManager.setState(GameStateManager.GameState.MODE_SELECT, null)
                     return
                 }
                 pauseTable.isVisible = !pauseTable.isVisible
