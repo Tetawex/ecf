@@ -8,34 +8,22 @@ import org.tetawex.ecf.util.IntVector2
  * Created by Tetawex on 02.05.17.
  */
 //TODO: Extract interface!!!
-class Cell {
-    var position: IntVector2? = null
-    var elements: OrderedSet<Element>? = null
-
-    constructor(position: IntVector2, vararg elements: Element) {
-        this.elements = OrderedSet()
-        this.elements!!.addAll(*elements)
-        this.position = position
-    }
-
-    @JvmOverloads constructor(position: IntVector2, elements: OrderedSet<Element> = OrderedSet()) {
-        this.position = position
-        this.elements = elements
-    }
+class Cell @JvmOverloads constructor(var position: IntVector2,
+                                     var elements: OrderedSet<Element> = OrderedSet()) {
 
     fun setElements(vararg elementArray: Element) {
-        elements!!.addAll(*elementArray)
+        elements.addAll(*elementArray)
     }
 
     fun clear() {
-        elements!!.clear()
+        elements.clear()
     }
 
     fun interactWith(cell: Cell): Int {
         val array = Array<Element>()
 
-        array.addAll(elements!!.orderedItems())
-        array.addAll(cell.elements!!.orderedItems())
+        array.addAll(elements.orderedItems())
+        array.addAll(cell.elements.orderedItems())
         cell.clear()
 
         return ElementFunctions.advancedResolveElementSet(array, elements)

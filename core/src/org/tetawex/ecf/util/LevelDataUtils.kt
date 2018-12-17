@@ -7,8 +7,8 @@ import org.tetawex.ecf.model.LevelData
  * Created by tetawex on 16.08.17.
  */
 object LevelDataUtils {
-    fun toJson(`object`: LevelData): String {
-        return JsonUtils.serializer.toJson(SavableLevelData(`object`))
+    fun toJson(data: LevelData): String {
+        return JsonUtils.serializer.toJson(SavableLevelData(data))
     }
 
     fun fromJson(json: String): LevelData {
