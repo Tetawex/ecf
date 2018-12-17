@@ -83,7 +83,7 @@ class LevelPackSelectScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game
         })
         mainTable.add(menuButtonClassic).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
         mainTable.add(menuButtonMot).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
-        mainTable.add(menuButtonSc).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
+        //mainTable.add(menuButtonSc).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
         mainTable.add(menuButtonBackPlayModeSelectScreen).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
     }
 

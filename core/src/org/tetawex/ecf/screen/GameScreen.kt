@@ -370,12 +370,17 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         winLossMenuButtonNext = TextButton(game.getLocalisedString("next"), StyleFactory.generateStandardMenuButtonStyle(game))
         winLossMenuButtonNext!!.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
-                if (levelCode === "editor") {
+                if (levelCode == "editor") {
                     goBackToEditor()
                     return
                 }
-                if (levelCode === "random")
-                    game.gameStateManager.setState(GameStateManager.GameState.HIGHSCORES, null)
+                else if (levelCode == "random") {
+                    val bundle = Bundle()
+                    val factory = RandomLevelFactory(Random().nextInt(10000), Random().nextInt(2) + 3, Random().nextInt(3) + 3)
+                    bundle.putItem("levelData", LevelData(factory.theBoard, factory.mana, 10000, -1, "Generated Level", "random"))
+                    game.gameStateManager.setState(GameStateManager.GameState.GAME, bundle)
+                    return
+                }
                 else if (levelData.levelNumber + 1 >= PreferencesProvider.getLevelCountForCode(levelCode)) {
                     val bundle = Bundle()
                     bundle.putItem("levelCode", levelCode)
@@ -413,6 +418,10 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
                 if ("editor" == levelCode) {
                     goBackToEditor()
+                    return
+                }
+                if (levelCode == "random") {
+                    game.gameStateManager.setState(GameStateManager.GameState.HIGHSCORES, null)
                     return
                 }
                 val bundle = Bundle()

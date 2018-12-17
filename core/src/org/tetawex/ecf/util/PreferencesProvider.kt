@@ -17,6 +17,7 @@ object PreferencesProvider {
     val LEVELS_COUNT = 18
     val MOT_LEVELS_COUNT = 15
     private var preferences: ECFPreferences? = null
+    const val CURRENT_VERSION_CODE = 8
 
     fun getPreferences(): ECFPreferences {
         if (preferences == null) {
@@ -31,6 +32,7 @@ object PreferencesProvider {
 
             if (preferences?.version ?: 0 < 7) {
                 preferences!!.scores = getDefaultScores()
+                preferences!!.version = CURRENT_VERSION_CODE
             }
 
             var size = preferences!!.getLevelCompletionStateList("")!!.size
