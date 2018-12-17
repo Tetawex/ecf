@@ -17,7 +17,7 @@ object PreferencesProvider {
     val LEVELS_COUNT = 18
     val MOT_LEVELS_COUNT = 15
     private var preferences: ECFPreferences? = null
-    const val CURRENT_VERSION_CODE = 8
+    const val CURRENT_VERSION_CODE = 9
 
     fun getPreferences(): ECFPreferences {
         if (preferences == null) {
