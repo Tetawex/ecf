@@ -130,7 +130,7 @@ class ECFGame(val actionResolver: ActionResolver) : Game() {
 
     private fun loadFonts() {
         val resolver = InternalFileHandleResolver()
-        assetManager.setLoader<FreeTypeFontGenerator, FreeTypeFontGeneratorLoader.FreeTypeFontGeneratorParameters>(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
+        assetManager.setLoader<FreeTypeFontGenerator,FreeTypeFontGeneratorLoader.FreeTypeFontGeneratorParameters>(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
         assetManager.setLoader<BitmapFont, FreetypeFontLoader.FreeTypeFontLoaderParameter>(BitmapFont::class.java, ".ttf", FreetypeFontLoader(resolver))
 
         // load to fonts via the generator (implicitly done by the FreetypeFontLoader).
@@ -138,29 +138,22 @@ class ECFGame(val actionResolver: ActionResolver) : Game() {
         // of the font to be generated. The names of the fonts are arbitrary and are not pointing
         // to a file on disk!
 
+        val loadFont = createFontLoader(assetManager)
+        loadFont(48, "small")
+        loadFont(75, "medium")
+        loadFont(96, "large")
+    }
+}
 
-        val paramsS = FreetypeFontLoader.FreeTypeFontLoaderParameter()
-        paramsS.fontParameters.characters = FontCharacters.en + FontCharacters.ru
-        paramsS.fontFileName = "fonts/font_main.ttf"
-        paramsS.fontParameters.size = 48
-        paramsS.fontParameters.minFilter = Texture.TextureFilter.Linear
-        paramsS.fontParameters.magFilter = Texture.TextureFilter.Linear
-        assetManager.load("fonts/font_main_small.ttf", BitmapFont::class.java, paramsS)
-
-        val paramsM = FreetypeFontLoader.FreeTypeFontLoaderParameter()
-        paramsM.fontParameters.characters = FontCharacters.en + FontCharacters.ru
-        paramsM.fontFileName = "fonts/font_main.ttf"
-        paramsM.fontParameters.size = 75
-        paramsM.fontParameters.minFilter = Texture.TextureFilter.Linear
-        paramsM.fontParameters.magFilter = Texture.TextureFilter.Linear
-        assetManager.load("fonts/font_main_medium.ttf", BitmapFont::class.java, paramsM)
-
-        val paramsL = FreetypeFontLoader.FreeTypeFontLoaderParameter()
-        paramsL.fontParameters.characters = FontCharacters.en + FontCharacters.ru
-        paramsL.fontFileName = "fonts/font_main.ttf"
-        paramsL.fontParameters.size = 96
-        paramsL.fontParameters.minFilter = Texture.TextureFilter.Linear
-        paramsL.fontParameters.magFilter = Texture.TextureFilter.Linear
-        assetManager.load("fonts/font_main_large.ttf", BitmapFont::class.java, paramsL)
+fun createFontLoader(assetManager: AssetManager): (size: Int, nameSuffix: String) -> Unit {
+    return { size, nameSuffix ->
+        val params = FreetypeFontLoader.FreeTypeFontLoaderParameter()
+        params.fontParameters.characters = FontCharacters.en + FontCharacters.ru
+        params.fontFileName = "fonts/font_main.ttf"
+        params.fontParameters.size = size
+        params.fontParameters.minFilter = Texture.TextureFilter.Linear
+        params.fontParameters.magFilter = Texture.TextureFilter.Linear
+        params.fontParameters.hinting = FreeTypeFontGenerator.Hinting.Full
+        assetManager.load("fonts/font_main_${nameSuffix}.ttf", BitmapFont::class.java, params)
     }
 }

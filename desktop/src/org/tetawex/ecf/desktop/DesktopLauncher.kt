@@ -13,6 +13,7 @@ object DesktopLauncher {
         config.width = 432
         config.height = 768
         config.useHDPI = true
+
         //config.fullscreen = true
         LwjglApplication(ECFGame(DesktopActionResolver()), config)
         //LevelFactory.convertLevels()
