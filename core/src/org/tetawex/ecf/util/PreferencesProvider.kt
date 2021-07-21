@@ -32,6 +32,9 @@ object PreferencesProvider {
 
             if (preferences?.version ?: 0 < 10) {
                 preferences!!.scores = getDefaultScores()
+            }
+
+            if (preferences?.version ?: 0 < CURRENT_VERSION_CODE) {
                 preferences!!.version = CURRENT_VERSION_CODE
             }
 

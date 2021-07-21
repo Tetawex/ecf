@@ -377,7 +377,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
                 else if (levelCode == "random") {
                     val bundle = Bundle()
                     val factory = RandomLevelFactory(Random().nextInt(10000), Random().nextInt(2) + 3, Random().nextInt(3) + 3)
-                    bundle.putItem("levelData", LevelData(factory.theBoard, factory.mana, 10000, -1, "Generated Level", "random"))
+                    bundle.putItem("levelData", LevelData(factory.theBoard, factory.mana, 10000, -1, "Random Level", "random"))
                     game.gameStateManager.setState(GameStateManager.GameState.GAME, bundle)
                     return
                 }
