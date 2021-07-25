@@ -19,11 +19,11 @@ class GameStateManager(private val game: ECFGame) {
     }
 
     enum class GameState {
-        INIT, MAIN_MENU, GAME, SETTINGS, HIGHSCORES, MODE_SELECT, LEVEL_SELECT, TUTORIAL, EDITOR, MOT_TUTORIAL, LEVEL_PACK_SELECT
+        LOADING, MAIN_MENU, GAME, SETTINGS, HIGHSCORES, MODE_SELECT, LEVEL_SELECT, TUTORIAL, EDITOR, MOT_TUTORIAL, LEVEL_PACK_SELECT
     }
 
     init {
-        setState(GameState.INIT, null)
+//        setState(GameState.LOADING, null)
     }
 
     constructor(game: ECFGame, state: GameState) : this(game) {
@@ -53,7 +53,7 @@ class GameStateManager(private val game: ECFGame) {
             GameState.GAME -> currentScreen = GameScreen(game, bundle)
             GameState.LEVEL_PACK_SELECT -> currentScreen = LevelPackSelectScreen(game, bundle)
             GameState.EDITOR -> currentScreen = EditorScreen(game, bundle)
-            GameState.INIT -> currentScreen = null
+            GameState.LOADING -> currentScreen = LoadingScreen(game, bundle)
         }
     }
 }

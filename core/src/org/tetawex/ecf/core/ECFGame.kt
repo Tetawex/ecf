@@ -6,63 +6,71 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 import com.badlogic.gdx.utils.I18NBundle
+import com.badlogic.gdx.utils.ScreenUtils
 import org.tetawex.ecf.model.Language
 import org.tetawex.ecf.util.FontCharacters
 import org.tetawex.ecf.util.PreferencesProvider
 import java.util.*
 import kotlin.collections.HashMap
 
-const val BACKGROUND_IMAGE_PATH = "backgrounds/background.png"
+
+const val BACKGROUND_IMAGE_PATH = "backgrounds/background_stub.png"
 
 class ECFGame(val actionResolver: ActionResolver) : Game() {
     lateinit var assetManager: AssetManager
         private set
-    private var textureAtlas: TextureAtlas? = null
     lateinit var gameStateManager: GameStateManager
         private set
+
+    private var textureAtlas: TextureAtlas? = null
     private var i18NBundle: I18NBundle? = null
     private var music: Music? = null
 
     override fun create() {
-        PreferencesProvider.getPreferences()
         assetManager = AssetManager()
-        assetManager.let {
-            loadAssets(it)
-            it.finishLoadingAsset<Texture>(BACKGROUND_IMAGE_PATH)
-        }
+
+        assetManager.load(BACKGROUND_IMAGE_PATH, Texture::class.java)
+        assetManager.finishLoadingAsset<Texture>(BACKGROUND_IMAGE_PATH)
+
         gameStateManager = GameStateManager(this)
 
-//        setupLocalisation()
-//
-//        textureAtlas = assetManager.get("atlas.atlas", TextureAtlas::class.java)
-//        for (texture in textureAtlas!!.textures) {
-//            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-//        }
-//
-//        gameStateManager = GameStateManager(this, GameStateManager.GameState.MAIN_MENU)
-//
-//        music = Gdx.audio.newMusic(Gdx.files.internal("music/ambient.ogg")).apply {
-//            isLooping = true
-//            volume = PreferencesProvider.getPreferences().musicVolume
-//            play()
-//        }
-//
-//        actionResolver.setBackPressedListener {
-//            gameStateManager.currentScreen?.onBackPressed() ?: false
-//        }
+//        Gdx.app.postRunnable { postInit() }
     }
 
-    fun postInit() {
+    private fun postInit() {
+        loadAssets(assetManager)
+        assetManager.finishLoading()
+        setupLocalisation()
 
+        textureAtlas = assetManager.get("atlas.atlas", TextureAtlas::class.java)
+        for (texture in textureAtlas!!.textures) {
+            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+        }
+
+        gameStateManager = GameStateManager(this, GameStateManager.GameState.MAIN_MENU)
+
+        music = Gdx.audio.newMusic(Gdx.files.internal("music/ambient.ogg")).apply {
+            isLooping = true
+            volume = PreferencesProvider.getPreferences().musicVolume
+            play()
+        }
+
+        actionResolver.setBackPressedListener {
+            gameStateManager.currentScreen?.onBackPressed() ?: false
+        }
+
+        PreferencesProvider.getPreferences()
+
+        gameStateManager.setState(GameStateManager.GameState.MAIN_MENU, null)
     }
 
     fun setMusicVolume(volume: Float) {
@@ -70,7 +78,8 @@ class ECFGame(val actionResolver: ActionResolver) : Game() {
     }
 
     override fun render() {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        ScreenUtils.clear(207/255f, 161/255f, 158/255f, 1f)
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         gameStateManager.renderCurrentScreen(Gdx.graphics.deltaTime)
     }
 
