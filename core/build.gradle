@@ -7,5 +7,5 @@ eclipse.project.name = appName + "-core"
 
 dependencies {
     implementation 'com.badlogicgames.gdx:gdx-tools:1.10.0'
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
