@@ -37,10 +37,15 @@ class HighscoresScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(gam
     private fun initUi() {
         val stack = Stack()
         stack.setFillParent(true)
-        stack.add(Image(
+        stack.add(
+            Image(
                 game.assetManager
-                        .get("backgrounds/background.png",
-                                Texture::class.java)))
+                    .get(
+                        "backgrounds/background.png",
+                        Texture::class.java
+                    )
+            )
+        )
         val mainTable = Table()
         mainTable.setFillParent(true)
         stack.add(mainTable)
@@ -50,17 +55,20 @@ class HighscoresScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(gam
         for (score in preferences.scores) {
             val table = Table()
             table.add(Label(i.toString(), labelStyle))
-                    .padLeft(80f).padRight(80f).padBottom(40f).padTop(40f)
+                .padLeft(80f).padRight(80f).padBottom(40f).padTop(40f)
             table.add(Label(score.name, labelStyle))
-                    .padLeft(80f).padRight(80f).padBottom(40f).padTop(40f).growX()
+                .padLeft(80f).padRight(80f).padBottom(40f).padTop(40f).growX()
             table.add(Label(score.value.toString(), labelStyle))
-                    .padLeft(80f).padRight(80f).padBottom(40f).padTop(40f)
+                .padLeft(80f).padRight(80f).padBottom(40f).padTop(40f)
             mainTable.add(table).growX().row()
             i++
             if (i > 9)
                 break
         }
-        val menuButtonBackToMainMenu = TextButton(game.getLocalisedString("back"), StyleFactory.generateStandardMenuButtonStyle(game))
+        val menuButtonBackToMainMenu = TextButton(
+            game.getLocalisedString("back"),
+            StyleFactory.generateStandardMenuButtonStyle(game)
+        )
         menuButtonBackToMainMenu.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
                 onBackPressed()
@@ -70,8 +78,9 @@ class HighscoresScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(gam
         mainTable.add(menuButtonBackToMainMenu).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD)
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean {
         game.gameStateManager.setState(GameStateManager.GameState.MAIN_MENU, null)
+        return true
     }
 
     override fun render(delta: Float) {

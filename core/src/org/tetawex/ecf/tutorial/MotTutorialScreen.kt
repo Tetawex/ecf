@@ -250,7 +250,7 @@ class MotTutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(ga
         tutButton!!.setText(game.getLocalisedString("mottutorial$tutorialStage"))
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean {
         if (pauseTable!!.isVisible) {
             pauseTable!!.isVisible = false
             backgroundPause!!.isVisible = false
@@ -258,6 +258,7 @@ class MotTutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(ga
             pauseTable!!.isVisible = true
             backgroundPause!!.isVisible = true
         }
+        return true
     }
 
     companion object {

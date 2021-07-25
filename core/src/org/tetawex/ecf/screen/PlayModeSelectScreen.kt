@@ -103,8 +103,9 @@ class PlayModeSelectScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>
         stage.viewport.camera.update()
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean {
         game.gameStateManager.setState(GameStateManager.GameState.MAIN_MENU, null)
+        return true
     }
 
     companion object {

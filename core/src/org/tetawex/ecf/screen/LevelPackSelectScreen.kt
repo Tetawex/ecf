@@ -97,8 +97,9 @@ class LevelPackSelectScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game
         stage.viewport.camera.update()
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean {
         game.gameStateManager.setState(GameStateManager.GameState.MODE_SELECT, null)
+        return true
     }
 
     companion object {

@@ -198,8 +198,9 @@ class SettingsScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(game)
 
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean {
         game.gameStateManager.setState(GameStateManager.GameState.MAIN_MENU, null)
+        return true
     }
 
     override fun dispose() {

@@ -8,5 +8,7 @@ import org.tetawex.ecf.core.ECFGame
  * Created by Tetawex on 17.05.2017.
  */
 open class BaseScreen<T : Game>(val game: T) : ScreenAdapter() {
-    open fun onBackPressed() {}
+    open fun onBackPressed(): Boolean {
+        return false
+    }
 }

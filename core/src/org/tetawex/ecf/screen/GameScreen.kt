@@ -121,11 +121,15 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         val stack = Stack()
         stack.setFillParent(true)
 
-        val background = Image(game.assetManager
-                .get("backgrounds/" + levelCode + "background.png", Texture::class.java))
+        val background = Image(
+            game.assetManager
+                .get("backgrounds/" + levelCode + "background.png", Texture::class.java)
+        )
         background.setFillParent(true)
-        backgroundPause = Image(game.assetManager
-                .get("backgrounds/background_pause.png", Texture::class.java))
+        backgroundPause = Image(
+            game.assetManager
+                .get("backgrounds/background_pause.png", Texture::class.java)
+        )
         backgroundPause.setFillParent(true)
         backgroundPause.isVisible = false
 
@@ -205,7 +209,15 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
                 hexMapActor!!.setCellArray(newMap)
             }
 
-            override fun elementsCountChanged(fire: Int, water: Int, air: Int, earth: Int, shadow: Int, light: Int, time: Int) {
+            override fun elementsCountChanged(
+                fire: Int,
+                water: Int,
+                air: Int,
+                earth: Int,
+                shadow: Int,
+                light: Int,
+                time: Int
+            ) {
                 fireCounterLabel!!.setText(fire.toString() + "")
                 waterCounterLabel!!.setText(water.toString() + "")
                 airCounterLabel!!.setText(air.toString() + "")
@@ -252,11 +264,17 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
                         stars[i]!!.drawable = TextureRegionDrawable(starRegion)
                     }
                     if ("editor" != levelData.levelCode && "random" != levelData.levelCode) {
-                        preferences.getLevelCompletionStateList(levelCode)!![levelData.levelNumber].completed = true
+                        preferences.getLevelCompletionStateList(levelCode)!![levelData.levelNumber].completed =
+                            true
                         if (preferences.getLevelCompletionStateList(levelCode)!![levelData.levelNumber].stars < starsCount)
-                            preferences.getLevelCompletionStateList(levelCode)!![levelData.levelNumber].stars = starsCount
-                        if (levelData.levelNumber + 1 < PreferencesProvider.getLevelCountForCode(levelCode))
-                            preferences.getLevelCompletionStateList(levelCode)!![levelData.levelNumber + 1].unlocked = true
+                            preferences.getLevelCompletionStateList(levelCode)!![levelData.levelNumber].stars =
+                                starsCount
+                        if (levelData.levelNumber + 1 < PreferencesProvider.getLevelCountForCode(
+                                levelCode
+                            )
+                        )
+                            preferences.getLevelCompletionStateList(levelCode)!![levelData.levelNumber + 1].unlocked =
+                                true
                     }
                     PreferencesProvider.flushPreferences()
                 } else {
@@ -283,11 +301,17 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         val fireTable = Table()
         val waterTable = Table()
 
-        fireTable.add(Image(
-                game.getTextureRegionFromAtlas("element_fire"))).size(ELEMENT_COUNTER_IMAGE_SIZE).row()
+        fireTable.add(
+            Image(
+                game.getTextureRegionFromAtlas("element_fire")
+            )
+        ).size(ELEMENT_COUNTER_IMAGE_SIZE).row()
         fireTable.add<Label>(fireCounterLabel)
-        waterTable.add(Image(
-                game.getTextureRegionFromAtlas("element_water"))).size(ELEMENT_COUNTER_IMAGE_SIZE).row()
+        waterTable.add(
+            Image(
+                game.getTextureRegionFromAtlas("element_water")
+            )
+        ).size(ELEMENT_COUNTER_IMAGE_SIZE).row()
         waterTable.add<Label>(waterCounterLabel)
 
         fwTable.add(fireTable)
@@ -298,11 +322,17 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         val airTable = Table()
         val earthTable = Table()
 
-        airTable.add(Image(
-                game.getTextureRegionFromAtlas("element_air"))).size(ELEMENT_COUNTER_IMAGE_SIZE).row()
+        airTable.add(
+            Image(
+                game.getTextureRegionFromAtlas("element_air")
+            )
+        ).size(ELEMENT_COUNTER_IMAGE_SIZE).row()
         airTable.add<Label>(airCounterLabel)
-        earthTable.add(Image(
-                game.getTextureRegionFromAtlas("element_earth"))).size(ELEMENT_COUNTER_IMAGE_SIZE).row()
+        earthTable.add(
+            Image(
+                game.getTextureRegionFromAtlas("element_earth")
+            )
+        ).size(ELEMENT_COUNTER_IMAGE_SIZE).row()
         earthTable.add<Label>(earthCounterLabel)
 
         aeTable.add(airTable)
@@ -313,11 +343,17 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         val shadowTable = Table()
         val lightTable = Table()
 
-        shadowTable.add(Image(
-                game.getTextureRegionFromAtlas("element_shadow"))).size(ELEMENT_COUNTER_IMAGE_SIZE).row()
+        shadowTable.add(
+            Image(
+                game.getTextureRegionFromAtlas("element_shadow")
+            )
+        ).size(ELEMENT_COUNTER_IMAGE_SIZE).row()
         shadowTable.add<Label>(shadowCounterLabel)
-        lightTable.add(Image(
-                game.getTextureRegionFromAtlas("element_light"))).size(ELEMENT_COUNTER_IMAGE_SIZE).row()
+        lightTable.add(
+            Image(
+                game.getTextureRegionFromAtlas("element_light")
+            )
+        ).size(ELEMENT_COUNTER_IMAGE_SIZE).row()
         lightTable.add<Label>(lightCounterLabel)
 
         slTable.add(shadowTable)
@@ -347,19 +383,34 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         }
 
         val scoreTable = Table()
-        scoreTable.add(Label(game.getLocalisedString("score"), StyleFactory.generateStandardLabelStyle(game)))
+        scoreTable.add(
+            Label(
+                game.getLocalisedString("score"),
+                StyleFactory.generateStandardLabelStyle(game)
+            )
+        )
         wlScore = Label("", StyleFactory.generateStandardLabelStyle(game))
         scoreTable.add<Label>(wlScore).padRight(40f)
         wlTable.add(scoreTable).pad(20f).row()
 
         val spareTable = Table()
-        spareTable.add(Label(game.getLocalisedString("spare_mana"), StyleFactory.generateStandardLabelStyle(game)))
+        spareTable.add(
+            Label(
+                game.getLocalisedString("spare_mana"),
+                StyleFactory.generateStandardLabelStyle(game)
+            )
+        )
         wlSpareMana = Label("", StyleFactory.generateStandardLabelStyle(game))
         spareTable.add<Label>(wlSpareMana)
         wlTable.add(spareTable).pad(20f).row()
 
         val totalTable = Table()
-        totalTable.add(Label(game.getLocalisedString("total"), StyleFactory.generateStandardLabelStyle(game)))
+        totalTable.add(
+            Label(
+                game.getLocalisedString("total"),
+                StyleFactory.generateStandardLabelStyle(game)
+            )
+        )
         wlTotal = Label("", StyleFactory.generateStandardLabelStyle(game))
         totalTable.add<Label>(wlTotal)
         wlTable.add(totalTable).pad(20f).row()
@@ -367,38 +418,61 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
 
         stack.add(wlTable)
 
-        winLossMenuButtonNext = TextButton(game.getLocalisedString("next"), StyleFactory.generateStandardMenuButtonStyle(game))
+        winLossMenuButtonNext = TextButton(
+            game.getLocalisedString("next"),
+            StyleFactory.generateStandardMenuButtonStyle(game)
+        )
         winLossMenuButtonNext!!.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
                 if (levelCode == "editor") {
                     goBackToEditor()
                     return
-                }
-                else if (levelCode == "random") {
+                } else if (levelCode == "random") {
                     val bundle = Bundle()
-                    val factory = RandomLevelFactory(Random().nextInt(10000), Random().nextInt(2) + 3, Random().nextInt(3) + 3)
-                    bundle.putItem("levelData", LevelData(factory.theBoard, factory.mana, 10000, -1, "Random Level", "random"))
+                    val factory = RandomLevelFactory(
+                        Random().nextInt(10000),
+                        Random().nextInt(2) + 3,
+                        Random().nextInt(3) + 3
+                    )
+                    bundle.putItem(
+                        "levelData",
+                        LevelData(
+                            factory.theBoard,
+                            factory.mana,
+                            10000,
+                            -1,
+                            "Random Level",
+                            "random"
+                        )
+                    )
                     game.gameStateManager.setState(GameStateManager.GameState.GAME, bundle)
                     return
-                }
-                else if (levelData.levelNumber + 1 >= PreferencesProvider.getLevelCountForCode(levelCode)) {
+                } else if (levelData.levelNumber + 1 >= PreferencesProvider.getLevelCountForCode(
+                        levelCode
+                    )
+                ) {
                     val bundle = Bundle()
                     bundle.putItem("levelCode", levelCode)
                     game.gameStateManager.setState(GameStateManager.GameState.LEVEL_SELECT, bundle)
                 } else {
                     val bundle = Bundle()
                     bundle.putItem("levelCode", levelCode)
-                    bundle.putItem("levelData",
-                            LevelFactory.generateLevel(levelData.levelNumber + 1, levelCode))
+                    bundle.putItem(
+                        "levelData",
+                        LevelFactory.generateLevel(levelData.levelNumber + 1, levelCode)
+                    )
                     game.gameStateManager.setState(GameStateManager.GameState.GAME, bundle)
                 }
             }
         })
         wlTable.add<TextButton>(winLossMenuButtonNext)
-                .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-                .center().pad(PAUSE_BUTTON_PAD).row()
+            .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
+            .center().pad(PAUSE_BUTTON_PAD).row()
 
-        val winLossMenuButtonRetry = TextButton(game.getLocalisedString("retry"), StyleFactory.generateStandardMenuButtonStyle(game))
+        val winLossMenuButtonRetry = TextButton(
+            game.getLocalisedString("retry"),
+            StyleFactory.generateStandardMenuButtonStyle(game)
+        )
         winLossMenuButtonRetry.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
                 wlTable.isVisible = false
@@ -409,11 +483,14 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
             }
         })
         wlTable.add(winLossMenuButtonRetry)
-                .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-                .center().pad(PAUSE_BUTTON_PAD).row()
+            .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
+            .center().pad(PAUSE_BUTTON_PAD).row()
 
 
-        val winLossMenuButtonQuit = TextButton(game.getLocalisedString("quit"), StyleFactory.generateStandardMenuButtonStyle(game))
+        val winLossMenuButtonQuit = TextButton(
+            game.getLocalisedString("quit"),
+            StyleFactory.generateStandardMenuButtonStyle(game)
+        )
         winLossMenuButtonQuit.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
                 if ("editor" == levelCode) {
@@ -430,13 +507,16 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
             }
         })
         wlTable.add(winLossMenuButtonQuit)
-                .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-                .center().pad(PAUSE_BUTTON_PAD).row()
+            .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
+            .center().pad(PAUSE_BUTTON_PAD).row()
 
         //pause ui
         pauseTable.center()
 
-        val pauseMenuButtonContinue = TextButton(game.getLocalisedString("continue"), StyleFactory.generateStandardMenuButtonStyle(game))
+        val pauseMenuButtonContinue = TextButton(
+            game.getLocalisedString("continue"),
+            StyleFactory.generateStandardMenuButtonStyle(game)
+        )
         pauseMenuButtonContinue.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
 
@@ -446,10 +526,13 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         })
         pauseMenuButtonContinue.label.setFontScale(PAUSE_BUTTON_FONT_SCALE)
         pauseTable.add(pauseMenuButtonContinue)
-                .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-                .center().pad(PAUSE_BUTTON_PAD).row()
+            .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
+            .center().pad(PAUSE_BUTTON_PAD).row()
 
-        val pauseMenuButtonRetry = TextButton(game.getLocalisedString("retry"), StyleFactory.generateStandardMenuButtonStyle(game))
+        val pauseMenuButtonRetry = TextButton(
+            game.getLocalisedString("retry"),
+            StyleFactory.generateStandardMenuButtonStyle(game)
+        )
         pauseMenuButtonRetry.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
                 pauseTable.isVisible = !pauseTable.isVisible
@@ -461,11 +544,14 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         })
         pauseMenuButtonRetry.label.setFontScale(PAUSE_BUTTON_FONT_SCALE)
         pauseTable.add(pauseMenuButtonRetry)
-                .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-                .center().pad(PAUSE_BUTTON_PAD).row()
+            .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
+            .center().pad(PAUSE_BUTTON_PAD).row()
 
 
-        val pauseMenuButtonQuit = TextButton(game.getLocalisedString("quit"), StyleFactory.generateStandardMenuButtonStyle(game))
+        val pauseMenuButtonQuit = TextButton(
+            game.getLocalisedString("quit"),
+            StyleFactory.generateStandardMenuButtonStyle(game)
+        )
         pauseMenuButtonQuit.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
                 if ("editor" == levelCode) {
@@ -488,15 +574,15 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         })
         pauseMenuButtonQuit.label.setFontScale(PAUSE_BUTTON_FONT_SCALE)
         pauseTable.add(pauseMenuButtonQuit)
-                .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-                .center().pad(PAUSE_BUTTON_PAD).row()
+            .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
+            .center().pad(PAUSE_BUTTON_PAD).row()
     }
 
     override fun dispose() {
 
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean {
         if (pauseTable.isVisible) {
             pauseTable.isVisible = false
             backgroundPause.isVisible = false
@@ -504,6 +590,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
             pauseTable.isVisible = true
             backgroundPause.isVisible = true
         }
+        return true
     }
 
     private fun goBackToEditor() {

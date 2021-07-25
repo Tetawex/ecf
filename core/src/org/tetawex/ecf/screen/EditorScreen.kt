@@ -277,7 +277,7 @@ class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
 
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean {
         if (pauseTable.isVisible) {
             pauseTable.isVisible = false
             backgroundPause.isVisible = false
@@ -285,6 +285,7 @@ class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
             pauseTable.isVisible = true
             backgroundPause.isVisible = true
         }
+        return true
     }
 
     fun generateButtonForAction(action: ButtonAction): TextButton {

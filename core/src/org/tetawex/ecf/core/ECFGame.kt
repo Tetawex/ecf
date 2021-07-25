@@ -78,7 +78,9 @@ class ECFGame(val actionResolver: ActionResolver) : Game() {
         music!!.volume = PreferencesProvider.getPreferences().musicVolume
         music!!.play()
 
-        actionResolver.setBackPressedListener { gameStateManager!!.currentScreen!!.onBackPressed() }
+        actionResolver.setBackPressedListener {
+            gameStateManager.currentScreen?.onBackPressed() ?: false
+        }
     }
 
     fun setMusicVolume(volume: Float) {
@@ -119,7 +121,8 @@ class ECFGame(val actionResolver: ActionResolver) : Game() {
             i18NBundle = assetManager.get("i18n/bundle", I18NBundle::class.java)
         } else {
             val baseFileHandle = Gdx.files.internal("i18n/bundle")
-            val locale = Locale(preferences.selectedLanguageCode!!, preferences.selectedCountryCode!!)
+            val locale =
+                Locale(preferences.selectedLanguageCode!!, preferences.selectedCountryCode!!)
             i18NBundle = I18NBundle.createBundle(baseFileHandle, locale)
         }
         FontCharacters.codeToLanguageMap = HashMap()
@@ -130,8 +133,15 @@ class ECFGame(val actionResolver: ActionResolver) : Game() {
 
     private fun loadFonts() {
         val resolver = InternalFileHandleResolver()
-        assetManager.setLoader<FreeTypeFontGenerator,FreeTypeFontGeneratorLoader.FreeTypeFontGeneratorParameters>(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
-        assetManager.setLoader<BitmapFont, FreetypeFontLoader.FreeTypeFontLoaderParameter>(BitmapFont::class.java, ".ttf", FreetypeFontLoader(resolver))
+        assetManager.setLoader<FreeTypeFontGenerator, FreeTypeFontGeneratorLoader.FreeTypeFontGeneratorParameters>(
+            FreeTypeFontGenerator::class.java,
+            FreeTypeFontGeneratorLoader(resolver)
+        )
+        assetManager.setLoader<BitmapFont, FreetypeFontLoader.FreeTypeFontLoaderParameter>(
+            BitmapFont::class.java,
+            ".ttf",
+            FreetypeFontLoader(resolver)
+        )
 
         // load to fonts via the generator (implicitly done by the FreetypeFontLoader).
         // Note: you MUST specify a FreetypeFontGenerator defining the ttf font file name and the size

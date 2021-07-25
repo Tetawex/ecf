@@ -2,6 +2,8 @@ package org.tetawex.ecf.desktop;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
+import kotlin.jvm.functions.Function1;
+
 import org.jetbrains.annotations.NotNull;
 import org.tetawex.ecf.core.ActionResolver;
 import org.tetawex.ecf.util.BasicListener;
@@ -32,7 +34,7 @@ public class DesktopActionResolver implements ActionResolver {
     }
 
     @Override
-    public void setBackPressedListener(@NotNull Function0<Unit> listener) {
+    public void setBackPressedListener(@NotNull Function1<? super error.NonExistentClass, Unit> listener) {
 
     }
 }
