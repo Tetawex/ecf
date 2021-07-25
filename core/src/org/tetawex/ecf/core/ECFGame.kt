@@ -21,6 +21,8 @@ import org.tetawex.ecf.util.PreferencesProvider
 import java.util.*
 import kotlin.collections.HashMap
 
+const val BACKGROUND_IMAGE_PATH = "backgrounds/background.png"
+
 class ECFGame(val actionResolver: ActionResolver) : Game() {
     lateinit var assetManager: AssetManager
         private set
@@ -35,27 +37,32 @@ class ECFGame(val actionResolver: ActionResolver) : Game() {
         assetManager = AssetManager()
         assetManager.let {
             loadAssets(it)
-            it.finishLoading()
+            it.finishLoadingAsset<Texture>(BACKGROUND_IMAGE_PATH)
         }
+        gameStateManager = GameStateManager(this)
 
-        setupLocalisation()
+//        setupLocalisation()
+//
+//        textureAtlas = assetManager.get("atlas.atlas", TextureAtlas::class.java)
+//        for (texture in textureAtlas!!.textures) {
+//            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+//        }
+//
+//        gameStateManager = GameStateManager(this, GameStateManager.GameState.MAIN_MENU)
+//
+//        music = Gdx.audio.newMusic(Gdx.files.internal("music/ambient.ogg")).apply {
+//            isLooping = true
+//            volume = PreferencesProvider.getPreferences().musicVolume
+//            play()
+//        }
+//
+//        actionResolver.setBackPressedListener {
+//            gameStateManager.currentScreen?.onBackPressed() ?: false
+//        }
+    }
 
-        textureAtlas = assetManager.get("atlas.atlas", TextureAtlas::class.java)
-        for (texture in textureAtlas!!.textures) {
-            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-        }
+    fun postInit() {
 
-        gameStateManager = GameStateManager(this, GameStateManager.GameState.MAIN_MENU)
-
-        music = Gdx.audio.newMusic(Gdx.files.internal("music/ambient.ogg")).apply {
-            isLooping = true
-            volume = PreferencesProvider.getPreferences().musicVolume
-            play()
-        }
-
-        actionResolver.setBackPressedListener {
-            gameStateManager.currentScreen?.onBackPressed() ?: false
-        }
     }
 
     fun setMusicVolume(volume: Float) {
@@ -74,7 +81,7 @@ class ECFGame(val actionResolver: ActionResolver) : Game() {
     }
 
     override fun resize(width: Int, height: Int) {
-        gameStateManager.currentScreen!!.resize(width, height)
+        gameStateManager.resize(width, height)
     }
 
     fun getTextureRegionFromAtlas(name: String): TextureRegion {

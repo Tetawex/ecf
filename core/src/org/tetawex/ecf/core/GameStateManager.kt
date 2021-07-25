@@ -13,16 +13,17 @@ class GameStateManager(private val game: ECFGame) {
     var currentScreen: BaseScreen<ECFGame>? = null
         private set
     private var currentState: GameState? = null
+
     fun dispose() {
         currentScreen!!.dispose()
     }
 
     enum class GameState {
-        MAIN_MENU, GAME, SETTINGS, HIGHSCORES, MODE_SELECT, LEVEL_SELECT, TUTORIAL, EDITOR, MOT_TUTORIAL, LEVEL_PACK_SELECT
+        INIT, MAIN_MENU, GAME, SETTINGS, HIGHSCORES, MODE_SELECT, LEVEL_SELECT, TUTORIAL, EDITOR, MOT_TUTORIAL, LEVEL_PACK_SELECT
     }
 
     init {
-        setState(GameState.MAIN_MENU, null)
+        setState(GameState.INIT, null)
     }
 
     constructor(game: ECFGame, state: GameState) : this(game) {
@@ -30,7 +31,11 @@ class GameStateManager(private val game: ECFGame) {
     }
 
     fun renderCurrentScreen(deltaTime: Float) {
-        currentScreen!!.render(deltaTime)
+        currentScreen?.render(deltaTime)
+    }
+
+    fun resize(width: Int, height: Int) {
+        currentScreen?.resize(width, height)
     }
 
     fun setState(gameState: GameState, bundle: Bundle?) {
@@ -48,6 +53,7 @@ class GameStateManager(private val game: ECFGame) {
             GameState.GAME -> currentScreen = GameScreen(game, bundle)
             GameState.LEVEL_PACK_SELECT -> currentScreen = LevelPackSelectScreen(game, bundle)
             GameState.EDITOR -> currentScreen = EditorScreen(game, bundle)
+            GameState.INIT -> currentScreen = null
         }
     }
 }
