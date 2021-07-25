@@ -17,9 +17,9 @@ class LoadingScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(game) 
     private val preferences: ECFPreferences
 
     init {
-        val camera = OrthographicCamera(144f, 256f)
+        val camera = OrthographicCamera(1440f, 2560f)
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0f)
-        stage = Stage(ExtendViewport(144f, 256f, camera))
+        stage = Stage(ExtendViewport(1440f, 2560f, camera))
         Gdx.input.inputProcessor = stage
         preferences = PreferencesProvider.getPreferences()
         initUi()

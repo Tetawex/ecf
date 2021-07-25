@@ -23,7 +23,7 @@ class GameStateManager(private val game: ECFGame) {
     }
 
     init {
-//        setState(GameState.LOADING, null)
+        setState(GameState.LOADING, null)
     }
 
     constructor(game: ECFGame, state: GameState) : this(game) {
@@ -38,22 +38,29 @@ class GameStateManager(private val game: ECFGame) {
         currentScreen?.resize(width, height)
     }
 
-    fun setState(gameState: GameState, bundle: Bundle?) {
+    private val savedStates: MutableMap<GameState, Bundle> = mutableMapOf()
+
+    fun saveStateForGameState(gameState: GameState, bundle: Bundle) {
+        savedStates[gameState] = bundle
+    }
+
+    fun setState(gameState: GameState, params: Bundle?) {
         currentState = gameState
         currentScreen?.dispose()
 
         when (currentState) {
-            GameState.TUTORIAL -> currentScreen = TutorialScreen(game, bundle)
-            GameState.MOT_TUTORIAL -> currentScreen = MotTutorialScreen(game, bundle)
-            GameState.MODE_SELECT -> currentScreen = PlayModeSelectScreen(game, bundle)
-            GameState.LEVEL_SELECT -> currentScreen = LevelSelectScreen(game, bundle)
-            GameState.HIGHSCORES -> currentScreen = HighscoresScreen(game, bundle)
-            GameState.MAIN_MENU -> currentScreen = MainMenuScreen(game, bundle)
-            GameState.SETTINGS -> currentScreen = SettingsScreen(game, bundle)
-            GameState.GAME -> currentScreen = GameScreen(game, bundle)
-            GameState.LEVEL_PACK_SELECT -> currentScreen = LevelPackSelectScreen(game, bundle)
-            GameState.EDITOR -> currentScreen = EditorScreen(game, bundle)
-            GameState.LOADING -> currentScreen = LoadingScreen(game, bundle)
+            GameState.TUTORIAL -> currentScreen = TutorialScreen(game, params)
+            GameState.MOT_TUTORIAL -> currentScreen = MotTutorialScreen(game, params)
+            GameState.MODE_SELECT -> currentScreen = PlayModeSelectScreen(game, params)
+            GameState.LEVEL_SELECT -> currentScreen =
+                LevelSelectScreen(game, params, savedStates[GameState.LEVEL_SELECT])
+            GameState.HIGHSCORES -> currentScreen = HighscoresScreen(game, params)
+            GameState.MAIN_MENU -> currentScreen = MainMenuScreen(game, params)
+            GameState.SETTINGS -> currentScreen = SettingsScreen(game, params)
+            GameState.GAME -> currentScreen = GameScreen(game, params)
+            GameState.LEVEL_PACK_SELECT -> currentScreen = LevelPackSelectScreen(game, params)
+            GameState.EDITOR -> currentScreen = EditorScreen(game, params)
+            GameState.LOADING -> currentScreen = LoadingScreen(game, params)
         }
     }
 }

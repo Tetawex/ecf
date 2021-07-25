@@ -305,6 +305,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
                 if (levelData.levelNumber != -1) {
                     val bundle = Bundle()
                     bundle.putItem("levelCode", levelCode)
+                    bundle.putItem(SHOULD_RESTORE_SCROLL_POSITION_KEY, "true")
                     game.gameStateManager.setState(GameStateManager.GameState.LEVEL_SELECT, bundle)
                 } else
                     game.gameStateManager.setState(GameStateManager.GameState.MODE_SELECT, null)
@@ -363,6 +364,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
                     PreferencesProvider.getLevelCountForCode(levelCode) -> {
                 val bundle = Bundle()
                 bundle.putItem("levelCode", levelCode)
+                bundle.putItem(SHOULD_RESTORE_SCROLL_POSITION_KEY, "true")
                 game.gameStateManager.setState(GameStateManager.GameState.LEVEL_SELECT, bundle)
             }
             else -> {
@@ -389,6 +391,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
             else -> {
                 val bundle = Bundle()
                 bundle.putItem("levelCode", levelCode)
+                bundle.putItem(SHOULD_RESTORE_SCROLL_POSITION_KEY, "true")
                 game.gameStateManager.setState(
                     GameStateManager.GameState.LEVEL_SELECT,
                     bundle
