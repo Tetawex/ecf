@@ -43,7 +43,7 @@ class ECFGame(val actionResolver: ActionResolver) : Game() {
 
         gameStateManager = GameStateManager(this)
 
-//        Gdx.app.postRunnable { postInit() }
+        Gdx.app.postRunnable { postInit() }
     }
 
     private fun postInit() {
