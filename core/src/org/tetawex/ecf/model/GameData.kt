@@ -18,11 +18,13 @@ class GameData {
     var light: Int = 0
     private var time: Int = 0
 
+    var maxScore: Int = 0
+
     private var mana: Int = 0
     private var score: Int = 0
     var cellArray: Array<Array<Cell?>> = arrayOf(arrayOf())
         set(inputArray) {
-            val width = inputArray!!.size
+            val width = inputArray.size
             var height = 0
             if (width > 0)
                 height = inputArray[0].size
@@ -32,7 +34,8 @@ class GameData {
             for (i in 0 until width) {
                 for (j in 0 until height) {
                     if (inputArray[i][j] != null)
-                        copiedArray[i][j] = Cell(IntVector2(i, j), copyElementSet(inputArray[i][j]!!.elements))
+                        copiedArray[i][j] =
+                            Cell(IntVector2(i, j), copyElementSet(inputArray[i][j]!!.elements))
                 }
             }
             field = copiedArray
@@ -48,9 +51,37 @@ class GameData {
 
         fun cellMapChanged(newMap: Array<Array<Cell?>>)
 
-        fun elementsCountChanged(fire: Int, water: Int, air: Int, earth: Int, shadow: Int, light: Int, time: Int)
+        fun elementsCountChanged(
+            fire: Int,
+            water: Int,
+            air: Int,
+            earth: Int,
+            shadow: Int,
+            light: Int,
+            time: Int
+        )
 
-        fun gameLostOrWon(won: Boolean, lossCondition: LossCondition?)
+        fun gameLostOrWon(payload: WinLossPayload)
+    }
+
+    data class WinLossTotals(
+        val rawScore: Int,
+        val manaScore: Int,
+        val totalScore: Int,
+        val stars: Int,
+        val maxScore: Int
+    )
+
+    sealed class WinLossPayload(val totals: WinLossTotals) {
+        class Win(totals: WinLossTotals) : WinLossPayload(
+            totals
+        )
+
+        class Loss(
+            val lossCondition: LossCondition
+        ) : WinLossPayload(
+            totals = WinLossTotals(0, 0, 0, 0, 0)
+        )
     }
 
     enum class LossCondition {
@@ -125,19 +156,19 @@ class GameData {
         for (i in this.cellArray.indices) {
             for (j in 0 until this.cellArray[i].size) {
                 if (this.cellArray[i][j] != null) {
-                    if (this.cellArray[i][j]!!.elements!!.contains(Element.FIRE))
+                    if (this.cellArray[i][j]!!.elements.contains(Element.FIRE))
                         fire++
-                    if (this.cellArray[i][j]!!.elements!!.contains(Element.WATER))
+                    if (this.cellArray[i][j]!!.elements.contains(Element.WATER))
                         water++
-                    if (this.cellArray[i][j]!!.elements!!.contains(Element.EARTH))
+                    if (this.cellArray[i][j]!!.elements.contains(Element.EARTH))
                         earth++
-                    if (this.cellArray[i][j]!!.elements!!.contains(Element.AIR))
+                    if (this.cellArray[i][j]!!.elements.contains(Element.AIR))
                         air++
-                    if (this.cellArray[i][j]!!.elements!!.contains(Element.SHADOW))
+                    if (this.cellArray[i][j]!!.elements.contains(Element.SHADOW))
                         shadow++
-                    if (this.cellArray[i][j]!!.elements!!.contains(Element.LIGHT))
+                    if (this.cellArray[i][j]!!.elements.contains(Element.LIGHT))
                         light++
-                    if (this.cellArray[i][j]!!.elements!!.contains(Element.TIME))
+                    if (this.cellArray[i][j]!!.elements.contains(Element.TIME))
                         time++
                 }
 
@@ -147,25 +178,46 @@ class GameData {
     }
 
     private fun checkIfLostOrWon() {
-        if (fire == 0 && water == 0 && earth == 0 && air == 0 && shadow == 0 && light == 0 && time == 0)
-            gameDataChangedListener!!.gameLostOrWon(true, null)
-        else {
-            if (mana <= 0)
-                gameDataChangedListener!!.gameLostOrWon(false, LossCondition.NO_MANA)
-            else if (fire == 0 && water != 0)
-                gameDataChangedListener!!.gameLostOrWon(false, LossCondition.NO_FIRE)
-            else if (fire != 0 && water == 0)
-                gameDataChangedListener!!.gameLostOrWon(false, LossCondition.NO_WATER)
-            else if (air == 0 && earth != 0)
-                gameDataChangedListener!!.gameLostOrWon(false, LossCondition.NO_AIR)
-            else if (earth == 0 && air != 0)
-                gameDataChangedListener!!.gameLostOrWon(false, LossCondition.NO_EARTH)
-            else if (shadow == 0 && light != 0)
-                gameDataChangedListener!!.gameLostOrWon(false, LossCondition.NO_SHADOW)
-            else if (light == 0 && shadow != 0)
-                gameDataChangedListener!!.gameLostOrWon(false, LossCondition.NO_LIGHT)
-            else if (time % 2 != 0)
-                gameDataChangedListener!!.gameLostOrWon(false, LossCondition.NO_TIME)
+        val rawScore = score
+        val manaScore = mana * 100
+        val totalScore = rawScore + manaScore
+
+        val stars = when {
+            totalScore > maxScore / 2 -> 2
+            totalScore >= maxScore -> 3
+            else -> 1
+        }
+
+        val totals = WinLossTotals(
+            rawScore,
+            manaScore,
+            totalScore,
+            stars,
+            maxScore
+        )
+
+        if (fire == 0 && water == 0 && earth == 0 && air == 0 && shadow == 0 && light == 0 && time == 0) {
+            gameDataChangedListener?.gameLostOrWon(
+                WinLossPayload.Win(totals)
+            )
+        } else {
+            val lossCondition = when {
+                mana <= 0 -> LossCondition.NO_MANA
+                fire == 0 && water != 0 -> LossCondition.NO_FIRE
+                fire != 0 && water == 0 -> LossCondition.NO_WATER
+                air == 0 && earth != 0 -> LossCondition.NO_AIR
+                earth == 0 && air != 0 -> LossCondition.NO_EARTH
+                shadow == 0 && light != 0 -> LossCondition.NO_SHADOW
+                light == 0 && shadow != 0 -> LossCondition.NO_LIGHT
+                time % 2 != 0 -> LossCondition.NO_TIME
+                else -> null
+            }
+
+            lossCondition?.let {
+                gameDataChangedListener?.gameLostOrWon(
+                    WinLossPayload.Loss(it)
+                )
+            }
         }
 
     }
@@ -175,7 +227,6 @@ class GameData {
     }
 
     companion object {
-
         private val SINGLE_MERGE_BONUS_SCORE = 100
         private val SINGLE_MERGE_BONUS_MANA = 2
         private val SINGLE_MOVE_MANACOST = 1

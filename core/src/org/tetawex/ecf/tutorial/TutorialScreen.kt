@@ -14,8 +14,8 @@ import org.tetawex.ecf.model.Cell
 import org.tetawex.ecf.model.CellArrayFactory
 import org.tetawex.ecf.model.ECFPreferences
 import org.tetawex.ecf.model.GameData
-import org.tetawex.ecf.screen.BaseScreen
-import org.tetawex.ecf.screen.StyleFactory
+import org.tetawex.ecf.presentation.screen.BaseScreen
+import org.tetawex.ecf.presentation.screen.StyleFactory
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.IntVector2
 import org.tetawex.ecf.util.PreferencesProvider
@@ -57,6 +57,7 @@ class TutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(game)
         gameData.cellArray = CellArrayFactory.generateTutorialCellArray()
         gameData.setMana(2)
         gameData.setScore(0)
+        gameData.maxScore = 10000
 
     }
 
@@ -167,8 +168,7 @@ class TutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(game)
 
             }
 
-            override fun gameLostOrWon(won: Boolean, lossCondition: GameData.LossCondition?) {
-
+            override fun gameLostOrWon(payload: GameData.WinLossPayload) {
             }
         }
         //pause ui

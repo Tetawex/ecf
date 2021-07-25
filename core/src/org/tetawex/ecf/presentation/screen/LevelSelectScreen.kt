@@ -1,7 +1,6 @@
-package org.tetawex.ecf.screen
+package org.tetawex.ecf.presentation.screen
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -15,8 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.viewport.ExtendViewport
-import org.tetawex.ecf.actor.LevelIconActor
-import org.tetawex.ecf.actor.PagedScrollPane
+import org.tetawex.ecf.presentation.actor.LevelIconActor
+import org.tetawex.ecf.presentation.actor.PagedScrollPane
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.ECFPreferences

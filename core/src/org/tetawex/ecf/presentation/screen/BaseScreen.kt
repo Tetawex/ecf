@@ -1,8 +1,7 @@
-package org.tetawex.ecf.screen
+package org.tetawex.ecf.presentation.screen
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.ScreenAdapter
-import org.tetawex.ecf.core.ECFGame
 
 /**
  * Created by Tetawex on 17.05.2017.

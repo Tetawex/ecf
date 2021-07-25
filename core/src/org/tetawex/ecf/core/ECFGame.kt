@@ -33,36 +33,10 @@ class ECFGame(val actionResolver: ActionResolver) : Game() {
     override fun create() {
         PreferencesProvider.getPreferences()
         assetManager = AssetManager()
-        assetManager.load("atlas.atlas", TextureAtlas::class.java)
-
-        assetManager.load("backgrounds/background.png", Texture::class.java)
-        assetManager.load("backgrounds/randombackground.png", Texture::class.java)
-        assetManager.load("backgrounds/editorbackground.png", Texture::class.java)
-        assetManager.load("backgrounds/motbackground.png", Texture::class.java)
-        assetManager.load("backgrounds/scbackground.png", Texture::class.java)
-
-        assetManager.load("backgrounds/motbutton.png", Texture::class.java)
-        assetManager.load("backgrounds/motbutton_pressed.png", Texture::class.java)
-
-        assetManager.load("backgrounds/scbutton.png", Texture::class.java)
-        assetManager.load("backgrounds/scbutton_pressed.png", Texture::class.java)
-
-        assetManager.load("backgrounds/background_pause.png", Texture::class.java)
-        assetManager.load("backgrounds/background_dialog.png", Texture::class.java)
-
-        assetManager.load("backgrounds/text_logo.png", Texture::class.java)
-
-        assetManager.load("sounds/click.ogg", Sound::class.java)
-        assetManager.load("sounds/merge.ogg", Sound::class.java)
-        assetManager.load("sounds/error.ogg", Sound::class.java)
-        assetManager.load("sounds/win.ogg", Sound::class.java)
-        assetManager.load("sounds/loss.ogg", Sound::class.java)
-
-        assetManager.load("i18n/bundle", I18NBundle::class.java)
-
-        loadFonts()
-
-        assetManager.finishLoading()
+        assetManager.let {
+            loadAssets(it)
+            it.finishLoading()
+        }
 
         setupLocalisation()
 
@@ -73,10 +47,11 @@ class ECFGame(val actionResolver: ActionResolver) : Game() {
 
         gameStateManager = GameStateManager(this, GameStateManager.GameState.MAIN_MENU)
 
-        music = Gdx.audio.newMusic(Gdx.files.internal("music/ambient.ogg"))
-        music!!.isLooping = true
-        music!!.volume = PreferencesProvider.getPreferences().musicVolume
-        music!!.play()
+        music = Gdx.audio.newMusic(Gdx.files.internal("music/ambient.ogg")).apply {
+            isLooping = true
+            volume = PreferencesProvider.getPreferences().musicVolume
+            play()
+        }
 
         actionResolver.setBackPressedListener {
             gameStateManager.currentScreen?.onBackPressed() ?: false
@@ -89,17 +64,17 @@ class ECFGame(val actionResolver: ActionResolver) : Game() {
 
     override fun render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        gameStateManager!!.renderCurrentScreen(Gdx.graphics.deltaTime)
+        gameStateManager.renderCurrentScreen(Gdx.graphics.deltaTime)
     }
 
     override fun dispose() {
-        assetManager.dispose()
-        gameStateManager!!.dispose()
         PreferencesProvider.flushPreferences()
+        assetManager.dispose()
+        gameStateManager.dispose()
     }
 
     override fun resize(width: Int, height: Int) {
-        gameStateManager!!.currentScreen!!.resize(width, height)
+        gameStateManager.currentScreen!!.resize(width, height)
     }
 
     fun getTextureRegionFromAtlas(name: String): TextureRegion {
@@ -130,32 +105,9 @@ class ECFGame(val actionResolver: ActionResolver) : Game() {
         FontCharacters.codeToLanguageMap["ru_RU"] = "Русский"
         FontCharacters.codeToLanguageMap["default_"] = getLocalisedString("auto")
     }
-
-    private fun loadFonts() {
-        val resolver = InternalFileHandleResolver()
-        assetManager.setLoader<FreeTypeFontGenerator, FreeTypeFontGeneratorLoader.FreeTypeFontGeneratorParameters>(
-            FreeTypeFontGenerator::class.java,
-            FreeTypeFontGeneratorLoader(resolver)
-        )
-        assetManager.setLoader<BitmapFont, FreetypeFontLoader.FreeTypeFontLoaderParameter>(
-            BitmapFont::class.java,
-            ".ttf",
-            FreetypeFontLoader(resolver)
-        )
-
-        // load to fonts via the generator (implicitly done by the FreetypeFontLoader).
-        // Note: you MUST specify a FreetypeFontGenerator defining the ttf font file name and the size
-        // of the font to be generated. The names of the fonts are arbitrary and are not pointing
-        // to a file on disk!
-
-        val loadFont = createFontLoader(assetManager)
-        loadFont(48, "small")
-        loadFont(75, "medium")
-        loadFont(96, "large")
-    }
 }
 
-fun createFontLoader(assetManager: AssetManager): (size: Int, nameSuffix: String) -> Unit {
+private fun createFontLoader(assetManager: AssetManager): (size: Int, nameSuffix: String) -> Unit {
     return { size, nameSuffix ->
         val params = FreetypeFontLoader.FreeTypeFontLoaderParameter()
         params.fontParameters.characters = FontCharacters.en + FontCharacters.ru
@@ -166,4 +118,59 @@ fun createFontLoader(assetManager: AssetManager): (size: Int, nameSuffix: String
         params.fontParameters.hinting = FreeTypeFontGenerator.Hinting.Full
         assetManager.load("fonts/font_main_${nameSuffix}.ttf", BitmapFont::class.java, params)
     }
+}
+
+private fun loadAssets(assetManager: AssetManager) {
+    with(assetManager) {
+        load("atlas.atlas", TextureAtlas::class.java)
+
+        load("backgrounds/background.png", Texture::class.java)
+        load("backgrounds/randombackground.png", Texture::class.java)
+        load("backgrounds/editorbackground.png", Texture::class.java)
+        load("backgrounds/motbackground.png", Texture::class.java)
+        load("backgrounds/scbackground.png", Texture::class.java)
+
+        load("backgrounds/motbutton.png", Texture::class.java)
+        load("backgrounds/motbutton_pressed.png", Texture::class.java)
+
+        load("backgrounds/scbutton.png", Texture::class.java)
+        load("backgrounds/scbutton_pressed.png", Texture::class.java)
+
+        load("backgrounds/background_pause.png", Texture::class.java)
+        load("backgrounds/background_dialog.png", Texture::class.java)
+
+        load("backgrounds/text_logo.png", Texture::class.java)
+
+        load("sounds/click.ogg", Sound::class.java)
+        load("sounds/merge.ogg", Sound::class.java)
+        load("sounds/error.ogg", Sound::class.java)
+        load("sounds/win.ogg", Sound::class.java)
+        load("sounds/loss.ogg", Sound::class.java)
+
+        load("i18n/bundle", I18NBundle::class.java)
+        loadFonts(this)
+    }
+}
+
+private fun loadFonts(assetManager: AssetManager) {
+    val resolver = InternalFileHandleResolver()
+    assetManager.setLoader<FreeTypeFontGenerator, FreeTypeFontGeneratorLoader.FreeTypeFontGeneratorParameters>(
+        FreeTypeFontGenerator::class.java,
+        FreeTypeFontGeneratorLoader(resolver)
+    )
+    assetManager.setLoader<BitmapFont, FreetypeFontLoader.FreeTypeFontLoaderParameter>(
+        BitmapFont::class.java,
+        ".ttf",
+        FreetypeFontLoader(resolver)
+    )
+
+    // load to fonts via the generator (implicitly done by the FreetypeFontLoader).
+    // Note: you MUST specify a FreetypeFontGenerator defining the ttf font file name and the size
+    // of the font to be generated. The names of the fonts are arbitrary and are not pointing
+    // to a file on disk!
+
+    val loadFont = createFontLoader(assetManager)
+    loadFont(48, "small")
+    loadFont(75, "medium")
+    loadFont(96, "large")
 }

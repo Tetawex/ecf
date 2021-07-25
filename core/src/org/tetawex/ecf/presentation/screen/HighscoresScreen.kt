@@ -1,7 +1,6 @@
-package org.tetawex.ecf.screen
+package org.tetawex.ecf.presentation.screen
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -12,7 +11,6 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.ECFPreferences
-import org.tetawex.ecf.model.Score
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
 

@@ -1,13 +1,11 @@
-package org.tetawex.ecf.actor
+package org.tetawex.ecf.presentation.actor
 
 
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.Cell
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.utils.Array
 
 class PagedScrollPane : ScrollPane {
 

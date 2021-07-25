@@ -1,4 +1,4 @@
-package org.tetawex.ecf.screen
+package org.tetawex.ecf.presentation.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera

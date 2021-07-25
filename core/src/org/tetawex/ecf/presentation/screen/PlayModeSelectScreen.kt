@@ -1,4 +1,4 @@
-package org.tetawex.ecf.screen
+package org.tetawex.ecf.presentation.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -14,13 +14,17 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.ECFPreferences
+import org.tetawex.ecf.model.LevelData
+import org.tetawex.ecf.model.RandomLevelFactory
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
+
+import java.util.Random
 
 /**
  * Created by Tetawex on 03.06.2017.
  */
-class LevelPackSelectScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
+class PlayModeSelectScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(game) {
 
     private val preferences: ECFPreferences
 
@@ -49,42 +53,44 @@ class LevelPackSelectScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game
         stack.add(mainTable)
         stage.addActor(stack)
         val tbStyle = StyleFactory.generateStandardMenuButtonStyle(game)
-        val menuButtonClassic = TextButton(game.getLocalisedString("lp_classic"), tbStyle)
-        menuButtonClassic.addListener(object : ChangeListener() {
+        val menuButtonLevels = TextButton(game.getLocalisedString("levels"), tbStyle)
+        menuButtonLevels.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
+                game.gameStateManager.setState(GameStateManager.GameState.LEVEL_PACK_SELECT, null)
+            }
+        })
+        val menuButtonRandom = TextButton(game.getLocalisedString("random"), tbStyle)
+        menuButtonRandom.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
                 val bundle = Bundle()
-                bundle.putItem("levelCode", "")
-                game.gameStateManager.setState(GameStateManager.GameState.LEVEL_SELECT, bundle)
+                val factory = RandomLevelFactory(Random().nextInt(10000), Random().nextInt(2) + 3, Random().nextInt(3) + 3)
+                bundle.putItem("levelData", LevelData(factory.theBoard, factory.mana, 10000, -1, "Random Level", "random"))
+                game.gameStateManager.setState(GameStateManager.GameState.GAME, bundle)
             }
         })
-        val menuButtonMot = TextButton(game.getLocalisedString("lp_mot"), StyleFactory.generateMotMenuButtonStyle(game))
-        menuButtonMot.addListener(object : ChangeListener() {
+        val menuButtonTutorial = TextButton(game.getLocalisedString("how_to_play"), tbStyle)
+        menuButtonTutorial.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
-                if (preferences.completedMotTutorial) {
-                    if (!preferences.completedMotTutorial) {
-                        game.gameStateManager.setState(GameStateManager.GameState.MOT_TUTORIAL, null)
-                    } else {
-                        val bundle = Bundle()
-                        bundle.putItem("levelCode", "mot")
-                        game.gameStateManager.setState(GameStateManager.GameState.LEVEL_SELECT, bundle)
-                    }
-                } else
-                    game.gameStateManager.setState(GameStateManager.GameState.MOT_TUTORIAL, null)
+                game.gameStateManager.setState(GameStateManager.GameState.TUTORIAL, null)
             }
         })
-
-        val menuButtonSc = TextButton(game.getLocalisedString("lp_sc"), StyleFactory.generateScMenuButtonStyle(game))
-
-        val menuButtonBackPlayModeSelectScreen = TextButton(game.getLocalisedString("back"), tbStyle)
-        menuButtonBackPlayModeSelectScreen.addListener(object : ChangeListener() {
+        val menuButtonEditor = TextButton(game.getLocalisedString("editor"), tbStyle)
+        menuButtonEditor.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
+                game.gameStateManager.setState(GameStateManager.GameState.EDITOR, null)
+            }
+        })
+        val menuButtonBackToMainMenu = TextButton(game.getLocalisedString("back"), tbStyle)
+        menuButtonBackToMainMenu.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
                 onBackPressed()
             }
         })
-        mainTable.add(menuButtonClassic).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
-        mainTable.add(menuButtonMot).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
-        //mainTable.add(menuButtonSc).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
-        mainTable.add(menuButtonBackPlayModeSelectScreen).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
+        mainTable.add(menuButtonLevels).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
+        mainTable.add(menuButtonRandom).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
+        mainTable.add(menuButtonTutorial).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
+        mainTable.add(menuButtonEditor).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
+        mainTable.add(menuButtonBackToMainMenu).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
     }
 
     override fun render(delta: Float) {
@@ -98,7 +104,7 @@ class LevelPackSelectScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game
     }
 
     override fun onBackPressed(): Boolean {
-        game.gameStateManager.setState(GameStateManager.GameState.MODE_SELECT, null)
+        game.gameStateManager.setState(GameStateManager.GameState.MAIN_MENU, null)
         return true
     }
 

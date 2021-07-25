@@ -1,8 +1,6 @@
-package org.tetawex.ecf.screen
+package org.tetawex.ecf.presentation.screen
 
 import org.tetawex.ecf.core.ECFGame
-import org.tetawex.ecf.screen.BaseScreen
-import org.tetawex.ecf.util.BasicListener
 
 /**
  * Created by tetawex on 08.08.17.
