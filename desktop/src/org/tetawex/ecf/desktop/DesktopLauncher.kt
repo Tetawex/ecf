@@ -33,10 +33,9 @@ object DesktopLauncher {
         val config = Lwjgl3ApplicationConfiguration()
         config.setForegroundFPS(240)
         config.useVsync(false)
-        config.setWindowSizeLimits(432, 768, 432, 768)
+        config.setWindowedMode(432, 768)
         config.setHdpiMode(HdpiMode.Logical)
 
-        //config.fullscreen = true
         Lwjgl3Application(ECFGame(DesktopActionResolver()), config)
         //LevelFactory.convertLevels()
     }
