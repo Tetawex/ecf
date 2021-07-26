@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import org.tetawex.ecf.core.ECFGame
-import org.tetawex.ecf.screen.StyleFactory
+import org.tetawex.ecf.presentation.screen.StyleFactory
 
 open class FileChooser(title: String, style: Window.WindowStyle, private val game: ECFGame) : Dialog(title, style) {
     private var directory: FileHandle? = null

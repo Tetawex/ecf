@@ -1,7 +1,8 @@
 package org.tetawex.ecf.core
 
-import org.tetawex.ecf.screen.*
-import org.tetawex.ecf.tutorial.*
+import org.tetawex.ecf.presentation.screen.*
+import org.tetawex.ecf.tutorial.MotTutorialScreen
+import org.tetawex.ecf.tutorial.TutorialScreen
 import org.tetawex.ecf.util.Bundle
 
 /**
@@ -12,16 +13,17 @@ class GameStateManager(private val game: ECFGame) {
     var currentScreen: BaseScreen<ECFGame>? = null
         private set
     private var currentState: GameState? = null
+
     fun dispose() {
         currentScreen!!.dispose()
     }
 
     enum class GameState {
-        MAIN_MENU, GAME, SETTINGS, HIGHSCORES, MODE_SELECT, LEVEL_SELECT, TUTORIAL, EDITOR, MOT_TUTORIAL, LEVEL_PACK_SELECT
+        LOADING, MAIN_MENU, GAME, SETTINGS, HIGHSCORES, MODE_SELECT, LEVEL_SELECT, TUTORIAL, EDITOR, MOT_TUTORIAL, LEVEL_PACK_SELECT
     }
 
     init {
-        setState(GameState.MAIN_MENU, null)
+        setState(GameState.LOADING, null)
     }
 
     constructor(game: ECFGame, state: GameState) : this(game) {
@@ -29,25 +31,36 @@ class GameStateManager(private val game: ECFGame) {
     }
 
     fun renderCurrentScreen(deltaTime: Float) {
-        currentScreen!!.render(deltaTime)
+        currentScreen?.render(deltaTime)
     }
 
-    fun setState(gameState: GameState, bundle: Bundle?) {
+    fun resize(width: Int, height: Int) {
+        currentScreen?.resize(width, height)
+    }
+
+    private val savedStates: MutableMap<GameState, Bundle> = mutableMapOf()
+
+    fun saveStateForGameState(gameState: GameState, bundle: Bundle) {
+        savedStates[gameState] = bundle
+    }
+
+    fun setState(gameState: GameState, params: Bundle?) {
         currentState = gameState
-        if (currentScreen != null)
-            currentScreen!!.dispose()
+        currentScreen?.dispose()
 
         when (currentState) {
-            GameStateManager.GameState.TUTORIAL -> currentScreen = org.tetawex.ecf.tutorial.TutorialScreen(game, bundle)
-            GameStateManager.GameState.MOT_TUTORIAL -> currentScreen = MotTutorialScreen(game, bundle)
-            GameStateManager.GameState.MODE_SELECT -> currentScreen = PlayModeSelectScreen(game, bundle)
-            GameStateManager.GameState.LEVEL_SELECT -> currentScreen = LevelSelectScreen(game, bundle)
-            GameStateManager.GameState.HIGHSCORES -> currentScreen = HighscoresScreen(game, bundle)
-            GameStateManager.GameState.MAIN_MENU -> currentScreen = MainMenuScreen(game, bundle)
-            GameStateManager.GameState.SETTINGS -> currentScreen = SettingsScreen(game, bundle)
-            GameStateManager.GameState.GAME -> currentScreen = GameScreen(game, bundle)
-            GameStateManager.GameState.LEVEL_PACK_SELECT -> currentScreen = LevelPackSelectScreen(game, bundle)
-            GameStateManager.GameState.EDITOR -> currentScreen = EditorScreen(game, bundle)
+            GameState.TUTORIAL -> currentScreen = TutorialScreen(game, params)
+            GameState.MOT_TUTORIAL -> currentScreen = MotTutorialScreen(game, params)
+            GameState.MODE_SELECT -> currentScreen = PlayModeSelectScreen(game, params)
+            GameState.LEVEL_SELECT -> currentScreen =
+                LevelSelectScreen(game, params, savedStates[GameState.LEVEL_SELECT])
+            GameState.HIGHSCORES -> currentScreen = HighscoresScreen(game, params)
+            GameState.MAIN_MENU -> currentScreen = MainMenuScreen(game, params)
+            GameState.SETTINGS -> currentScreen = SettingsScreen(game, params)
+            GameState.GAME -> currentScreen = GameScreen(game, params)
+            GameState.LEVEL_PACK_SELECT -> currentScreen = LevelPackSelectScreen(game, params)
+            GameState.EDITOR -> currentScreen = EditorScreen(game, params)
+            GameState.LOADING -> currentScreen = LoadingScreen(game, params)
         }
     }
 }

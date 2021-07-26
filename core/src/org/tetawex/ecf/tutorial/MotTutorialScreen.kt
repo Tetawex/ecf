@@ -8,13 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.viewport.ExtendViewport
-import org.tetawex.ecf.actor.HexMapActor
+import org.tetawex.ecf.presentation.actor.HexMapActor
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.Cell
 import org.tetawex.ecf.model.*
-import org.tetawex.ecf.screen.BaseScreen
-import org.tetawex.ecf.screen.StyleFactory
+import org.tetawex.ecf.presentation.screen.BaseScreen
+import org.tetawex.ecf.presentation.screen.StyleFactory
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.IntVector2
 import org.tetawex.ecf.util.PreferencesProvider
@@ -167,7 +167,7 @@ class MotTutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(ga
 
             }
 
-            override fun gameLostOrWon(won: Boolean, lossCondition: GameData.LossCondition?) {
+            override fun gameLostOrWon(payload: GameData.WinLossPayload) {
 
             }
         }
@@ -250,7 +250,7 @@ class MotTutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(ga
         tutButton!!.setText(game.getLocalisedString("mottutorial$tutorialStage"))
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean {
         if (pauseTable!!.isVisible) {
             pauseTable!!.isVisible = false
             backgroundPause!!.isVisible = false
@@ -258,6 +258,7 @@ class MotTutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(ga
             pauseTable!!.isVisible = true
             backgroundPause!!.isVisible = true
         }
+        return true
     }
 
     companion object {

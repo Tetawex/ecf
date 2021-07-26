@@ -17,7 +17,7 @@ object PreferencesProvider {
     val LEVELS_COUNT = 18
     val MOT_LEVELS_COUNT = 15
     private var preferences: ECFPreferences? = null
-    const val CURRENT_VERSION_CODE = 9
+    const val CURRENT_VERSION_CODE = 10
 
     fun getPreferences(): ECFPreferences {
         if (preferences == null) {
@@ -30,8 +30,11 @@ object PreferencesProvider {
                 initEmptyPreferences(preferences!!)
             }
 
-            if (preferences?.version ?: 0 < 7) {
+            if (preferences?.version ?: 0 < 10) {
                 preferences!!.scores = getDefaultScores()
+            }
+
+            if (preferences?.version ?: 0 < CURRENT_VERSION_CODE) {
                 preferences!!.version = CURRENT_VERSION_CODE
             }
 
@@ -84,16 +87,16 @@ object PreferencesProvider {
 
     private fun getDefaultScores(): MutableList<Score> {
         val list = ArrayList<Score>()
-        list.add(Score(9000, "---", ""))
-        list.add(Score(8000, "---", ""))
-        list.add(Score(6000, "---", ""))
-        list.add(Score(4000, "---", ""))
-        list.add(Score(3000, "---", ""))
-        list.add(Score(2000, "---", ""))
-        list.add(Score(1000, "---", ""))
-        list.add(Score(900, "---", ""))
-        list.add(Score(300, "---", ""))
-        list.add(Score(100, "Invisible Entry", "???"))
+        list.add(Score(0, "---", ""))
+        list.add(Score(0, "---", ""))
+        list.add(Score(0, "---", ""))
+        list.add(Score(0, "---", ""))
+        list.add(Score(0, "---", ""))
+        list.add(Score(0, "---", ""))
+        list.add(Score(0, "---", ""))
+        list.add(Score(0, "---", ""))
+        list.add(Score(0, "---", ""))
+        list.add(Score(0, "Invisible Entry", "???"))
         return list
     }
 

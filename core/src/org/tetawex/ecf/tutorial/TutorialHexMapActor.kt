@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Touchable
-import org.tetawex.ecf.actor.HexMapActor
+import org.tetawex.ecf.presentation.actor.HexMapActor
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.model.Cell
 import org.tetawex.ecf.util.IntVector2
