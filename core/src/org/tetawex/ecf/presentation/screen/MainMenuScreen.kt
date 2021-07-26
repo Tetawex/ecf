@@ -14,6 +14,10 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.ECFPreferences
+import org.tetawex.ecf.presentation.BUTTON_FONT_SCALE
+import org.tetawex.ecf.presentation.BUTTON_HEIGHT
+import org.tetawex.ecf.presentation.BUTTON_PAD
+import org.tetawex.ecf.presentation.BUTTON_WIDTH
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
 
@@ -95,43 +99,5 @@ class MainMenuScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
         mainTable.add(menuButtonQuit)
                 .size(BUTTON_WIDTH, BUTTON_HEIGHT)
                 .center().pad(BUTTON_PAD).row()
-    }
-
-    override fun show() {
-
-    }
-
-    override fun render(delta: Float) {
-        stage.act(delta)
-        stage.draw()
-    }
-
-    override fun resize(width: Int, height: Int) {
-        stage.viewport.update(width, height, true)
-        stage.viewport.camera.update()
-    }
-
-    override fun pause() {
-
-    }
-
-    override fun resume() {
-
-    }
-
-    override fun hide() {
-
-    }
-
-    override fun dispose() {
-
-    }
-
-    companion object {
-        private val BUTTON_WIDTH = 1275f
-        private val BUTTON_HEIGHT = 252f
-        private val BUTTON_PAD = 40f
-        private val BUTTON_FONT_SCALE = 1f
-        private val LABEL_FONT_SCALE = 1f
     }
 }

@@ -5,14 +5,17 @@ import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
-import org.tetawex.ecf.presentation.widget.EditorHexMapWidget
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.*
+import org.tetawex.ecf.presentation.PAUSE_BUTTON_FONT_SCALE
+import org.tetawex.ecf.presentation.PAUSE_BUTTON_HEIGHT
+import org.tetawex.ecf.presentation.PAUSE_BUTTON_PAD
+import org.tetawex.ecf.presentation.PAUSE_BUTTON_WIDTH
+import org.tetawex.ecf.presentation.widget.EditorHexMapWidget
 import org.tetawex.ecf.util.*
 
 /**
@@ -250,10 +253,6 @@ class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
                 .center().pad(PAUSE_BUTTON_PAD).row()
     }
 
-    override fun dispose() {
-
-    }
-
     override fun onBackPressed(): Boolean {
         if (pauseTable.isVisible) {
             pauseTable.isVisible = false
@@ -411,13 +410,5 @@ class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
 
     companion object {
         var EDITOR_LEVEL_STORAGE = "Elementality/Levels/"
-
-        private val PAUSE_BUTTON_WIDTH = 1275f
-        private val PAUSE_BUTTON_HEIGHT = 252f
-        private val PAUSE_BUTTON_PAD = 32f
-        private val PAUSE_BUTTON_FONT_SCALE = 1f
-        private val MANA_LABEL_FONT_SCALE = 1f
-        private val SCORE_LABEL_FONT_SCALE = 1f
-        private val ELEMENT_COUNTER_IMAGE_SIZE = 130f
     }
 }

@@ -1,19 +1,19 @@
-package org.tetawex.ecf.presentation.screen
+package org.tetawex.ecf.presentation.screen.game
 
 import ElementCounterWidget
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import org.tetawex.ecf.presentation.widget.HexMapWidget
-import org.tetawex.ecf.presentation.widget.WinLossModal
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.*
 import org.tetawex.ecf.model.Cell
 import org.tetawex.ecf.presentation.*
+import org.tetawex.ecf.presentation.screen.BaseScreen
+import org.tetawex.ecf.presentation.screen.SHOULD_RESTORE_SCROLL_POSITION_KEY
+import org.tetawex.ecf.presentation.screen.StyleFactory
 import org.tetawex.ecf.presentation.widget.SafeAreaContainer
 import org.tetawex.ecf.presentation.widget.background.Background
 import org.tetawex.ecf.presentation.widget.ScreenContainer
@@ -95,15 +95,15 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
         mainTable.add(midRowTable).growX().growY().row()
         mainTable.add(elementCounterWidget).growX()
 
-        val pauseButton = TextButton(" ", StyleFactory.generatePauseButtonStyle(game))
-        pauseButton.addListener(object : ChangeListener() {
+        val smallPauseButton = TextButton(" ", StyleFactory.generatePauseButtonStyle(game))
+        smallPauseButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
                 pauseTable.isVisible = !pauseTable.isVisible
                 backgroundPause.isVisible = !backgroundPause.isVisible
             }
         })
         topRowLeftTable.left().top()
-        topRowLeftTable.add(pauseButton).size(120f).pad(DEFAULT_PADDING_HALVED).center()
+        topRowLeftTable.add(smallPauseButton).size(120f).pad(DEFAULT_PADDING_HALF).center()
 
         scoreLabel = Label("", StyleFactory.generateStandardLabelStyle(game))
         scoreLabel!!.setFontScale(SCORE_LABEL_FONT_SCALE)
@@ -111,7 +111,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
 
         //Stack topRowRightStack = new Stack();
         manaLabel = TextButton("", StyleFactory.generateManaButtonStyle(game))
-        topRowRightTable.add<TextButton>(manaLabel).size(150f).pad(DEFAULT_PADDING_HALVED)
+        topRowRightTable.add<TextButton>(manaLabel).size(150f).pad(DEFAULT_PADDING_HALF)
 
         topRowTable.toFront()
         topRowRightTable.right()
@@ -222,7 +222,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
         pauseMenuButtonContinue.label.setFontScale(PAUSE_BUTTON_FONT_SCALE)
         pauseTable.add(pauseMenuButtonContinue)
             .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-            .center().pad(PAUSE_BUTTON_PAD).row()
+            .center().pad(MODAL_BUTTON_PADDING).row()
 
         val pauseMenuButtonRetry = TextButton(
             game.getLocalisedString("retry"),
@@ -241,7 +241,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
         pauseMenuButtonRetry.label.setFontScale(PAUSE_BUTTON_FONT_SCALE)
         pauseTable.add(pauseMenuButtonRetry)
             .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-            .center().pad(PAUSE_BUTTON_PAD).row()
+            .center().pad(MODAL_BUTTON_PADDING).row()
 
 
         val pauseMenuButtonQuit = TextButton(
@@ -272,7 +272,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
         pauseMenuButtonQuit.label.setFontScale(PAUSE_BUTTON_FONT_SCALE)
         pauseTable.add(pauseMenuButtonQuit)
             .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-            .center().pad(PAUSE_BUTTON_PAD).row()
+            .center().pad(MODAL_BUTTON_PADDING).row()
 
         stage.addActor(
             ScreenContainer(

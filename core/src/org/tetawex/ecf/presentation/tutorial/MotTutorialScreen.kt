@@ -9,6 +9,7 @@ import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.Cell
 import org.tetawex.ecf.model.*
+import org.tetawex.ecf.presentation.*
 import org.tetawex.ecf.presentation.screen.BaseScreen
 import org.tetawex.ecf.presentation.screen.StyleFactory
 import org.tetawex.ecf.util.Bundle
@@ -238,14 +239,5 @@ class MotTutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
             backgroundPause!!.isVisible = true
         }
         return true
-    }
-
-    companion object {
-        private val PAUSE_BUTTON_WIDTH = 1275f
-        private val PAUSE_BUTTON_HEIGHT = 252f
-        private val PAUSE_BUTTON_PAD = 40f
-        private val PAUSE_BUTTON_FONT_SCALE = 1f
-        private val MANA_LABEL_FONT_SCALE = 1f
-        private val SCORE_LABEL_FONT_SCALE = 1f
     }
 }

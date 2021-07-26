@@ -10,6 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.ECFPreferences
+import org.tetawex.ecf.presentation.BUTTON_HEIGHT
+import org.tetawex.ecf.presentation.BUTTON_PAD
+import org.tetawex.ecf.presentation.BUTTON_WIDTH
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
 
@@ -101,13 +104,5 @@ class LevelPackSelectScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     override fun onBackPressed(): Boolean {
         game.gameStateManager.setState(GameStateManager.GameState.MODE_SELECT, null)
         return true
-    }
-
-    companion object {
-        private val BUTTON_WIDTH = 1275f
-        private val BUTTON_HEIGHT = 255f
-        private val BUTTON_PAD = 40f
-        private val BUTTON_FONT_SCALE = 1f
-        private val LABEL_FONT_SCALE = 1f
     }
 }

@@ -17,8 +17,7 @@ import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.ECFPreferences
 import org.tetawex.ecf.model.LevelFactory
-import org.tetawex.ecf.presentation.DEFAULT_PADDING
-import org.tetawex.ecf.presentation.VIEWPORT_WIDTH
+import org.tetawex.ecf.presentation.*
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
 import kotlin.math.ceil
@@ -205,13 +204,5 @@ class LevelSelectScreen(game: ECFGame, bundle: Bundle?, savedState: Bundle?) :
         )
 
         super.dispose()
-    }
-
-    companion object {
-        private val BUTTON_WIDTH = 1275f
-        private val BUTTON_HEIGHT = 255f
-        private val BUTTON_PAD = 82.5f
-        private val BUTTON_FONT_SCALE = 1f
-        private val LABEL_FONT_SCALE = 1f
     }
 }

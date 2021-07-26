@@ -1,4 +1,4 @@
-package org.tetawex.ecf.presentation.widget
+package org.tetawex.ecf.presentation.screen.game
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -14,7 +14,7 @@ import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.model.ECFPreferences
 import org.tetawex.ecf.model.GameData
 import org.tetawex.ecf.presentation.PAUSE_BUTTON_HEIGHT
-import org.tetawex.ecf.presentation.PAUSE_BUTTON_PAD
+import org.tetawex.ecf.presentation.MODAL_BUTTON_PADDING
 import org.tetawex.ecf.presentation.PAUSE_BUTTON_WIDTH
 import org.tetawex.ecf.presentation.screen.StyleFactory
 import java.util.*
@@ -123,7 +123,7 @@ class WinLossModal(
             })
         add<TextButton>(winLossMenuButtonNext)
             .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-            .center().pad(PAUSE_BUTTON_PAD).row()
+            .center().pad(MODAL_BUTTON_PADDING).row()
 
         val winLossMenuButtonRetry = TextButton(
             game.getLocalisedString("retry"),
@@ -138,7 +138,7 @@ class WinLossModal(
 
         add(winLossMenuButtonRetry)
             .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-            .center().pad(PAUSE_BUTTON_PAD).row()
+            .center().pad(MODAL_BUTTON_PADDING).row()
 
 
         val winLossMenuButtonQuit = TextButton(
@@ -154,7 +154,7 @@ class WinLossModal(
 
         add(winLossMenuButtonQuit)
             .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-            .center().pad(PAUSE_BUTTON_PAD).row()
+            .center().pad(MODAL_BUTTON_PADDING).row()
     }
 
     fun setData(payload: GameData.WinLossPayload) {
