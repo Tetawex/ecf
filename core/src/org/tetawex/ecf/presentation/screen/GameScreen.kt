@@ -174,11 +174,11 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
 
         gameData.gameDataChangedListener = object : GameData.GameDataChangedListener {
             override fun manaChanged(newValue: Int) {
-                manaLabel!!.setText(newValue.toString() + "")
+                manaLabel!!.setText(newValue.toString())
             }
 
             override fun scoreChanged(newValue: Int) {
-                scoreLabel!!.setText(newValue.toString() + "")
+                scoreLabel!!.setText(newValue.toString())
             }
 
             override fun cellMapChanged(newMap: Array<Array<Cell?>>) {
