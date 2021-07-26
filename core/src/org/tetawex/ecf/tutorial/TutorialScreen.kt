@@ -23,9 +23,7 @@ import org.tetawex.ecf.util.PreferencesProvider
 /**
  * ...
  */
-class TutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(game) {
-
-    private val gameStage: Stage
+class TutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     private var hexMapActor: OldTutorialHexMapActor? = null
     private var scoreLabel: Label? = null
     private var manaLabel: TextButton? = null
@@ -44,11 +42,6 @@ class TutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(game)
     init {
         preferences = PreferencesProvider.getPreferences()
         preferences.completedTutorial = true
-        val camera = OrthographicCamera(1440f, 2560f)
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0f)
-        gameStage = Stage(ExtendViewport(1440f, 2560f, camera))
-
-        Gdx.input.inputProcessor = gameStage
 
         gameData = GameData()
 
@@ -59,16 +52,6 @@ class TutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(game)
         gameData.setScore(0)
         gameData.maxScore = 10000
 
-    }
-
-    override fun render(delta: Float) {
-        gameStage.act()
-        gameStage.draw()
-    }
-
-    override fun resize(width: Int, height: Int) {
-        gameStage.viewport.update(width, height, true)
-        gameStage.viewport.camera.update()
     }
 
     private fun initUi() {
@@ -90,7 +73,7 @@ class TutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(game)
         stack.add(backgroundPause)
         stack.add(pauseTable)
 
-        gameStage.addActor(stack)
+        stage.addActor(stack)
 
         val topRowTable = Table()
         val topRowLeftTable = Table()

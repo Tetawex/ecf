@@ -24,20 +24,17 @@ import java.util.Random
 /**
  * Created by Tetawex on 03.06.2017.
  */
-class PlayModeSelectScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(game) {
+class PlayModeSelectScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
 
     private val preferences: ECFPreferences
 
-    private val stage: Stage
-
     init {
         preferences = PreferencesProvider.getPreferences()
-        if (!preferences.completedTutorial)
+
+        if (!preferences.completedTutorial) {
             game.gameStateManager.setState(GameStateManager.GameState.TUTORIAL, null)
-        val camera = OrthographicCamera(1440f, 2560f)
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0f)
-        stage = Stage(ExtendViewport(1440f, 2560f, camera))
-        Gdx.input.inputProcessor = stage
+        }
+
         initUi()
     }
 

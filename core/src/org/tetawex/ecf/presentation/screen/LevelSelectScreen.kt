@@ -33,21 +33,16 @@ import kotlin.math.round
 const val SHOULD_RESTORE_SCROLL_POSITION_KEY = "shouldRestoreScrollPosition"
 
 class LevelSelectScreen(game: ECFGame, bundle: Bundle?, savedState: Bundle?) :
-    BaseScreen<ECFGame>(game) {
+    BaseScreen(game) {
 
     private val preferences: ECFPreferences
 
-    private val stage: Stage
     private val levelCode: String
     private val initialScrollPosition: Float
 
     private lateinit var scroll: PagedScrollPane
 
     init {
-        val camera = OrthographicCamera(1440f, 2560f)
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0f)
-        stage = Stage(ExtendViewport(1440f, 2560f, camera))
-        Gdx.input.inputProcessor = stage
         preferences = PreferencesProvider.getPreferences()
 
         levelCode = bundle!!.getItem("levelCode", String::class.java, "")!!
@@ -208,6 +203,7 @@ class LevelSelectScreen(game: ECFGame, bundle: Bundle?, savedState: Bundle?) :
             GameStateManager.GameState.LEVEL_SELECT,
             savedState
         )
+        stage.dispose()
 
         super.dispose()
     }

@@ -21,9 +21,7 @@ import org.tetawex.ecf.util.*
 /**
  * ...
  */
-class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
-
-    private val gameStage: Stage
+class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     private var hexMapActor: EditorHexMapActor? = null
 
     private var nameField: TextField? = null
@@ -71,13 +69,6 @@ class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
     }
 
     init {
-
-        val camera = OrthographicCamera(1440f, 2560f)
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0f)
-        gameStage = Stage(ExtendViewport(1440f, 2560f, camera))
-
-        Gdx.input.inputProcessor = gameStage
-
         initUi()
 
         bundle?.getItem("levelData", LevelData::class.java)?.let { levelData ->
@@ -85,16 +76,6 @@ class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         }
 
         preferences = PreferencesProvider.getPreferences()
-    }
-
-    override fun render(delta: Float) {
-        gameStage.act()
-        gameStage.draw()
-    }
-
-    override fun resize(width: Int, height: Int) {
-        gameStage.viewport.update(width, height, true)
-        gameStage.viewport.camera.update()
     }
 
     private fun initUi() {
@@ -118,7 +99,7 @@ class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         stack.add(backgroundPause)
         stack.add(pauseTable)
 
-        gameStage.addActor(stack)
+        stage.addActor(stack)
 
         val topRowTable = Table()
         val topRowLeftTable = Table()
@@ -249,7 +230,7 @@ class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
                     }
                 }
                 files.setDirectory(Gdx.files.external(EDITOR_LEVEL_STORAGE))
-                files.show(gameStage)
+                files.show(stage)
             }
         })
         pauseMenuButtonLoadLevel.label.setFontScale(PAUSE_BUTTON_FONT_SCALE)

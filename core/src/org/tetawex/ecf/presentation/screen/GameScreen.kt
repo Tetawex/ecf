@@ -27,11 +27,9 @@ import java.util.*
 /**
  * ...
  */
-class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
-
+class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     private val levelData: LevelData
 
-    private val gameStage: Stage
     private var hexMapActor: HexMapActor? = null
     private var scoreLabel: Label? = null
     private var manaLabel: TextButton? = null
@@ -47,13 +45,6 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
     private val levelCode: String
 
     init {
-
-        val camera = OrthographicCamera(1440f, 2560f)
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0f)
-        gameStage = Stage(ExtendViewport(1440f, 2560f, camera))
-
-        Gdx.input.inputProcessor = gameStage
-
         gameData = GameData()
         levelData = bundle!!.getItem("levelData", LevelData::class.java)!!
         levelCode = levelData.levelCode!!
@@ -64,16 +55,6 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         gameData.setMana(levelData.mana)
         gameData.setScore(0)
         gameData.maxScore = levelData.maxScore
-    }
-
-    override fun render(delta: Float) {
-        gameStage.act()
-        gameStage.draw()
-    }
-
-    override fun resize(width: Int, height: Int) {
-        gameStage.viewport.update(width, height, true)
-        gameStage.viewport.camera.update()
     }
 
     private fun initUi() {
@@ -101,7 +82,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         stack.add(backgroundPause)
         stack.add(pauseTable)
 
-        gameStage.addActor(stack)
+        stage.addActor(stack)
 
         val topRowTable = Table()
         val topRowLeftTable = Table()
@@ -315,10 +296,6 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseECFScreen(game) {
         pauseTable.add(pauseMenuButtonQuit)
             .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
             .center().pad(PAUSE_BUTTON_PAD).row()
-    }
-
-    override fun dispose() {
-
     }
 
     override fun onBackPressed(): Boolean {

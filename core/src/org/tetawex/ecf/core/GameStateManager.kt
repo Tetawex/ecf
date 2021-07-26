@@ -9,8 +9,7 @@ import org.tetawex.ecf.util.Bundle
  * Created by Tetawex on 30.12.2016.
  */
 class GameStateManager(private val game: ECFGame) {
-
-    var currentScreen: BaseScreen<ECFGame>? = null
+    var currentScreen: BaseScreen? = null
         private set
     private var currentState: GameState? = null
 

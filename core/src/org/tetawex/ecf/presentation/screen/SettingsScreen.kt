@@ -22,20 +22,14 @@ import org.tetawex.ecf.util.PreferencesProvider
 /**
  * Created by Tetawex on 03.06.2017.
  */
-class SettingsScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(game) {
-
+class SettingsScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     private val preferences: ECFPreferences
 
-    private val stage: Stage
     private var musicSlider: Slider? = null
     private var soundSlider: Slider? = null
     private var selectedLanguageLabel: Label? = null
 
     init {
-        val camera = OrthographicCamera(1440f, 2560f)
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0f)
-        stage = Stage(ExtendViewport(1440f, 2560f, camera))
-        Gdx.input.inputProcessor = stage
         preferences = PreferencesProvider.getPreferences()
         initUi()
     }
@@ -168,32 +162,6 @@ class SettingsScreen(game: ECFGame, bundle: Bundle?) : BaseScreen<ECFGame>(game)
                 langStack.isVisible = true
             }
         })
-    }
-
-    override fun show() {
-
-    }
-
-    override fun render(delta: Float) {
-        stage.act(delta)
-        stage.draw()
-    }
-
-    override fun resize(width: Int, height: Int) {
-        stage.viewport.update(width, height, true)
-        stage.viewport.camera.update()
-    }
-
-    override fun pause() {
-
-    }
-
-    override fun resume() {
-
-    }
-
-    override fun hide() {
-
     }
 
     override fun onBackPressed(): Boolean {
