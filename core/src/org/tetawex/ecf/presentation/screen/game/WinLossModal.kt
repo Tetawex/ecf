@@ -3,10 +3,8 @@ package org.tetawex.ecf.presentation.screen.game
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
@@ -17,6 +15,8 @@ import org.tetawex.ecf.presentation.PAUSE_BUTTON_HEIGHT
 import org.tetawex.ecf.presentation.MODAL_BUTTON_PADDING
 import org.tetawex.ecf.presentation.PAUSE_BUTTON_WIDTH
 import org.tetawex.ecf.presentation.StyleFactory
+import org.tetawex.ecf.presentation.widget.SafeAreaContainer
+import org.tetawex.ecf.presentation.widget.background.PauseBackground
 import java.util.*
 
 class WinLossModal(
@@ -25,8 +25,7 @@ class WinLossModal(
     val onNextPressed: () -> Unit,
     val onRetryPressed: () -> Unit,
     val onQuitPressed: () -> Unit
-) :
-    Table() {
+) : Stack() {
     private val wlLabel: Label
     private val wlScore: Label
     private val wlSpareMana: Label
@@ -41,21 +40,10 @@ class WinLossModal(
     private val starRegion: TextureRegion = game.getTextureRegionFromAtlas("star")
     private val starDisabledRegion: TextureRegion = game.getTextureRegionFromAtlas("star_ungained")
 
-
-    private val lcToStringMap: MutableMap<GameData.LossCondition, String>
+    private val lcToStringMap = initLcMap()
 
     init {
-        lcToStringMap = EnumMap(GameData.LossCondition::class.java)
-        lcToStringMap[GameData.LossCondition.NO_MANA] = "lc_no_mana"
-
-        lcToStringMap[GameData.LossCondition.NO_FIRE] = "lc_no_fire"
-        lcToStringMap[GameData.LossCondition.NO_WATER] = "lc_no_water"
-
-        lcToStringMap[GameData.LossCondition.NO_AIR] = "lc_no_air"
-        lcToStringMap[GameData.LossCondition.NO_EARTH] = "lc_no_earth"
-
-        lcToStringMap[GameData.LossCondition.NO_SHADOW] = "lc_no_shadow"
-        lcToStringMap[GameData.LossCondition.NO_LIGHT] = "lc_no_light"
+        val table = Table()
 
         //win/loss ui
         wlLabel = Label("", StyleFactory.generateLargeStandardLabelStyle(game))
@@ -64,8 +52,8 @@ class WinLossModal(
         wlReasonLabel.wrap = true
         wlReasonLabel.setAlignment(Align.center)
 
-        add<Label>(wlLabel).pad(20f).row()
-        add<Label>(wlReasonLabel).pad(20f).width(PAUSE_BUTTON_WIDTH).row()
+        table.add(wlLabel).pad(20f).row()
+        table.add(wlReasonLabel).pad(20f).width(PAUSE_BUTTON_WIDTH).row()
 
         val starsTable = Table()
         starImages = Array(3) { null }
@@ -85,7 +73,7 @@ class WinLossModal(
         )
         wlScore = Label("", StyleFactory.generateStandardLabelStyle(game))
         scoreTable.add<Label>(wlScore).padRight(40f)
-        add(scoreTable).pad(20f).row()
+        table.add(scoreTable).pad(20f).row()
 
         val spareTable = Table()
         spareTable.add(
@@ -96,7 +84,7 @@ class WinLossModal(
         )
         wlSpareMana = Label("", StyleFactory.generateStandardLabelStyle(game))
         spareTable.add<Label>(wlSpareMana)
-        add(spareTable).pad(20f).row()
+        table.add(spareTable).pad(20f).row()
 
         val totalTable = Table()
         totalTable.add(
@@ -107,8 +95,8 @@ class WinLossModal(
         )
         wlTotal = Label("", StyleFactory.generateStandardLabelStyle(game))
         totalTable.add<Label>(wlTotal)
-        add(totalTable).pad(20f).row()
-        add(starsTable).pad(20f).row()
+        table.add(totalTable).pad(20f).row()
+        table.add(starsTable).pad(20f).row()
 
         winLossMenuButtonNext = TextButton(
             game.getLocalisedString("next"),
@@ -121,7 +109,7 @@ class WinLossModal(
                     onNextPressed()
                 }
             })
-        add<TextButton>(winLossMenuButtonNext)
+        table.add(winLossMenuButtonNext)
             .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
             .center().pad(MODAL_BUTTON_PADDING).row()
 
@@ -136,7 +124,7 @@ class WinLossModal(
                 }
             })
 
-        add(winLossMenuButtonRetry)
+        table.add(winLossMenuButtonRetry)
             .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
             .center().pad(MODAL_BUTTON_PADDING).row()
 
@@ -152,9 +140,12 @@ class WinLossModal(
                 }
             })
 
-        add(winLossMenuButtonQuit)
+        table.add(winLossMenuButtonQuit)
             .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
             .center().pad(MODAL_BUTTON_PADDING).row()
+
+        add(PauseBackground(game))
+        add(SafeAreaContainer(table))
     }
 
     fun setData(payload: GameData.WinLossPayload) {
@@ -189,4 +180,22 @@ class WinLossModal(
             }
         }
     }
+}
+
+fun initLcMap(): MutableMap<GameData.LossCondition, String> {
+    val lcToStringMap: MutableMap<GameData.LossCondition, String>
+
+    lcToStringMap = EnumMap(GameData.LossCondition::class.java)
+    lcToStringMap[GameData.LossCondition.NO_MANA] = "lc_no_mana"
+
+    lcToStringMap[GameData.LossCondition.NO_FIRE] = "lc_no_fire"
+    lcToStringMap[GameData.LossCondition.NO_WATER] = "lc_no_water"
+
+    lcToStringMap[GameData.LossCondition.NO_AIR] = "lc_no_air"
+    lcToStringMap[GameData.LossCondition.NO_EARTH] = "lc_no_earth"
+
+    lcToStringMap[GameData.LossCondition.NO_SHADOW] = "lc_no_shadow"
+    lcToStringMap[GameData.LossCondition.NO_LIGHT] = "lc_no_light"
+
+    return lcToStringMap
 }

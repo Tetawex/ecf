@@ -181,16 +181,6 @@ class LevelSelectScreen(game: ECFGame, bundle: Bundle?, savedState: Bundle?) :
             .align(Align.top)
     }
 
-    override fun render(delta: Float) {
-        stage.act(delta)
-        stage.draw()
-    }
-
-    override fun resize(width: Int, height: Int) {
-        stage.viewport.update(width, height, true)
-        stage.viewport.camera.update()
-    }
-
     override fun onBackPressed(): Boolean {
         game.gameStateManager.setState(GameStateManager.GameState.MODE_SELECT, null)
         return true

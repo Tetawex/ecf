@@ -90,16 +90,6 @@ class PlayModeSelectScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
         mainTable.add(menuButtonBackToMainMenu).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).row()
     }
 
-    override fun render(delta: Float) {
-        stage.act(delta)
-        stage.draw()
-    }
-
-    override fun resize(width: Int, height: Int) {
-        stage.viewport.update(width, height, true)
-        stage.viewport.camera.update()
-    }
-
     override fun onBackPressed(): Boolean {
         game.gameStateManager.setState(GameStateManager.GameState.MAIN_MENU, null)
         return true

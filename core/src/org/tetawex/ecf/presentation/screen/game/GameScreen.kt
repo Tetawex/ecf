@@ -1,7 +1,6 @@
 package org.tetawex.ecf.presentation.screen.game
 
 import ElementCounterWidget
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
@@ -17,7 +16,6 @@ import org.tetawex.ecf.presentation.StyleFactory
 import org.tetawex.ecf.presentation.widget.SafeAreaContainer
 import org.tetawex.ecf.presentation.widget.background.Background
 import org.tetawex.ecf.presentation.widget.ScreenContainer
-import org.tetawex.ecf.presentation.widget.background.PauseBackground
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
 import java.util.*
@@ -32,10 +30,9 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     private var scoreLabel: Label? = null
     private var manaLabel: TextButton? = null
 
-    private val gameData: GameData
+    private val gameData: GameData = GameData()
 
-    lateinit var pauseTable: Table
-    lateinit var backgroundPause: Image
+    lateinit var pauseModal: PauseModal
     lateinit var winLossModal: WinLossModal
 
     private val preferences: ECFPreferences = PreferencesProvider.getPreferences()
@@ -43,7 +40,6 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     private val levelCode: String
 
     init {
-        gameData = GameData()
         levelData = bundle!!.getItem("levelData", LevelData::class.java)!!
         levelCode = levelData.levelCode!!
 
@@ -56,15 +52,14 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     }
 
     private fun initUi() {
-        pauseTable = PauseModal(
+        pauseModal = PauseModal(
             game = game,
             onContinuePressed = {
-                pauseTable.isVisible = !pauseTable.isVisible
-                backgroundPause.isVisible = !backgroundPause.isVisible
+                pauseModal.isVisible = !pauseModal.isVisible
             },
             onRetryPressed = {
-                pauseTable.isVisible = !pauseTable.isVisible
-                backgroundPause.isVisible = !backgroundPause.isVisible
+                pauseModal.isVisible = !pauseModal.isVisible
+
                 gameData.cellArray = levelData.cellArray
                 gameData.setScore(0)
                 gameData.maxScore = levelData.maxScore
@@ -76,8 +71,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
                 } else if ("random" == levelCode) {
                     game.gameStateManager.setState(GameStateManager.GameState.MODE_SELECT, null)
                 } else {
-                    pauseTable.isVisible = !pauseTable.isVisible
-                    backgroundPause.isVisible = !backgroundPause.isVisible
+                    pauseModal.isVisible = !pauseModal.isVisible
                     if (levelData.levelNumber != -1) {
                         val bundle = Bundle()
                         bundle.putItem("levelCode", levelCode)
@@ -92,9 +86,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
                 }
             }
         )
-        pauseTable.isVisible = false
-
-        backgroundPause = PauseBackground(game)
+        pauseModal.isVisible = false
 
         val mainTable = Table()
 
@@ -132,9 +124,8 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
 
         val smallPauseButton = TextButton(" ", StyleFactory.generatePauseButtonStyle(game))
         smallPauseButton.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
-                pauseTable.isVisible = !pauseTable.isVisible
-                backgroundPause.isVisible = !backgroundPause.isVisible
+            override fun changed(event: ChangeEvent, actor: Actor) {
+                pauseModal.isVisible = !pauseModal.isVisible
             }
         })
         topRowLeftTable.left().top()
@@ -199,44 +190,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
             }
 
             override fun gameLostOrWon(payload: GameData.WinLossPayload) {
-                winLossModal.setData(payload)
-                backgroundPause.isVisible = true
-                winLossModal.isVisible = true
-
-                val totalScore = payload.totals.totalScore
-                val starsCount = payload.totals.stars
-
-                if (payload is GameData.WinLossPayload.Win) {
-                    if ("random" == levelData.levelCode) {
-                        var i = 0
-                        val list = preferences.scores
-                        for (s in list) {
-                            if (totalScore > s.value) {
-                                break
-                            }
-                            i++
-                        }
-                        if (i < 12)
-                            preferences.scores.add(i, Score(totalScore, "Player", levelData.name!!))
-                    }
-                    if ("editor" != levelData.levelCode && "random" != levelData.levelCode) {
-                        preferences
-                            .getLevelCompletionStateList(levelCode)!![levelData.levelNumber]
-                            .completed = true
-                        if (preferences.getLevelCompletionStateList(levelCode)!![levelData.levelNumber].stars < starsCount) {
-                            preferences.getLevelCompletionStateList(levelCode)!![levelData.levelNumber].stars =
-                                starsCount
-                        }
-                        if (levelData.levelNumber + 1 <
-                            PreferencesProvider.getLevelCountForCode(levelCode)
-                        ) {
-                            preferences
-                                .getLevelCompletionStateList(levelCode)!![levelData.levelNumber + 1]
-                                .unlocked = true
-                        }
-                    }
-                    PreferencesProvider.flushPreferences()
-                }
+                handleGameLostOrWon(payload)
             }
         }
 
@@ -244,26 +198,59 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
             ScreenContainer(
                 Background(game, levelCode),
                 SafeAreaContainer(mainTable),
-                backgroundPause,
+
                 winLossModal,
-                pauseTable
+                pauseModal
             )
         )
     }
 
     override fun onBackPressed(): Boolean {
-        if (pauseTable.isVisible) {
-            pauseTable.isVisible = false
-            backgroundPause.isVisible = false
-        } else {
-            pauseTable.isVisible = true
-            backgroundPause.isVisible = true
-        }
+        pauseModal.isVisible = !pauseModal.isVisible
         return true
     }
 
+    private fun handleGameLostOrWon(payload: GameData.WinLossPayload) {
+        winLossModal.setData(payload)
+        winLossModal.isVisible = true
+
+        val totalScore = payload.totals.totalScore
+        val starsCount = payload.totals.stars
+
+        if (payload is GameData.WinLossPayload.Win) {
+            if ("random" == levelData.levelCode) {
+                var i = 0
+                val list = preferences.scores
+                for (s in list) {
+                    if (totalScore > s.value) {
+                        break
+                    }
+                    i++
+                }
+                if (i < 12)
+                    preferences.scores.add(i, Score(totalScore, "Player", levelData.name!!))
+            }
+            if ("editor" != levelData.levelCode && "random" != levelData.levelCode) {
+                preferences
+                    .getLevelCompletionStateList(levelCode)!![levelData.levelNumber]
+                    .completed = true
+                if (preferences.getLevelCompletionStateList(levelCode)!![levelData.levelNumber].stars < starsCount) {
+                    preferences.getLevelCompletionStateList(levelCode)!![levelData.levelNumber].stars =
+                        starsCount
+                }
+                if (levelData.levelNumber + 1 <
+                    PreferencesProvider.getLevelCountForCode(levelCode)
+                ) {
+                    preferences
+                        .getLevelCompletionStateList(levelCode)!![levelData.levelNumber + 1]
+                        .unlocked = true
+                }
+            }
+            PreferencesProvider.flushPreferences()
+        }
+    }
+
     private fun handleNextPressed() {
-        Gdx.app.log("tag", "next")
         when {
             levelCode == "editor" -> {
                 goBackToEditor()
@@ -310,7 +297,6 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     }
 
     private fun handleQuitPressed() {
-        Gdx.app.log("tag", "q")
         when (levelCode) {
             "editor" -> {
                 goBackToEditor()
@@ -331,9 +317,8 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     }
 
     private fun handleRetryPressed() {
-        Gdx.app.log("tag", "ret")
         winLossModal.isVisible = false
-        backgroundPause.isVisible = false
+
         gameData.cellArray = levelData.cellArray
         gameData.setScore(0)
         gameData.maxScore = levelData.maxScore

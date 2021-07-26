@@ -1,6 +1,7 @@
 package org.tetawex.ecf.presentation.screen.game
 
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
@@ -11,16 +12,19 @@ import org.tetawex.ecf.presentation.PAUSE_BUTTON_HEIGHT
 import org.tetawex.ecf.presentation.PAUSE_BUTTON_WIDTH
 import org.tetawex.ecf.presentation.StyleFactory
 import org.tetawex.ecf.presentation.widget.OutlineTextButton
+import org.tetawex.ecf.presentation.widget.SafeAreaContainer
+import org.tetawex.ecf.presentation.widget.background.PauseBackground
 
 class PauseModal(
     val game: ECFGame,
     val onContinuePressed: () -> Unit,
     val onRetryPressed: () -> Unit,
     val onQuitPressed: () -> Unit
-) : Table() {
+) : Stack() {
 
     init {
-        center()
+        val table = Table()
+        table.center()
 
         val pauseMenuButtonContinue = OutlineTextButton(
             game.getLocalisedString("continue"), game
@@ -30,7 +34,7 @@ class PauseModal(
                 onContinuePressed()
             }
         })
-        add(pauseMenuButtonContinue)
+        table.add(pauseMenuButtonContinue)
             .center()
             .pad(MODAL_BUTTON_PADDING)
             .row()
@@ -43,7 +47,7 @@ class PauseModal(
                 onRetryPressed()
             }
         })
-        add(pauseMenuButtonRetry)
+        table.add(pauseMenuButtonRetry)
             .center()
             .pad(MODAL_BUTTON_PADDING)
             .row()
@@ -57,9 +61,12 @@ class PauseModal(
                 onQuitPressed()
             }
         })
-        add(pauseMenuButtonQuit)
+        table.add(pauseMenuButtonQuit)
             .center()
             .pad(MODAL_BUTTON_PADDING)
             .row()
+
+        add(PauseBackground(game))
+        add(SafeAreaContainer(table))
     }
 }

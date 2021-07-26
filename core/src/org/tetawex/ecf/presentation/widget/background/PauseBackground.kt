@@ -10,6 +10,5 @@ class PauseBackground(game: ECFGame) : Image(
 ) {
     init {
         setFillParent(true)
-        isVisible = false
     }
 }
