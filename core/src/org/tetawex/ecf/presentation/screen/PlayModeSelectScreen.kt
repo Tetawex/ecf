@@ -1,10 +1,7 @@
 package org.tetawex.ecf.presentation.screen
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -18,6 +15,7 @@ import org.tetawex.ecf.model.RandomLevelFactory
 import org.tetawex.ecf.presentation.BUTTON_HEIGHT
 import org.tetawex.ecf.presentation.BUTTON_PAD
 import org.tetawex.ecf.presentation.BUTTON_WIDTH
+import org.tetawex.ecf.presentation.StyleFactory
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
 

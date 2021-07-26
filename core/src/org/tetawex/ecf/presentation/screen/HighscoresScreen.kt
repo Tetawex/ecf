@@ -1,20 +1,13 @@
 package org.tetawex.ecf.presentation.screen
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.utils.viewport.ExtendViewport
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.ECFPreferences
-import org.tetawex.ecf.presentation.BUTTON_FONT_SCALE
-import org.tetawex.ecf.presentation.BUTTON_HEIGHT
-import org.tetawex.ecf.presentation.BUTTON_PAD
-import org.tetawex.ecf.presentation.BUTTON_WIDTH
+import org.tetawex.ecf.presentation.*
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
 

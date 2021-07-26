@@ -13,6 +13,7 @@ import org.tetawex.ecf.model.ECFPreferences
 import org.tetawex.ecf.presentation.BUTTON_HEIGHT
 import org.tetawex.ecf.presentation.BUTTON_PAD
 import org.tetawex.ecf.presentation.BUTTON_WIDTH
+import org.tetawex.ecf.presentation.StyleFactory
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
 

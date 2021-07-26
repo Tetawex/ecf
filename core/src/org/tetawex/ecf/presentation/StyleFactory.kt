@@ -1,4 +1,4 @@
-package org.tetawex.ecf.presentation.screen
+package org.tetawex.ecf.presentation
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import org.tetawex.ecf.core.ECFGame
+import org.tetawex.ecf.presentation.screen.EditorScreen
 
 /**
  * Created by Tetawex on 23.05.2017.

@@ -16,7 +16,7 @@ import org.tetawex.ecf.model.GameData
 import org.tetawex.ecf.presentation.PAUSE_BUTTON_HEIGHT
 import org.tetawex.ecf.presentation.MODAL_BUTTON_PADDING
 import org.tetawex.ecf.presentation.PAUSE_BUTTON_WIDTH
-import org.tetawex.ecf.presentation.screen.StyleFactory
+import org.tetawex.ecf.presentation.StyleFactory
 import java.util.*
 
 class WinLossModal(

@@ -11,7 +11,7 @@ import org.tetawex.ecf.model.Cell
 import org.tetawex.ecf.model.*
 import org.tetawex.ecf.presentation.*
 import org.tetawex.ecf.presentation.screen.BaseScreen
-import org.tetawex.ecf.presentation.screen.StyleFactory
+import org.tetawex.ecf.presentation.StyleFactory
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.IntVector2
 import org.tetawex.ecf.util.PreferencesProvider

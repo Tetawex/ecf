@@ -11,10 +11,7 @@ import com.badlogic.gdx.utils.Array
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.*
-import org.tetawex.ecf.presentation.PAUSE_BUTTON_FONT_SCALE
-import org.tetawex.ecf.presentation.PAUSE_BUTTON_HEIGHT
-import org.tetawex.ecf.presentation.PAUSE_BUTTON_PAD
-import org.tetawex.ecf.presentation.PAUSE_BUTTON_WIDTH
+import org.tetawex.ecf.presentation.*
 import org.tetawex.ecf.presentation.widget.EditorHexMapWidget
 import org.tetawex.ecf.util.*
 

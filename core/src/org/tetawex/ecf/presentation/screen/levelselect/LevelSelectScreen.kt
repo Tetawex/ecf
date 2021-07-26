@@ -18,7 +18,7 @@ import org.tetawex.ecf.model.ECFPreferences
 import org.tetawex.ecf.model.LevelFactory
 import org.tetawex.ecf.presentation.*
 import org.tetawex.ecf.presentation.screen.BaseScreen
-import org.tetawex.ecf.presentation.screen.StyleFactory
+import org.tetawex.ecf.presentation.StyleFactory
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
 import kotlin.math.ceil

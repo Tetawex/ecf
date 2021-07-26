@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.presentation.DEFAULT_PADDING_HALF
 import org.tetawex.ecf.presentation.VIEWPORT_WIDTH
-import org.tetawex.ecf.presentation.screen.StyleFactory
+import org.tetawex.ecf.presentation.StyleFactory
 
 class ElementCounterWidget(game: ECFGame) : Table() {
     companion object {
