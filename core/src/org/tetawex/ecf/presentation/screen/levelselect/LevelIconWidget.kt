@@ -1,4 +1,4 @@
-package org.tetawex.ecf.presentation.widget
+package org.tetawex.ecf.presentation.screen.levelselect
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -31,7 +31,7 @@ class LevelIconWidget(
     override fun act(deltaTime: Float) {}
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        batch!!.draw(backgroundRegion, x, y, 400f, 400f)
+        batch!!.draw(backgroundRegion, x, y, LEVEL_ICON_SIZE, LEVEL_ICON_SIZE)
         if (number < 10)
             font.draw(batch, number.toString() + "", x + width / 2 - 20, y + height / 2 + 40f)
         else
@@ -51,15 +51,15 @@ class LevelIconWidget(
             }
         }
         if (!levelCompletionState.unlocked) {
-            batch.draw(tintRegion, x, y, 400f, 400f)
+            batch.draw(tintRegion, x, y, LEVEL_ICON_SIZE, LEVEL_ICON_SIZE)
         }
     }
 
     override fun getPrefWidth(): Float {
-        return 400f
+        return LEVEL_ICON_SIZE
     }
 
     override fun getPrefHeight(): Float {
-        return 400f
+        return LEVEL_ICON_SIZE
     }
 }

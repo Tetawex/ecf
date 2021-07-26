@@ -12,7 +12,7 @@ import org.tetawex.ecf.model.*
 import org.tetawex.ecf.model.Cell
 import org.tetawex.ecf.presentation.*
 import org.tetawex.ecf.presentation.screen.BaseScreen
-import org.tetawex.ecf.presentation.screen.SHOULD_RESTORE_SCROLL_POSITION_KEY
+import org.tetawex.ecf.presentation.screen.levelselect.SHOULD_RESTORE_SCROLL_POSITION_KEY
 import org.tetawex.ecf.presentation.screen.StyleFactory
 import org.tetawex.ecf.presentation.widget.SafeAreaContainer
 import org.tetawex.ecf.presentation.widget.background.Background

@@ -1,4 +1,4 @@
-package org.tetawex.ecf.presentation.screen
+package org.tetawex.ecf.presentation.screen.levelselect
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -11,13 +11,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
-import org.tetawex.ecf.presentation.widget.LevelIconWidget
 import org.tetawex.ecf.presentation.widget.PagedScrollPane
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.ECFPreferences
 import org.tetawex.ecf.model.LevelFactory
 import org.tetawex.ecf.presentation.*
+import org.tetawex.ecf.presentation.screen.BaseScreen
+import org.tetawex.ecf.presentation.screen.StyleFactory
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
 import kotlin.math.ceil
@@ -48,7 +49,7 @@ class LevelSelectScreen(game: ECFGame, bundle: Bundle?, savedState: Bundle?) :
                 ?: "false"
 
         initialScrollPosition =
-            (VIEWPORT_WIDTH + DEFAULT_PADDING) * (if (shouldRestoreScrollPosition.toBoolean()) {
+            (VIEWPORT_WIDTH + 2 * DEFAULT_PADDING) * (if (shouldRestoreScrollPosition.toBoolean()) {
                 (savedState?.getItem("page", String::class.java, "0") ?: "1").toFloat()
             } else {
                 0f
@@ -84,18 +85,19 @@ class LevelSelectScreen(game: ECFGame, bundle: Bundle?, savedState: Bundle?) :
         outerLoop@ for (l in 0 until pageCount) {
             val levelTable = Table()
             if (l == 0)
-                levelTable.padTop(40f).padBottom(40f).padLeft(82.5f).padRight(82.5f)
+                levelTable.padTop(DEFAULT_PADDING_HALF).padBottom(DEFAULT_PADDING_HALF).padLeft(DEFAULT_PADDING).padRight(DEFAULT_PADDING)
             else if (l == pageCount - 1)
-                levelTable.padTop(40f).padBottom(40f).padLeft(41.25f).padRight(82.5f)
+                levelTable.padTop(DEFAULT_PADDING_HALF).padBottom(DEFAULT_PADDING_HALF).padLeft(DEFAULT_PADDING_HALF).padRight(DEFAULT_PADDING)
             else
-                levelTable.padTop(40f).padBottom(40f).padLeft(41.25f).padRight(41.25f)
+                levelTable.pad(DEFAULT_PADDING_HALF)
+
             levelTable.defaults().pad(0f, 0f, 0f, 0f)
             levelTable.align(Align.top)
 
             scroll.addPage(levelTable)
-            for (y in 0..3) {
+            for (y in 0 until LEVEL_ROWS) {
                 levelTable.row()
-                for (x in 0..2) {
+                for (x in 0 until LEVEL_COLUMNS) {
                     if (i >= preferences.getLevelCompletionStateList(levelCode)!!.size) {
                         levelTable.row()
                         break@outerLoop
@@ -106,9 +108,9 @@ class LevelSelectScreen(game: ECFGame, bundle: Bundle?, savedState: Bundle?) :
                         game.assetManager.get("fonts/font_main_medium.ttf", BitmapFont::class.java),
                         i + 1
                     )
-                    val act = levelTable.add(actor).right().padBottom(37.5f)
+                    val act = levelTable.add(actor).right().padBottom(LEVEL_ICON_PADDING)
                     if (x != 2) {
-                        act.padRight(37.5f)
+                        act.padRight(LEVEL_ICON_PADDING)
                     }
 
                     val finalI = i
@@ -196,7 +198,7 @@ class LevelSelectScreen(game: ECFGame, bundle: Bundle?, savedState: Bundle?) :
 
     override fun dispose() {
         val savedState = Bundle()
-        savedState.putItem("page", round(scroll.scrollX / 1440f).toString())
+        savedState.putItem("page", round(scroll.scrollX / VIEWPORT_WIDTH).toString())
 
         game.gameStateManager.saveStateForGameState(
             GameStateManager.GameState.LEVEL_SELECT,
