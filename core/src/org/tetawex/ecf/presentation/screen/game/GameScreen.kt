@@ -56,7 +56,42 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     }
 
     private fun initUi() {
-        pauseTable = Table()
+        pauseTable = PauseModal(
+            game = game,
+            onContinuePressed = {
+                pauseTable.isVisible = !pauseTable.isVisible
+                backgroundPause.isVisible = !backgroundPause.isVisible
+            },
+            onRetryPressed = {
+                pauseTable.isVisible = !pauseTable.isVisible
+                backgroundPause.isVisible = !backgroundPause.isVisible
+                gameData.cellArray = levelData.cellArray
+                gameData.setScore(0)
+                gameData.maxScore = levelData.maxScore
+                gameData.setMana(levelData.mana)
+            },
+            onQuitPressed = {
+                if ("editor" == levelCode) {
+                    goBackToEditor()
+                } else if ("random" == levelCode) {
+                    game.gameStateManager.setState(GameStateManager.GameState.MODE_SELECT, null)
+                } else {
+                    pauseTable.isVisible = !pauseTable.isVisible
+                    backgroundPause.isVisible = !backgroundPause.isVisible
+                    if (levelData.levelNumber != -1) {
+                        val bundle = Bundle()
+                        bundle.putItem("levelCode", levelCode)
+                        bundle.putItem(SHOULD_RESTORE_SCROLL_POSITION_KEY, "true")
+                        game.gameStateManager.setState(
+                            GameStateManager.GameState.LEVEL_SELECT,
+                            bundle
+                        )
+                    } else {
+                        game.gameStateManager.setState(GameStateManager.GameState.MODE_SELECT, null)
+                    }
+                }
+            }
+        )
         pauseTable.isVisible = false
 
         backgroundPause = PauseBackground(game)
@@ -204,75 +239,6 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
                 }
             }
         }
-
-        //pause ui
-        pauseTable.center()
-
-        val pauseMenuButtonContinue = TextButton(
-            game.getLocalisedString("continue"),
-            StyleFactory.generateStandardMenuButtonStyle(game)
-        )
-        pauseMenuButtonContinue.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
-
-                pauseTable.isVisible = !pauseTable.isVisible
-                backgroundPause.isVisible = !backgroundPause.isVisible
-            }
-        })
-        pauseMenuButtonContinue.label.setFontScale(PAUSE_BUTTON_FONT_SCALE)
-        pauseTable.add(pauseMenuButtonContinue)
-            .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-            .center().pad(MODAL_BUTTON_PADDING).row()
-
-        val pauseMenuButtonRetry = TextButton(
-            game.getLocalisedString("retry"),
-            StyleFactory.generateStandardMenuButtonStyle(game)
-        )
-        pauseMenuButtonRetry.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
-                pauseTable.isVisible = !pauseTable.isVisible
-                backgroundPause.isVisible = !backgroundPause.isVisible
-                gameData.cellArray = levelData.cellArray
-                gameData.setScore(0)
-                gameData.maxScore = levelData.maxScore
-                gameData.setMana(levelData.mana)
-            }
-        })
-        pauseMenuButtonRetry.label.setFontScale(PAUSE_BUTTON_FONT_SCALE)
-        pauseTable.add(pauseMenuButtonRetry)
-            .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-            .center().pad(MODAL_BUTTON_PADDING).row()
-
-
-        val pauseMenuButtonQuit = TextButton(
-            game.getLocalisedString("quit"),
-            StyleFactory.generateStandardMenuButtonStyle(game)
-        )
-        pauseMenuButtonQuit.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
-                if ("editor" == levelCode) {
-                    goBackToEditor()
-                    return
-                }
-                if ("random" == levelCode) {
-                    game.gameStateManager.setState(GameStateManager.GameState.MODE_SELECT, null)
-                    return
-                }
-                pauseTable.isVisible = !pauseTable.isVisible
-                backgroundPause.isVisible = !backgroundPause.isVisible
-                if (levelData.levelNumber != -1) {
-                    val bundle = Bundle()
-                    bundle.putItem("levelCode", levelCode)
-                    bundle.putItem(SHOULD_RESTORE_SCROLL_POSITION_KEY, "true")
-                    game.gameStateManager.setState(GameStateManager.GameState.LEVEL_SELECT, bundle)
-                } else
-                    game.gameStateManager.setState(GameStateManager.GameState.MODE_SELECT, null)
-            }
-        })
-        pauseMenuButtonQuit.label.setFontScale(PAUSE_BUTTON_FONT_SCALE)
-        pauseTable.add(pauseMenuButtonQuit)
-            .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
-            .center().pad(MODAL_BUTTON_PADDING).row()
 
         stage.addActor(
             ScreenContainer(
