@@ -183,8 +183,8 @@ class GameData {
         val totalScore = rawScore + manaScore
 
         val stars = when {
+            (totalScore >= maxScore || totalScore == 0) -> 3
             totalScore > maxScore / 2 -> 2
-            totalScore >= maxScore -> 3
             else -> 1
         }
 
