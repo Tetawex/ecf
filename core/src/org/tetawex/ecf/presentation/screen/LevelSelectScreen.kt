@@ -1,26 +1,24 @@
 package org.tetawex.ecf.presentation.screen
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.viewport.ExtendViewport
-import org.tetawex.ecf.presentation.actor.LevelIconActor
-import org.tetawex.ecf.presentation.actor.PagedScrollPane
+import org.tetawex.ecf.presentation.widget.LevelIconWidget
+import org.tetawex.ecf.presentation.widget.PagedScrollPane
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.ECFPreferences
 import org.tetawex.ecf.model.LevelFactory
+import org.tetawex.ecf.presentation.DEFAULT_PADDING
+import org.tetawex.ecf.presentation.VIEWPORT_WIDTH
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
 import kotlin.math.ceil
@@ -50,11 +48,12 @@ class LevelSelectScreen(game: ECFGame, bundle: Bundle?, savedState: Bundle?) :
             bundle.getItem(SHOULD_RESTORE_SCROLL_POSITION_KEY, String::class.java, "false")
                 ?: "false"
 
-        initialScrollPosition = 1440f * (if (shouldRestoreScrollPosition.toBoolean()) {
-            (savedState?.getItem("page", String::class.java, "0") ?: "1").toFloat()
-        } else {
-            0f
-        })
+        initialScrollPosition =
+            (VIEWPORT_WIDTH + DEFAULT_PADDING) * (if (shouldRestoreScrollPosition.toBoolean()) {
+                (savedState?.getItem("page", String::class.java, "0") ?: "1").toFloat()
+            } else {
+                0f
+            })
 
         initUi()
     }
@@ -102,7 +101,7 @@ class LevelSelectScreen(game: ECFGame, bundle: Bundle?, savedState: Bundle?) :
                         levelTable.row()
                         break@outerLoop
                     }
-                    val actor = LevelIconActor(
+                    val actor = LevelIconWidget(
                         game,
                         preferences.getLevelCompletionStateList(levelCode)!![i],
                         game.assetManager.get("fonts/font_main_medium.ttf", BitmapFont::class.java),
@@ -177,7 +176,8 @@ class LevelSelectScreen(game: ECFGame, bundle: Bundle?, savedState: Bundle?) :
             }
         })
         menuButtonBackToMainMenu.label.setFontScale(BUTTON_FONT_SCALE)
-        mainTable.add(menuButtonBackToMainMenu).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD).align(Align.top)
+        mainTable.add(menuButtonBackToMainMenu).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(BUTTON_PAD)
+            .align(Align.top)
     }
 
     override fun render(delta: Float) {
@@ -203,7 +203,6 @@ class LevelSelectScreen(game: ECFGame, bundle: Bundle?, savedState: Bundle?) :
             GameStateManager.GameState.LEVEL_SELECT,
             savedState
         )
-        stage.dispose()
 
         super.dispose()
     }

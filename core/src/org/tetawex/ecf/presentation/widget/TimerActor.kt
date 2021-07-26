@@ -1,4 +1,4 @@
-package org.tetawex.ecf.presentation.actor
+package org.tetawex.ecf.presentation.widget
 
 import com.badlogic.gdx.scenes.scene2d.Actor
 

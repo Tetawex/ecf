@@ -1,8 +1,8 @@
 package org.tetawex.ecf.core
 
 import org.tetawex.ecf.presentation.screen.*
-import org.tetawex.ecf.tutorial.MotTutorialScreen
-import org.tetawex.ecf.tutorial.TutorialScreen
+import org.tetawex.ecf.presentation.tutorial.MotTutorialScreen
+import org.tetawex.ecf.presentation.tutorial.TutorialScreen
 import org.tetawex.ecf.util.Bundle
 
 /**

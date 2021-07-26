@@ -1,14 +1,10 @@
-package org.tetawex.ecf.tutorial
+package org.tetawex.ecf.presentation.tutorial
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.utils.viewport.ExtendViewport
-import org.tetawex.ecf.presentation.actor.HexMapActor
+import org.tetawex.ecf.presentation.widget.HexMapWidget
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.Cell
@@ -23,7 +19,7 @@ import org.tetawex.ecf.util.PreferencesProvider
  * ...
  */
 class MotTutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
-    private var hexMapActor: TutorialHexMapActor? = null
+    private var hexMapActor: TutorialHexMapWidget? = null
     private var scoreLabel: Label? = null
     private var manaLabel: TextButton? = null
 
@@ -84,8 +80,8 @@ class MotTutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
         val midRowTable = Table()
         val bottomRowTable = Table()
 
-        hexMapActor = TutorialHexMapActor(game)
-        hexMapActor!!.cellActionListener = object : HexMapActor.CellActionListener {
+        hexMapActor = TutorialHexMapWidget(game)
+        hexMapActor!!.cellActionListener = object : HexMapWidget.CellActionListener {
             override fun cellMerged(mergedElementsCount: Int) {
                 gameData.processElementsMerge(mergedElementsCount)
             }
@@ -99,7 +95,7 @@ class MotTutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
                 return gameData.canMove(cellElementCount)
             }
         }
-        midRowTable.add<TutorialHexMapActor>(hexMapActor).center().expand().padTop(60f)
+        midRowTable.add<TutorialHexMapWidget>(hexMapActor).center().expand().padTop(60f)
 
         mainTable.setFillParent(true)
         mainTable.add(topRowTable).growX().row()

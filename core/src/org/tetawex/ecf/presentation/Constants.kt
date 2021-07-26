@@ -1,10 +1,11 @@
 package org.tetawex.ecf.presentation
 
-const val SCREEN_WIDTH = 1440f
-const val SCREEN_HEIGHT = 2560f
+const val VIEWPORT_WIDTH = 1440f
+const val VIEWPORT_HEIGHT = 2560f
 
 const val SAFE_AREA_WIDTH = 1275f
-const val DEFAULT_PADDING = (SCREEN_WIDTH - SAFE_AREA_WIDTH) / 2
+const val DEFAULT_PADDING = (VIEWPORT_WIDTH - SAFE_AREA_WIDTH) / 2
+const val DEFAULT_PADDING_HALVED = DEFAULT_PADDING / 2
 
 const val PAUSE_BUTTON_WIDTH = SAFE_AREA_WIDTH
 const val PAUSE_BUTTON_HEIGHT = 252f

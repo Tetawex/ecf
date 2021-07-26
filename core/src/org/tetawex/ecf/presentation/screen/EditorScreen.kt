@@ -2,17 +2,14 @@ package org.tetawex.ecf.presentation.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
-import com.badlogic.gdx.utils.viewport.ExtendViewport
-import org.tetawex.ecf.presentation.actor.EditorHexMapActor
+import org.tetawex.ecf.presentation.widget.EditorHexMapWidget
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.*
@@ -22,7 +19,7 @@ import org.tetawex.ecf.util.*
  * ...
  */
 class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
-    private var hexMapActor: EditorHexMapActor? = null
+    private var hexMapWidget: EditorHexMapWidget? = null
 
     private var nameField: TextField? = null
     private var dimXField: TextField? = null
@@ -112,10 +109,10 @@ class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
         val bottomRowTable = Table()
         mainTable.add(topRowTable).growX().row()
 
-        hexMapActor = EditorHexMapActor(game)
-        hexMapActor!!.soundVolume = PreferencesProvider.getPreferences().soundVolume
-        hexMapActor!!.setCellArray(CellArrayFactory.generateEmptyCellArray(2, 2))
-        midRowTable.add<EditorHexMapActor>(hexMapActor).center().expand()
+        hexMapWidget = EditorHexMapWidget(game)
+        hexMapWidget!!.soundVolume = PreferencesProvider.getPreferences().soundVolume
+        hexMapWidget!!.setCellArray(CellArrayFactory.generateEmptyCellArray(2, 2))
+        midRowTable.add<EditorHexMapWidget>(hexMapWidget).center().expand()
 
         mainTable.setFillParent(true)
         mainTable.add(midRowTable).growX().growY().row()
@@ -274,42 +271,42 @@ class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
         when (action) {
             EditorScreen.ButtonAction.ADD_FIRE -> button.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
-                    hexMapActor!!.addElementToSelectedCell(Element.FIRE)
+                    hexMapWidget!!.addElementToSelectedCell(Element.FIRE)
                 }
             })
             EditorScreen.ButtonAction.ADD_WATER -> button.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
-                    hexMapActor!!.addElementToSelectedCell(Element.WATER)
+                    hexMapWidget!!.addElementToSelectedCell(Element.WATER)
                 }
             })
             EditorScreen.ButtonAction.ADD_AIR -> button.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
-                    hexMapActor!!.addElementToSelectedCell(Element.AIR)
+                    hexMapWidget!!.addElementToSelectedCell(Element.AIR)
                 }
             })
             EditorScreen.ButtonAction.ADD_EARTH -> button.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
-                    hexMapActor!!.addElementToSelectedCell(Element.EARTH)
+                    hexMapWidget!!.addElementToSelectedCell(Element.EARTH)
                 }
             })
             EditorScreen.ButtonAction.ADD_SHADOW -> button.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
-                    hexMapActor!!.addElementToSelectedCell(Element.SHADOW)
+                    hexMapWidget!!.addElementToSelectedCell(Element.SHADOW)
                 }
             })
             EditorScreen.ButtonAction.ADD_LIGHT -> button.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
-                    hexMapActor!!.addElementToSelectedCell(Element.LIGHT)
+                    hexMapWidget!!.addElementToSelectedCell(Element.LIGHT)
                 }
             })
             EditorScreen.ButtonAction.ADD_TIME -> button.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
-                    hexMapActor!!.addElementToSelectedCell(Element.TIME)
+                    hexMapWidget!!.addElementToSelectedCell(Element.TIME)
                 }
             })
             EditorScreen.ButtonAction.REMOVE_CELL -> button.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
-                    hexMapActor!!.removeOrCreateCell()
+                    hexMapWidget!!.removeOrCreateCell()
                 }
             })
             EditorScreen.ButtonAction.SAVE_LEVEL -> {
@@ -362,15 +359,15 @@ class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
         applyButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
                 try {
-                    hexMapActor!!.setHexSize(IntVector2(
+                    hexMapWidget!!.setHexSize(IntVector2(
                             Integer.valueOf(dimXField!!.text),
                             Integer.valueOf(dimYField!!.text)))
                     midRowTable.reset()
-                    midRowTable.add<EditorHexMapActor>(hexMapActor).center().expand()
+                    midRowTable.add<EditorHexMapWidget>(hexMapWidget).center().expand()
 
                 } catch (e: Exception) {
-                    dimXField!!.text = hexMapActor!!.getCellArray().size.toString()
-                    dimYField!!.text = hexMapActor!!.getCellArray()[0].size.toString()
+                    dimXField!!.text = hexMapWidget!!.getCellArray().size.toString()
+                    dimYField!!.text = hexMapWidget!!.getCellArray()[0].size.toString()
                 }
 
             }
@@ -386,7 +383,7 @@ class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     private fun createLevelData(): LevelData {
         val levelData = LevelData()
 
-        levelData.cellArray = hexMapActor!!.getCellArray()
+        levelData.cellArray = hexMapWidget!!.getCellArray()
 
         levelData.levelCode = "editor"
         levelData.levelNumber = 0
@@ -400,12 +397,12 @@ class EditorScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     }
 
     private fun resolveLoadedLevelData(data: LevelData) {
-        hexMapActor!!.setCellArray(data.cellArray)
+        hexMapWidget!!.setCellArray(data.cellArray)
         midRowTable.reset()
-        midRowTable.add<EditorHexMapActor>(hexMapActor).center().expand()
+        midRowTable.add<EditorHexMapWidget>(hexMapWidget).center().expand()
 
-        dimXField!!.text = hexMapActor!!.getCellArray().size.toString()
-        dimYField!!.text = hexMapActor!!.getCellArray()[0].size.toString()
+        dimXField!!.text = hexMapWidget!!.getCellArray().size.toString()
+        dimYField!!.text = hexMapWidget!!.getCellArray()[0].size.toString()
 
         manaField!!.text = data.mana.toString()
         maxScoreField!!.text = data.maxScore.toString()

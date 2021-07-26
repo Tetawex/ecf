@@ -2,24 +2,22 @@ package org.tetawex.ecf.presentation.screen
 
 import ElementCounterWidget
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.audio.Sound
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import com.badlogic.gdx.utils.viewport.ExtendViewport
-import org.tetawex.ecf.presentation.actor.HexMapActor
-import org.tetawex.ecf.presentation.actor.WinLossModal
+import org.tetawex.ecf.presentation.widget.HexMapWidget
+import org.tetawex.ecf.presentation.widget.WinLossModal
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.*
 import org.tetawex.ecf.model.Cell
 import org.tetawex.ecf.presentation.*
+import org.tetawex.ecf.presentation.widget.SafeAreaContainer
+import org.tetawex.ecf.presentation.widget.background.Background
+import org.tetawex.ecf.presentation.widget.ScreenContainer
+import org.tetawex.ecf.presentation.widget.background.PauseBackground
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
 import java.util.*
@@ -30,7 +28,7 @@ import java.util.*
 class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     private val levelData: LevelData
 
-    private var hexMapActor: HexMapActor? = null
+    private var hexMapWidget: HexMapWidget? = null
     private var scoreLabel: Label? = null
     private var manaLabel: TextButton? = null
 
@@ -61,42 +59,23 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
         pauseTable = Table()
         pauseTable.isVisible = false
 
+        backgroundPause = PauseBackground(game)
+
         val mainTable = Table()
-        val stack = Stack()
-        stack.setFillParent(true)
-
-        val background = Image(
-            game.assetManager
-                .get("backgrounds/" + levelCode + "background.png", Texture::class.java)
-        )
-        background.setFillParent(true)
-        backgroundPause = Image(
-            game.assetManager
-                .get("backgrounds/background_pause.png", Texture::class.java)
-        )
-        backgroundPause.setFillParent(true)
-        backgroundPause.isVisible = false
-
-        stack.add(background)
-        stack.add(mainTable)
-        stack.add(backgroundPause)
-        stack.add(pauseTable)
-
-        stage.addActor(stack)
 
         val topRowTable = Table()
         val topRowLeftTable = Table()
         val topRowCenterTable = Table()
         val topRowRightTable = Table()
         topRowTable.add(topRowLeftTable).width(300f)
-        topRowTable.add(topRowCenterTable).growX()
+        topRowTable.add(topRowCenterTable).expandX()
         topRowTable.add(topRowRightTable).width(300f)
         val midRowTable = Table()
         val elementCounterWidget = ElementCounterWidget(game)
 
-        hexMapActor = HexMapActor(game)
-        hexMapActor!!.soundVolume = PreferencesProvider.getPreferences().soundVolume
-        hexMapActor!!.cellActionListener = object : HexMapActor.CellActionListener {
+        hexMapWidget = HexMapWidget(game)
+        hexMapWidget!!.soundVolume = PreferencesProvider.getPreferences().soundVolume
+        hexMapWidget!!.cellActionListener = object : HexMapWidget.CellActionListener {
             override fun cellMerged(mergedElementsCount: Int) {
                 gameData.processElementsMerge(mergedElementsCount)
             }
@@ -109,9 +88,8 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
                 return gameData.canMove(cellElementCount)
             }
         }
-        midRowTable.add<HexMapActor>(hexMapActor).center().expand()
+        midRowTable.add<HexMapWidget>(hexMapWidget).center().expand()
 
-        mainTable.setFillParent(true)
         mainTable.add(topRowTable).growX().row()
         mainTable.add(Label(levelData.name, StyleFactory.generateStandardLabelStyle(game))).row()
         mainTable.add(midRowTable).growX().growY().row()
@@ -125,7 +103,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
             }
         })
         topRowLeftTable.left().top()
-        topRowLeftTable.add(pauseButton).size(120f).pad(40f).center()
+        topRowLeftTable.add(pauseButton).size(120f).pad(DEFAULT_PADDING_HALVED).center()
 
         scoreLabel = Label("", StyleFactory.generateStandardLabelStyle(game))
         scoreLabel!!.setFontScale(SCORE_LABEL_FONT_SCALE)
@@ -133,7 +111,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
 
         //Stack topRowRightStack = new Stack();
         manaLabel = TextButton("", StyleFactory.generateManaButtonStyle(game))
-        topRowRightTable.add<TextButton>(manaLabel).size(150f).pad(40f)
+        topRowRightTable.add<TextButton>(manaLabel).size(150f).pad(DEFAULT_PADDING_HALVED)
 
         topRowTable.toFront()
         topRowRightTable.right()
@@ -151,7 +129,6 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
             }
         )
         winLossModal.isVisible = false
-        stack.add(winLossModal)
 
         gameData.gameDataChangedListener = object : GameData.GameDataChangedListener {
             override fun manaChanged(newValue: Int) {
@@ -163,7 +140,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
             }
 
             override fun cellMapChanged(newMap: Array<Array<Cell?>>) {
-                hexMapActor!!.setCellArray(newMap)
+                hexMapWidget!!.setCellArray(newMap)
             }
 
             override fun elementsCountChanged(
@@ -296,6 +273,16 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
         pauseTable.add(pauseMenuButtonQuit)
             .size(PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT)
             .center().pad(PAUSE_BUTTON_PAD).row()
+
+        stage.addActor(
+            ScreenContainer(
+                Background(game, levelCode),
+                SafeAreaContainer(mainTable),
+                backgroundPause,
+                winLossModal,
+                pauseTable
+            )
+        )
     }
 
     override fun onBackPressed(): Boolean {

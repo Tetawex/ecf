@@ -1,15 +1,20 @@
-package org.tetawex.ecf.presentation.actor
+package org.tetawex.ecf.presentation.widget
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.ui.Widget
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.model.LevelCompletionState
 
 /**
  * Created by Tetawex on 06.06.2017.
  */
-class LevelIconActor(game: ECFGame, private val levelCompletionState: LevelCompletionState, private val font: BitmapFont, private val number: Int) : BaseWidget<ECFGame>(game) {
+class LevelIconWidget(
+    val game: ECFGame,
+    private val levelCompletionState: LevelCompletionState,
+    private val font: BitmapFont, private val number: Int
+) : Widget() {
     private val starRegion: TextureRegion
     private val starDisabledRegion: TextureRegion
     private val backgroundRegion: TextureRegion
@@ -17,7 +22,6 @@ class LevelIconActor(game: ECFGame, private val levelCompletionState: LevelCompl
     private val starSize = 80f
 
     init {
-
         starRegion = game.getTextureRegionFromAtlas("star")
         starDisabledRegion = game.getTextureRegionFromAtlas("star_ungained")
         backgroundRegion = game.getTextureRegionFromAtlas("level_active")
@@ -37,7 +41,13 @@ class LevelIconActor(game: ECFGame, private val levelCompletionState: LevelCompl
                 if (levelCompletionState.stars >= i)
                     batch.draw(starRegion, 80f + x + starSize * (i - 1), 60 + y, starSize, starSize)
                 else
-                    batch.draw(starDisabledRegion, 80f + x + starSize * (i - 1), 60 + y, starSize, starSize)
+                    batch.draw(
+                        starDisabledRegion,
+                        80f + x + starSize * (i - 1),
+                        60 + y,
+                        starSize,
+                        starSize
+                    )
             }
         }
         if (!levelCompletionState.unlocked) {

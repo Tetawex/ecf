@@ -1,4 +1,4 @@
-package org.tetawex.ecf.tutorial
+package org.tetawex.ecf.presentation.tutorial
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Touchable
-import org.tetawex.ecf.presentation.actor.HexMapActor
+import org.tetawex.ecf.presentation.widget.HexMapWidget
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.model.Cell
 import org.tetawex.ecf.util.IntVector2
@@ -15,7 +15,7 @@ import org.tetawex.ecf.util.IntVector2
 /**
  * Created by tetawex on 21.08.17.
  */
-class TutorialHexMapActor(game: ECFGame) : HexMapActor(game) {
+class TutorialHexMapWidget(game: ECFGame) : HexMapWidget(game) {
 
     var unlockedCells = Array(1) { BooleanArray(1) }
     var fromCell = IntVector2(2, 0)

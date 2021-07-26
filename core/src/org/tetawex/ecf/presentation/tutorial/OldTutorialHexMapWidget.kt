@@ -1,4 +1,4 @@
-package org.tetawex.ecf.tutorial
+package org.tetawex.ecf.presentation.tutorial
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Touchable
+import com.badlogic.gdx.scenes.scene2d.ui.Widget
 import com.badlogic.gdx.utils.OrderedMap
-import org.tetawex.ecf.presentation.actor.BaseWidget
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.model.Cell
 import org.tetawex.ecf.model.Element
@@ -20,7 +20,7 @@ import org.tetawex.ecf.util.PreferencesProvider
  * Created by tetawex on 02.05.17.
  */
 @Deprecated("")
-class OldTutorialHexMapActor(game: ECFGame) : BaseWidget<ECFGame>(game) {
+class OldTutorialHexMapWidget(val game: ECFGame) : Widget() {
 
     var cellArray: Array<Array<Cell?>>
     var unlockedCells = Array(4) { BooleanArray(4) }

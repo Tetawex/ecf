@@ -1,13 +1,9 @@
-package org.tetawex.ecf.tutorial
+package org.tetawex.ecf.presentation.tutorial
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.utils.viewport.ExtendViewport
 import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.Cell
@@ -24,7 +20,7 @@ import org.tetawex.ecf.util.PreferencesProvider
  * ...
  */
 class TutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
-    private var hexMapActor: OldTutorialHexMapActor? = null
+    private var hexMapWidget: OldTutorialHexMapWidget? = null
     private var scoreLabel: Label? = null
     private var manaLabel: TextButton? = null
 
@@ -85,8 +81,8 @@ class TutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
         val midRowTable = Table()
         val bottomRowTable = Table()
 
-        hexMapActor = OldTutorialHexMapActor(game)
-        hexMapActor!!.cellActionListener = object : OldTutorialHexMapActor.TutorialCellActionListener {
+        hexMapWidget = OldTutorialHexMapWidget(game)
+        hexMapWidget!!.cellActionListener = object : OldTutorialHexMapWidget.TutorialCellActionListener {
             override fun cellMerged(mergedElementsCount: Int) {
                 gameData.processElementsMerge(mergedElementsCount)
             }
@@ -100,7 +96,7 @@ class TutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
                 return gameData.canMove(cellElementCount)
             }
         }
-        midRowTable.add<OldTutorialHexMapActor>(hexMapActor).center().expand().padTop(60f)
+        midRowTable.add<OldTutorialHexMapWidget>(hexMapWidget).center().expand().padTop(60f)
 
         mainTable.setFillParent(true)
         mainTable.add(topRowTable).growX().row()
@@ -144,7 +140,7 @@ class TutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
             }
 
             override fun cellMapChanged(newMap: Array<Array<Cell?>>) {
-                hexMapActor!!.cellArray = newMap
+                hexMapWidget!!.cellArray = newMap
             }
 
             override fun elementsCountChanged(fire: Int, water: Int, air: Int, earth: Int, shadow: Int, light: Int, time: Int) {
@@ -188,55 +184,55 @@ class TutorialScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     fun advanceTutorial() {
         tutorialStage++
         if (tutorialStage == 2) {
-            hexMapActor!!.unlockedCells[2][1] = true
-            hexMapActor!!.unlockedCells[3][0] = true
-            hexMapActor!!.fromCell = IntVector2(2, 1)
-            hexMapActor!!.toCell = IntVector2(3, 0)
-            hexMapActor!!.acceptAnyClick = false
+            hexMapWidget!!.unlockedCells[2][1] = true
+            hexMapWidget!!.unlockedCells[3][0] = true
+            hexMapWidget!!.fromCell = IntVector2(2, 1)
+            hexMapWidget!!.toCell = IntVector2(3, 0)
+            hexMapWidget!!.acceptAnyClick = false
         } else if (tutorialStage == 3) {
-            hexMapActor!!.lockCells()
-            hexMapActor!!.unlockedCells[3][2] = true
-            hexMapActor!!.unlockedCells[3][3] = true
-            hexMapActor!!.fromCell = IntVector2(3, 3)
-            hexMapActor!!.toCell = IntVector2(3, 2)
-            hexMapActor!!.acceptAnyClick = false
+            hexMapWidget!!.lockCells()
+            hexMapWidget!!.unlockedCells[3][2] = true
+            hexMapWidget!!.unlockedCells[3][3] = true
+            hexMapWidget!!.fromCell = IntVector2(3, 3)
+            hexMapWidget!!.toCell = IntVector2(3, 2)
+            hexMapWidget!!.acceptAnyClick = false
         } else if (tutorialStage == 4) {
-            hexMapActor!!.lockCells()
-            hexMapActor!!.unlockedCells[3][1] = true
-            hexMapActor!!.unlockedCells[2][2] = true
-            hexMapActor!!.unlockedCells[2][3] = true
-            hexMapActor!!.fromCell = IntVector2(2, 3)
-            hexMapActor!!.toCell = IntVector2(2, 2)
-            hexMapActor!!.acceptAnyClick = false
+            hexMapWidget!!.lockCells()
+            hexMapWidget!!.unlockedCells[3][1] = true
+            hexMapWidget!!.unlockedCells[2][2] = true
+            hexMapWidget!!.unlockedCells[2][3] = true
+            hexMapWidget!!.fromCell = IntVector2(2, 3)
+            hexMapWidget!!.toCell = IntVector2(2, 2)
+            hexMapWidget!!.acceptAnyClick = false
         } else if (tutorialStage == 5) {
-            hexMapActor!!.unlockedCells[2][3] = false
-            hexMapActor!!.fromCell = IntVector2(2, 2)
-            hexMapActor!!.toCell = IntVector2(3, 1)
-            hexMapActor!!.acceptAnyClick = false
+            hexMapWidget!!.unlockedCells[2][3] = false
+            hexMapWidget!!.fromCell = IntVector2(2, 2)
+            hexMapWidget!!.toCell = IntVector2(3, 1)
+            hexMapWidget!!.acceptAnyClick = false
         } else if (tutorialStage == 6) {
-            hexMapActor!!.lockCells()
-            hexMapActor!!.unlockedCells[1][2] = true
-            hexMapActor!!.unlockedCells[1][1] = true
-            hexMapActor!!.fromCell = IntVector2(1, 2)
-            hexMapActor!!.toCell = IntVector2(1, 1)
-            hexMapActor!!.acceptAnyClick = false
+            hexMapWidget!!.lockCells()
+            hexMapWidget!!.unlockedCells[1][2] = true
+            hexMapWidget!!.unlockedCells[1][1] = true
+            hexMapWidget!!.fromCell = IntVector2(1, 2)
+            hexMapWidget!!.toCell = IntVector2(1, 1)
+            hexMapWidget!!.acceptAnyClick = false
         } else if (tutorialStage == 7) {
-            hexMapActor!!.lockCells()
-            hexMapActor!!.unlockedCells[0][2] = true
-            hexMapActor!!.unlockedCells[1][1] = true
-            hexMapActor!!.fromCell = IntVector2(0, 2)
-            hexMapActor!!.toCell = IntVector2(1, 1)
-            hexMapActor!!.acceptAnyClick = false
+            hexMapWidget!!.lockCells()
+            hexMapWidget!!.unlockedCells[0][2] = true
+            hexMapWidget!!.unlockedCells[1][1] = true
+            hexMapWidget!!.fromCell = IntVector2(0, 2)
+            hexMapWidget!!.toCell = IntVector2(1, 1)
+            hexMapWidget!!.acceptAnyClick = false
         } else if (tutorialStage == 8) {
-            hexMapActor!!.unlockCells()
-            hexMapActor!!.fromCell = IntVector2(1000, 1000)
-            hexMapActor!!.toCell = IntVector2(1000, 1000)
-            hexMapActor!!.acceptAnyClick = true
+            hexMapWidget!!.unlockCells()
+            hexMapWidget!!.fromCell = IntVector2(1000, 1000)
+            hexMapWidget!!.toCell = IntVector2(1000, 1000)
+            hexMapWidget!!.acceptAnyClick = true
         } else if (tutorialStage == 9) {
-            hexMapActor!!.unlockCells()
-            hexMapActor!!.fromCell = IntVector2(1000, 1000)
-            hexMapActor!!.toCell = IntVector2(1000, 1000)
-            hexMapActor!!.acceptAnyClick = true
+            hexMapWidget!!.unlockCells()
+            hexMapWidget!!.fromCell = IntVector2(1000, 1000)
+            hexMapWidget!!.toCell = IntVector2(1000, 1000)
+            hexMapWidget!!.acceptAnyClick = true
         } else if (tutorialStage == 10) {
             val bundle = Bundle()
             bundle.putItem("levelCode", "")
