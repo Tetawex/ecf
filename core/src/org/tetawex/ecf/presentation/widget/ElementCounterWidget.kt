@@ -2,6 +2,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import org.tetawex.ecf.core.ECFGame
+import org.tetawex.ecf.presentation.DEFAULT_PADDING_HALVED
+import org.tetawex.ecf.presentation.VIEWPORT_WIDTH
 import org.tetawex.ecf.presentation.screen.StyleFactory
 
 class ElementCounterWidget(game: ECFGame) : Table() {
@@ -90,9 +92,9 @@ class ElementCounterWidget(game: ECFGame) : Table() {
         slTable.add(shadowTable)
         slTable.add(lightTable)
 
-        add(fwTable).pad(40f)
-        add(aeTable).prefWidth(1500f)
-        add(slTable).pad(40f)
+        add(fwTable).pad(DEFAULT_PADDING_HALVED)
+        add(aeTable).prefWidth(VIEWPORT_WIDTH)
+        add(slTable).pad(DEFAULT_PADDING_HALVED)
     }
 
     fun setElementCount(
