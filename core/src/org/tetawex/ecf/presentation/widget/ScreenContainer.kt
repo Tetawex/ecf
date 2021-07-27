@@ -17,6 +17,14 @@ class ScreenContainer(vararg children: Actor) : Stack() {
         return VIEWPORT_WIDTH
     }
 
+    override fun getMinHeight(): Float {
+        return VIEWPORT_HEIGHT
+    }
+
+    override fun getMinWidth(): Float {
+        return VIEWPORT_WIDTH
+    }
+
     override fun getPrefWidth(): Float {
         return VIEWPORT_WIDTH
     }

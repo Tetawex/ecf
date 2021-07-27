@@ -108,13 +108,13 @@ class ECFGame(val actionResolver: ActionResolver) : Game() {
 
         val preferences = PreferencesProvider.getPreferences()
 
-        if (preferences.selectedLanguageCode == "default") {
-            i18NBundle = assetManager.get("i18n/bundle", I18NBundle::class.java)
+        i18NBundle = if (preferences.selectedLanguageCode == "default") {
+            assetManager.get("i18n/bundle", I18NBundle::class.java)
         } else {
             val baseFileHandle = Gdx.files.internal("i18n/bundle")
             val locale =
                 Locale(preferences.selectedLanguageCode!!, preferences.selectedCountryCode!!)
-            i18NBundle = I18NBundle.createBundle(baseFileHandle, locale)
+            I18NBundle.createBundle(baseFileHandle, locale)
         }
         FontCharacters.codeToLanguageMap = HashMap()
         FontCharacters.codeToLanguageMap["en_US"] = "English"

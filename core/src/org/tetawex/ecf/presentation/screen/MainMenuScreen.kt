@@ -12,6 +12,7 @@ import org.tetawex.ecf.core.ECFGame
 import org.tetawex.ecf.core.GameStateManager
 import org.tetawex.ecf.model.ECFPreferences
 import org.tetawex.ecf.presentation.*
+import org.tetawex.ecf.presentation.widget.background.CommonBackground
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
 
@@ -29,10 +30,7 @@ class MainMenuScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
     private fun initUi() {
         val stack = Stack()
         stack.setFillParent(true)
-        stack.add(Image(
-                game.assetManager
-                        .get("backgrounds/background.png",
-                                Texture::class.java)))
+        stack.add(CommonBackground(game))
         val titleTable = Table()
 
         val titleTexture = game.assetManager

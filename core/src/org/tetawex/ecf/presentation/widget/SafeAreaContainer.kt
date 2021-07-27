@@ -7,7 +7,7 @@ import org.tetawex.ecf.presentation.VIEWPORT_WIDTH
 
 class SafeAreaContainer(child: Actor) : Table() {
     init {
-        add(child).growY()
+        add(child).growY().fillX()
         setFillParent(true)
     }
 

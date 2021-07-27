@@ -14,7 +14,7 @@ import org.tetawex.ecf.presentation.screen.BaseScreen
 import org.tetawex.ecf.presentation.screen.levelselect.SHOULD_RESTORE_SCROLL_POSITION_KEY
 import org.tetawex.ecf.presentation.StyleFactory
 import org.tetawex.ecf.presentation.widget.SafeAreaContainer
-import org.tetawex.ecf.presentation.widget.background.Background
+import org.tetawex.ecf.presentation.widget.background.LevelBackground
 import org.tetawex.ecf.presentation.widget.ScreenContainer
 import org.tetawex.ecf.util.Bundle
 import org.tetawex.ecf.util.PreferencesProvider
@@ -196,7 +196,7 @@ class GameScreen(game: ECFGame, bundle: Bundle?) : BaseScreen(game) {
 
         stage.addActor(
             ScreenContainer(
-                Background(game, levelCode),
+                LevelBackground(game, levelCode),
                 SafeAreaContainer(mainTable),
 
                 winLossModal,
